@@ -1,7 +1,10 @@
 package org.example;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Status {
-    private String api_version;
+    @JsonProperty("api_version")
+    private String version;
     private String build;
     private boolean genquery2_enabled;
     private String irods_zone;
@@ -10,12 +13,12 @@ public class Status {
     private int max_size_of_request_body_in_bytes;
     private boolean openid_connect_enabled;
 
-    public String getApi_version() {
-        return api_version;
+    public String getVersion() {
+        return version;
     }
 
-    public void setApi_version(String api_version) {
-        this.api_version = api_version;
+    public void setApi_version(String version) {
+        this.version = version;
     }
 
     public String getBuild() {

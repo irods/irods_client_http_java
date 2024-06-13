@@ -1,10 +1,14 @@
 package org.example;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class Main {
     private static final String API_URL = "http://52.91.145.195:8888/irods-http-api/0.3.0/info";
@@ -21,6 +25,9 @@ public class Main {
         //System.out.println(response.body());
 
         // pase JSON into objects
+        ObjectMapper mapper = new ObjectMapper();
+        Status status = mapper.readValue(response.body(), Status.class);
+        System.out.println(status.getVersion());
 
     }
 }
