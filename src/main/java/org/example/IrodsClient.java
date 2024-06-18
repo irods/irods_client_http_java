@@ -9,24 +9,71 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Base64;
 
-public class irodsClient {
+public class IrodsClient {
 
     private final String baseUrl;
     private static HttpClient client;
     private User user;
 
-    public irodsClient(String address, String port, String version) {
+    /**
+     * Enforces the use of the builder
+     * @param builder
+     */
+    private IrodsClient(Builder builder) {
         this.client = HttpClient.newHttpClient();
-        this.baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
-        //this.baseUrl = "http://52.91.145.195:8888/irods-http-api/0.3.0";
+        this.baseUrl = "http://" + builder.address + ":" + builder.port + "/irods-http-api/" + builder.version;
+        this.user = builder.user;
     }
+
+    public static class Builder {
+        private String address;
+        private String port;
+        private String version;
+        private User user;
+
+        public Builder address(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder port(String port) {
+            this.port = port;
+            return this;
+        }
+
+        public Builder version(String version) {
+            this.version = version;
+            return this;
+        }
+
+        public Builder user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public IrodsClient build() throws IOException, InterruptedException {
+            IrodsClient client = new IrodsClient(this);
+            if (this.user != null) {
+                client.authenticate(this.user);
+            }
+            return client;
+        }
+
+
+    }
+
+//    public irodsClient(String address, String port, String version) {
+//        this.client = HttpClient.newHttpClient();
+//        this.baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
+//        //this.baseUrl = "http://52.91.145.195:8888/irods-http-api/0.3.0";
+//    }
     //private static final String url = "http://52.91.145.195:8888/irods-http-api/0.3.0";
 
-    public irodsClient(String address, String port, String version, User user) throws IOException, InterruptedException {
-        this(address, port, version);
-        this.user = user;
-        authenticate(user);
-    }
+//    public IrodsClientrodsClient(String address, String port, String version, User user) throws IOException, InterruptedException {
+//        this(address, port, version);
+//        this.user = user;
+//        authenticate(user);
+//    }
 
     /** Replicates the following request:
      * curl -X POST -u rods:rods http://localhost:9000/irods-http-api/0.3.0/authenticate
@@ -74,14 +121,5 @@ public class irodsClient {
 
     // response code of 401 means attempting to use an expired or invalid token
     // may need to reauthenticate
-
-
-
-
-
-
-
-
-
 
 }
