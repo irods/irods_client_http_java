@@ -13,11 +13,9 @@ public class Example {
         User rods = new User("rods", "rods");
         irodsClient client = new irodsClient(address, port, version, rods);
 
+
         System.out.println("Token is: " + rods.getAuthToken());
 
-//        client.info(url);
-//        String token = client.authenticate(url, "alice", "alicepass");
-//        System.out.println("Token is: " + token);
 
     }
 }

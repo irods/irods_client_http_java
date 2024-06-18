@@ -26,9 +26,16 @@ public class irodsClient {
         this(address, port, version);
         this.user = user;
         authenticate(user);
-        //info(baseUrl);
     }
 
+    /** Replicates the following request:
+     * curl -X POST -u rods:rods http://localhost:9000/irods-http-api/0.3.0/authenticate
+     *
+     * @param user The user objcet that is being authenticated
+     * @throws IOException
+     * @throws InterruptedException
+     * @return authetnciation token of the user
+     */
     private void authenticate (User user) throws IOException, InterruptedException {
         // creating authentication header
         String auth = user.getUsername() + ":" + user.getPassword();
@@ -51,26 +58,18 @@ public class irodsClient {
         }
     }
 
-
-
-
-
-    public static void info(String url) throws IOException, InterruptedException {
+    public Info info() throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/info"))
+                .uri(URI.create(baseUrl + "/info"))
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        //System.out.println("Response status code: " + response.statusCode());
-        //System.out.println(response.body());
-
         //parse JSON into objects
         ObjectMapper mapper = new ObjectMapper();
-        Status status = mapper.readValue(response.body(), Status.class);
-        //System.out.println("API Version: " + status.getVersion());
-        System.out.println(response.body());
+        Info info = mapper.readValue(response.body(), Info.class);
+        return (info);
     }
 
     // response code of 401 means attempting to use an expired or invalid token
@@ -78,16 +77,9 @@ public class irodsClient {
 
 
 
-    /** Replicates the following request:
-     * curl -X POST -u rods:rods http://localhost:9000/irods-http-api/0.3.0/authenticate
-     *
-     * @param url of the request
-     * @param user username of the user
-     * @param pass password of the user
-     * @throws IOException
-     * @throws InterruptedException
-     * @return authetnciation token of the user
-     */
+
+
+
 
 
 
