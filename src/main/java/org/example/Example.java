@@ -24,7 +24,8 @@ public class Example {
                 .user(rods)
                 .build();
 
-        client.collections().create(rods, "test", true);
+        client.collections().create(rods, "/tempZone/home/alice/test", true);
+        client.collections().create(rods, "/tempZone/home/alice/test");
         //System.out.println("Token is: " + rods.getAuthToken());
 
     }

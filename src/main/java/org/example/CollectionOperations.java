@@ -22,12 +22,20 @@ public class CollectionOperations {
     }
 
     //TODO: don't forget that intermediates is an optional parameter
-    //TODO: add comments
+
+    /**
+     * Creates a new collection
+     * @param user The user making the request
+     * @param lpath The logical path for the collection
+     * @param intermediates Whether to create intermediate directories
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public void create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException {
         String url = client.getBaseUrl() + "/collections";
         String token = client.getUser().getAuthToken();
 
-        // creating the paramters
+        // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "create",
                 "lpath", lpath,
@@ -37,7 +45,7 @@ public class CollectionOperations {
         // creating the request body
         String form = formData.entrySet()
                 .stream()
-                .map(entry -> entry.getKey() + "=" + entry.getValue())
+                .map(Map.Entry::toString) // method reference to Map.Entry.toString()
                 .collect(Collectors.joining("&"));
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -61,8 +69,17 @@ public class CollectionOperations {
         } else {
             System.out.println("Failed to create collection: " + message);
         }
-
     }
 
+    /**
+     * Overloaded method to handle the optional parameter for intermediates
+     * @param user The user making the request
+     * @param lpath The logical path for the collection
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public void create(User user, String lpath) throws IOException, InterruptedException {
+        create(user, lpath, false);
+    }
 
 }
