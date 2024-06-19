@@ -1,6 +1,7 @@
 package org.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.Mapper.Info;
 
 import java.io.IOException;
 import java.net.URI;
@@ -109,7 +110,7 @@ public class IrodsClient {
      * @throws IOException
      * @throws InterruptedException
      */
-    private void authenticate (User user) throws IOException, InterruptedException {
+    void authenticate(User user) throws IOException, InterruptedException {
         // creating authentication header
         String auth = user.getUsername() + ":" + user.getPassword();
         // encodes user and password into a suitable format for HTTP basic authentication
@@ -145,6 +146,7 @@ public class IrodsClient {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
 
         //parse JSON into objects
         ObjectMapper mapper = new ObjectMapper();

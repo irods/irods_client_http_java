@@ -1,11 +1,12 @@
 package org.example;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.Mapper.CollectionsCreate;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Base64;
-import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,10 +20,12 @@ public class CollectionOperations {
     public CollectionOperations(IrodsClient client) {
         this.client = client;
     }
+
+    //TODO: don't forget that intermediates is an optional parameter
+    //TODO: add comments
     public void create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException {
         String url = client.getBaseUrl() + "/collections";
         String token = client.getUser().getAuthToken();
-       // String intermediates = createIntermediates ? "1" : "0";
 
         // creating the paramters
         Map<Object, Object> formData = Map.of(
@@ -39,22 +42,26 @@ public class CollectionOperations {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .header("Authorization", "Bearer" + token)
+                .header("Authorization", "Bearer " + token)
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .POST(HttpRequest.BodyPublishers.ofString(form))
                 .build();
 
         HttpResponse<String> response = client.getClient().send(request, HttpResponse.BodyHandlers.ofString());
 
-        if (response.statusCode() == 200) {
+        // parse the JSON
+        ObjectMapper mapper = new ObjectMapper();
+        CollectionsCreate collectionsCreate = mapper.readValue(response.body(), CollectionsCreate.class);
+
+        String message = collectionsCreate.getIrods_response().getStatus_message();
+        boolean created = collectionsCreate.isCreated();
+
+        if (created) {
             System.out.println("System created successfully");
         } else {
-            throw new RuntimeException("Failed to create collection: " + response.statusCode());
+            System.out.println("Failed to create collection: " + message);
         }
 
-
-
-        //System.out.println(client.getUser().getUsername());
     }
 
 
