@@ -10,12 +10,13 @@ public class Example {
         String port = "8888";
         String version = "0.3.0";
 
-        // Create a new user
+        // Create users
         User rods = new User("rods", "rods");
 
         // original way:
         //IrodsClient client = new IrodsClient(address, port, version, rods);
 
+        //TODO: Think about how to better switch users instead of having to create new instances of the class for each user
         IrodsClient client = new IrodsClient.Builder()
                 .address(address)
                 .port(port)
@@ -23,9 +24,8 @@ public class Example {
                 .user(rods)
                 .build();
 
-
-        System.out.println("Token is: " + rods.getAuthToken());
-
+        client.collections().create(rods, "test", true);
+        //System.out.println("Token is: " + rods.getAuthToken());
 
     }
 }

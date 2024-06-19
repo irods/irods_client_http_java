@@ -1,6 +1,4 @@
-package org.example;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+package org.example.Mapper;
 
 public class Info {
     //@JsonProperty("api_version")
