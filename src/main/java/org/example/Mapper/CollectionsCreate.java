@@ -1,10 +1,10 @@
 package org.example.Mapper;
 
 public class CollectionsCreate {
-    private createInner irods_response;
+    private IrodsResponse irods_response;
     private boolean created;
 
-    public createInner getIrods_response() {
+    public IrodsResponse getIrods_response() {
         return irods_response;
     }
 
@@ -12,7 +12,10 @@ public class CollectionsCreate {
         return created;
     }
 
-    public class createInner {
+    /**
+     * Nested class for the nested JSON
+     */
+    public class IrodsResponse {
         private int status_code;
         private String status_message;
 
