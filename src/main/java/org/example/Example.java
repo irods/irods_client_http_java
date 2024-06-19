@@ -10,8 +10,9 @@ public class Example {
         String port = "8888";
         String version = "0.3.0";
 
-        // Create a new user
+        // Create users
         User rods = new User("rods", "rods");
+        User alice = new User("alice", "alicepass");
 
         // original way:
         //IrodsClient client = new IrodsClient(address, port, version, rods);
@@ -22,7 +23,6 @@ public class Example {
                 .version(version)
                 .user(rods)
                 .build();
-
 
         System.out.println("Token is: " + rods.getAuthToken());
 

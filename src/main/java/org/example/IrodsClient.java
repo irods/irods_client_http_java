@@ -12,45 +12,73 @@ import java.util.Base64;
 public class IrodsClient {
 
     private final String baseUrl;
-    private static HttpClient client;
+    private final HttpClient client = HttpClient.newHttpClient();;
     private User user;
 
     /**
-     * Enforces the use of the builder
-     * @param builder
+     * Enforces the use of the builder. Making it private ensures that users cannot create an instance of this.
+     * @param builder Builder instance with configuration details
      */
     private IrodsClient(Builder builder) {
-        this.client = HttpClient.newHttpClient();
         this.baseUrl = "http://" + builder.address + ":" + builder.port + "/irods-http-api/" + builder.version;
         this.user = builder.user;
     }
 
+    /**
+     * Nested Builder class to construct IrodsClient instances
+     */
     public static class Builder {
         private String address;
         private String port;
         private String version;
         private User user;
 
+        /**
+         * Sets server address
+         * @param address Server address
+         * @return Builder instance for chaining
+         */
         public Builder address(String address) {
             this.address = address;
             return this;
         }
 
+        /**
+         * Sets server port
+         * @param port Server port
+         * @return Builder instance for chaining
+         */
         public Builder port(String port) {
             this.port = port;
             return this;
         }
 
+        /**
+         * Sets API version
+         * @param version API version
+         * @return Builder instance for chaining
+         */
         public Builder version(String version) {
             this.version = version;
             return this;
         }
 
+        /**
+         * Sets user for authenticated requests
+         * @param user User that will be authenticated
+         * @return Builder instance for chaining
+         */
         public Builder user(User user) {
             this.user = user;
             return this;
         }
 
+        /**
+         * Builds the IrodsClient instance. If user is present, preforms authentication
+         * @return Constructed IrodsClient instance
+         * @throws IOException
+         * @throws InterruptedException
+         */
         public IrodsClient build() throws IOException, InterruptedException {
             IrodsClient client = new IrodsClient(this);
             if (this.user != null) {
@@ -58,8 +86,6 @@ public class IrodsClient {
             }
             return client;
         }
-
-
     }
 
 //    public irodsClient(String address, String port, String version) {
@@ -75,13 +101,13 @@ public class IrodsClient {
 //        authenticate(user);
 //    }
 
-    /** Replicates the following request:
+    /**
+     * Authenticates user by sending the following POST reqeust
      * curl -X POST -u rods:rods http://localhost:9000/irods-http-api/0.3.0/authenticate
      *
-     * @param user The user objcet that is being authenticated
+     * @param user The user object that is being authenticated
      * @throws IOException
      * @throws InterruptedException
-     * @return authetnciation token of the user
      */
     private void authenticate (User user) throws IOException, InterruptedException {
         // creating authentication header
@@ -105,6 +131,12 @@ public class IrodsClient {
         }
     }
 
+    /**
+     * Sends request to /info endpoint and parses the response
+     * @return Info objected parsed from the response JSON
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public Info info() throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
