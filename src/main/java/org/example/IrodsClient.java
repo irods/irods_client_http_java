@@ -103,7 +103,7 @@ public class IrodsClient {
 
     /**
      * Authenticates user by sending the following POST reqeust
-     * curl -X POST -u rods:rods http://localhost:9000/irods-http-api/0.3.0/authenticate
+     * curl -X POST -u rods:rods http://localhost:8888/irods-http-api/0.3.0/authenticate
      *
      * @param user The user object that is being authenticated
      * @throws IOException
@@ -115,9 +115,10 @@ public class IrodsClient {
         // encodes user and password into a suitable format for HTTP basic authentication
         String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
         String authHeader = "Basic " + encodedAuth;
+        String url = baseUrl + "/authenticate";
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/authenticate"))
+                .uri(URI.create(url))
                 .header("Authorization", authHeader)
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
@@ -149,6 +150,22 @@ public class IrodsClient {
         ObjectMapper mapper = new ObjectMapper();
         Info info = mapper.readValue(response.body(), Info.class);
         return (info);
+    }
+
+    public CollectionOperations collections() {
+        return new CollectionOperations(this);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public HttpClient getClient() {
+        return client;
     }
 
     // response code of 401 means attempting to use an expired or invalid token

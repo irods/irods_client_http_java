@@ -12,11 +12,11 @@ public class Example {
 
         // Create users
         User rods = new User("rods", "rods");
-        User alice = new User("alice", "alicepass");
 
         // original way:
         //IrodsClient client = new IrodsClient(address, port, version, rods);
 
+        //TODO: Think about how to better switch users instead of having to create new instances of the class for each user
         IrodsClient client = new IrodsClient.Builder()
                 .address(address)
                 .port(port)
@@ -24,6 +24,7 @@ public class Example {
                 .user(rods)
                 .build();
 
+        client.collections().create(rods, "test", false);
         System.out.println("Token is: " + rods.getAuthToken());
 
 
