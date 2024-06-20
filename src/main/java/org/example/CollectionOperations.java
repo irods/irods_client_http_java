@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Mapper.CollectionsCreate;
 import org.example.Mapper.IrodsResponse;
+import org.example.Util.HttpRequestUtil;
 
 import java.io.IOException;
 import java.net.URI;
@@ -43,24 +44,8 @@ public class CollectionOperations {
                 "create-intermediates", intermediates ? "1" : "0"
         );
 
-        // creating the request body
-        String form = formData.entrySet()
-                .stream()
-                .map(Map.Entry::toString) // method reference to Map.Entry.toString()
-                .collect(Collectors.joining("&"));
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl))
-                .header("Authorization", "Bearer " + token)
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(form))
-                .build();
-
-        HttpResponse<String> response = client.getClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-        // parse the JSON
-        ObjectMapper mapper = new ObjectMapper();
-        CollectionsCreate collectionsCreate = mapper.readValue(response.body(), CollectionsCreate.class);
+        CollectionsCreate collectionsCreate = HttpRequestUtil.sendAndParse(formData, baseUrl, token, client.getClient(),
+                CollectionsCreate.class);
 
         String message = collectionsCreate.getIrods_response().getStatus_message();
         boolean created = collectionsCreate.isCreated();
@@ -70,7 +55,6 @@ public class CollectionOperations {
         } else {
             System.out.println("Failed to create collection: " + message);
         }
-
     }
 
     /**
@@ -93,24 +77,9 @@ public class CollectionOperations {
                 "no-trash", noTrash ? "1" : "0"
         );
 
-        // creating the request body
-        String form = formData.entrySet()
-                .stream()
-                .map(Map.Entry::toString) // method reference to Map.Entry.toString()
-                .collect(Collectors.joining("&"));
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl))
-                .header("Authorization", "Bearer " + token)
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(form))
-                .build();
-
-        HttpResponse<String> response = client.getClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-        // parse the JSON
-        ObjectMapper mapper = new ObjectMapper();
-        CollectionsCreate mapped = mapper.readValue(response.body(), CollectionsCreate.class);
+        CollectionsCreate mapped = HttpRequestUtil.sendAndParse(formData, baseUrl, token, client.getClient(),
+                CollectionsCreate.class);
 
         System.out.println(mapped.getIrods_response());
     }

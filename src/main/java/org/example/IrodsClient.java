@@ -13,7 +13,7 @@ import java.util.Base64;
 public class IrodsClient {
 
     private final String baseUrl;
-    private final HttpClient client = HttpClient.newHttpClient();;
+    private final HttpClient client = HttpClient.newHttpClient();
     private User user;
 
     /**
