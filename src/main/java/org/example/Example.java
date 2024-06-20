@@ -32,9 +32,11 @@ public class Example {
                 .user(rods)
                 .build();
 
-        //TODO: can probably take out User parameter if we insantiate a new client for each user
+        //TODO: can probably take out User parameter if we instantiate a new client for each user
         client.collections().create(rods, "/tempZone/home/alice/test2", true);
-        client.collections().remove(rods, "/tempZone/home/alice/test2", true, false);
+
+        client.collections().remove(rods, "/tempZone/home/alice/test2").noTrash().recurse().execute();
+
         //clientAlice.collections().create(alice, "/tempZone/home/alice/test2", true);
         //client.collections().create(rods, "/tempZone/home/alice/test");
         //System.out.println("Token is: " + rods.getAuthToken());

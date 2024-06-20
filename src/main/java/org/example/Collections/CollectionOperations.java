@@ -1,9 +1,11 @@
-package org.example;
+package org.example.Collections;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.IrodsClient;
 import org.example.Mapper.CollectionsCreate;
 import org.example.Mapper.IrodsResponse;
+import org.example.User;
 import org.example.Util.HttpRequestUtil;
 
 import java.io.IOException;
@@ -29,7 +31,7 @@ public class CollectionOperations {
     }
 
     /**
-     * Creates a new collection
+     * Creates a new collection.
      * @param user The user making the request
      * @param lpath The logical path for the collection
      * @param intermediates Whether to create intermediate directories
@@ -68,7 +70,9 @@ public class CollectionOperations {
         create(user, lpath, false);
     }
 
-    public void remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException, InterruptedException {
+    // Main method to handle the remove operation. Protected so it can only be accessed from this package. Enforces
+    // use of builder
+    protected void remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException, InterruptedException {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "remove",
@@ -80,9 +84,15 @@ public class CollectionOperations {
 
         CollectionsCreate mapped = HttpRequestUtil.sendAndParse(formData, baseUrl, token, client.getClient(),
                 CollectionsCreate.class);
-
         System.out.println(mapped.getIrods_response());
+//        System.out.println("recurse: " + recurse);
+//        System.out.println("no_trash: " + noTrash);
+
     }
 
-
+    // how the user will actually call the remove method
+    //TODO: See if there's a way to throw an error if user forgets .execute()
+    public RemoveBuilder remove(User user, String lpath) {
+        return  new RemoveBuilder(this, user, lpath);
+    }
 }
