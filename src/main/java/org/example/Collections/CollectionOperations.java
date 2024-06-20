@@ -21,12 +21,10 @@ import java.util.stream.Collectors;
 public class CollectionOperations {
 
     private final IrodsClient client;
-    private String token;
     private String baseUrl;
 
     public CollectionOperations(IrodsClient client) {
         this.client = client;
-        this.token = client.getUser().getAuthToken();
         this.baseUrl = client.getBaseUrl() + "/collections";
     }
 
@@ -39,6 +37,7 @@ public class CollectionOperations {
      * @throws InterruptedException
      */
     public void create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException {
+        String token = user.getAuthToken();
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "create",
@@ -73,6 +72,8 @@ public class CollectionOperations {
     // Main method to handle the remove operation. Protected so it can only be accessed from this package. Enforces
     // use of builder
     protected void remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException, InterruptedException {
+        String token = user.getAuthToken();
+
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "remove",

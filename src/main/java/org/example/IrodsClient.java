@@ -15,7 +15,6 @@ public class IrodsClient {
 
     private final String baseUrl;
     private final HttpClient client = HttpClient.newHttpClient();
-    private User user;
 
     /**
      * Enforces the use of the builder. Making it private ensures that users cannot create an instance of this.
@@ -23,7 +22,6 @@ public class IrodsClient {
      */
     private IrodsClient(Builder builder) {
         this.baseUrl = "http://" + builder.address + ":" + builder.port + "/irods-http-api/" + builder.version;
-        this.user = builder.user;
     }
 
     /**
@@ -33,7 +31,6 @@ public class IrodsClient {
         private String address;
         private String port;
         private String version;
-        private User user;
 
         /**
          * Sets server address
@@ -66,42 +63,15 @@ public class IrodsClient {
         }
 
         /**
-         * Sets user for authenticated requests
-         * @param user User that will be authenticated
-         * @return Builder instance for chaining
-         */
-        public Builder user(User user) {
-            this.user = user;
-            return this;
-        }
-
-        /**
          * Builds the IrodsClient instance. If user is present, preforms authentication
          * @return Constructed IrodsClient instance
          * @throws IOException
          * @throws InterruptedException
          */
         public IrodsClient build() throws IOException, InterruptedException {
-            IrodsClient client = new IrodsClient(this);
-            if (this.user != null) {
-                client.authenticate(this.user);
-            }
-            return client;
+            return new IrodsClient(this);
         }
     }
-
-//    public irodsClient(String address, String port, String version) {
-//        this.client = HttpClient.newHttpClient();
-//        this.baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
-//        //this.baseUrl = "http://52.91.145.195:8888/irods-http-api/0.3.0";
-//    }
-    //private static final String url = "http://52.91.145.195:8888/irods-http-api/0.3.0";
-
-//    public IrodsClientrodsClient(String address, String port, String version, User user) throws IOException, InterruptedException {
-//        this(address, port, version);
-//        this.user = user;
-//        authenticate(user);
-//    }
 
     /**
      * Authenticates user by sending the following POST reqeust
@@ -111,7 +81,7 @@ public class IrodsClient {
      * @throws IOException
      * @throws InterruptedException
      */
-    void authenticate(User user) throws IOException, InterruptedException {
+    protected void authenticate(User user) throws IOException, InterruptedException {
         // creating authentication header
         String auth = user.getUsername() + ":" + user.getPassword();
         // encodes user and password into a suitable format for HTTP basic authentication
@@ -157,10 +127,6 @@ public class IrodsClient {
 
     public CollectionOperations collections() {
         return new CollectionOperations(this);
-    }
-
-    public User getUser() {
-        return user;
     }
 
     public String getBaseUrl() {
