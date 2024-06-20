@@ -13,65 +13,27 @@ import java.util.Base64;
 
 public class IrodsClient {
 
-    private final String baseUrl;
+    private String baseUrl;
     private final HttpClient client = HttpClient.newHttpClient();
 
     /**
-     * Enforces the use of the builder. Making it private ensures that users cannot create an instance of this.
-     * @param builder Builder instance with configuration details
+     * Enforces the use of the builder. Making it package-private ensures that users cannot create an instance of this.
+     * @param address The server address
+     * @param port The server port
+     * @param version The API version
      */
-    private IrodsClient(Builder builder) {
-        this.baseUrl = "http://" + builder.address + ":" + builder.port + "/irods-http-api/" + builder.version;
+    IrodsClient(String address, String port, String version) {
+        this.baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
     }
 
     /**
-     * Nested Builder class to construct IrodsClient instances
+     * Allows clients to use the builder pattern to create instances of the IrodsClient
+     * @return new instance of the IrodsBuilder class.
      */
-    public static class Builder {
-        private String address;
-        private String port;
-        private String version;
-
-        /**
-         * Sets server address
-         * @param address Server address
-         * @return Builder instance for chaining
-         */
-        public Builder address(String address) {
-            this.address = address;
-            return this;
-        }
-
-        /**
-         * Sets server port
-         * @param port Server port
-         * @return Builder instance for chaining
-         */
-        public Builder port(String port) {
-            this.port = port;
-            return this;
-        }
-
-        /**
-         * Sets API version
-         * @param version API version
-         * @return Builder instance for chaining
-         */
-        public Builder version(String version) {
-            this.version = version;
-            return this;
-        }
-
-        /**
-         * Builds the IrodsClient instance. If user is present, preforms authentication
-         * @return Constructed IrodsClient instance
-         * @throws IOException
-         * @throws InterruptedException
-         */
-        public IrodsClient build() throws IOException, InterruptedException {
-            return new IrodsClient(this);
-        }
+    public static IrodsBuilder newBuilder() {
+        return new IrodsBuilder();
     }
+
 
     /**
      * Authenticates user by sending the following POST reqeust
