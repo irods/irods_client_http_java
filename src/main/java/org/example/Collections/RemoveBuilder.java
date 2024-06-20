@@ -1,7 +1,6 @@
 package org.example.Collections;
 
 import org.example.User;
-
 import java.io.IOException;
 
 // allows for user to chain the optional parameters if needed

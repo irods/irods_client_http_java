@@ -14,11 +14,12 @@ public class Example {
         String version = "0.3.0";
 
         // create client
-        IrodsClient client = new IrodsClient.Builder()
+        IrodsClient client = IrodsClient.newBuilder()
                 .address(address)
                 .port(port)
                 .version(version)
                 .build();
+
 
         // Create users
         User rods = new User("rods", "rods", client);
