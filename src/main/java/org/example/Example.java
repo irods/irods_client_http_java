@@ -12,6 +12,7 @@ public class Example {
 
         // Create users
         User rods = new User("rods", "rods");
+        User alice = new User("alice", "alicepass");
 
         // original way:
         //IrodsClient client = new IrodsClient(address, port, version, rods);
@@ -24,8 +25,18 @@ public class Example {
                 .user(rods)
                 .build();
 
-        client.collections().create(rods, "/tempZone/home/alice/test", true);
-        client.collections().create(rods, "/tempZone/home/alice/test");
+        IrodsClient clientAlice = new IrodsClient.Builder()
+                .address(address)
+                .port(port)
+                .version(version)
+                .user(rods)
+                .build();
+
+        //TODO: can probably take out User parameter if we insantiate a new client for each user
+        client.collections().create(rods, "/tempZone/home/alice/test2", true);
+        client.collections().remove(rods, "/tempZone/home/alice/test2", true, false);
+        //clientAlice.collections().create(alice, "/tempZone/home/alice/test2", true);
+        //client.collections().create(rods, "/tempZone/home/alice/test");
         //System.out.println("Token is: " + rods.getAuthToken());
 
     }
