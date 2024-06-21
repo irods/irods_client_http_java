@@ -30,13 +30,14 @@ public class CollectionOperations {
 
     /**
      * Creates a new collection.
+     * Protected, so it can only be accessed from this package. Enforces use of builder
      * @param user The user making the request
      * @param lpath The logical path for the collection
-     * @param intermediates Whether to create intermediate directories
+     * @param intermediates Whether to create intermediate directories. Optional parameter
      * @throws IOException
      * @throws InterruptedException
      */
-    public void create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException {
+    protected void create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException {
         String token = user.getAuthToken();
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -59,18 +60,26 @@ public class CollectionOperations {
     }
 
     /**
-     * Overloaded method to handle the optional parameter for intermediates
+     * Initiates the creation of a collection
+     * @param user The user making the request
+     * @param lpath The logical path
+     * @return CreateBuilder instance that allows for the user to chain optional parameters
+     */
+    public CreateBuilder create(User user, String lpath) {
+        return new CreateBuilder(this, user, lpath);
+    }
+
+
+    /**
+     * Removes a collection
+     * Protected, so it can only be accessed from this package. Enforces use of builder
      * @param user The user making the request
      * @param lpath The logical path for the collection
+     * @param recurse If true, contents of the collection will be removed. Optional parameter
+     * @param noTrash If true, collection is permanently removed. Optional parameter
      * @throws IOException
      * @throws InterruptedException
      */
-    public void create(User user, String lpath) throws IOException, InterruptedException {
-        create(user, lpath, false);
-    }
-
-    // Main method to handle the remove operation. Protected so it can only be accessed from this package. Enforces
-    // use of builder
     protected void remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException, InterruptedException {
         String token = user.getAuthToken();
 
@@ -82,17 +91,19 @@ public class CollectionOperations {
                 "no-trash", noTrash ? "1" : "0"
         );
 
-
         CollectionsCreate mapped = HttpRequestUtil.sendAndParse(formData, baseUrl, token, client.getClient(),
                 CollectionsCreate.class);
+        //TODO: Have a better response
         System.out.println(mapped.getIrods_response());
-//        System.out.println("recurse: " + recurse);
-//        System.out.println("no_trash: " + noTrash);
-
     }
 
-    // how the user will actually call the remove method
     //TODO: See if there's a way to throw an error if user forgets .execute()
+    /**
+     * Initiates the removal of a collection
+     * @param user The user making the request
+     * @param lpath The logical path
+     * @return RemoveBuilder instance that allows for the user to chain optional parameters
+     */
     public RemoveBuilder remove(User user, String lpath) {
         return  new RemoveBuilder(this, user, lpath);
     }
