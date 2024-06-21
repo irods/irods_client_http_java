@@ -1,21 +1,16 @@
 package org.example.Collections;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.IrodsClient;
 import org.example.IrodsException;
 import org.example.Mapper.CollectionsCreate;
 import org.example.Mapper.CollectionsStat;
-import org.example.Mapper.IrodsResponse;
 import org.example.User;
 import org.example.Util.HttpRequestUtil;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Class for all the Collections Operations
@@ -48,7 +43,7 @@ public class CollectionOperations {
                 "create-intermediates", intermediates ? "1" : "0"
         );
 
-        CollectionsCreate mapped = HttpRequestUtil.sendAndParse(formData, baseUrl, token, client.getClient(),
+        CollectionsCreate mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
                 CollectionsCreate.class);
 
         String message = mapped.getIrods_response().getStatus_message();
@@ -93,7 +88,7 @@ public class CollectionOperations {
                 "no-trash", noTrash ? "1" : "0"
         );
 
-        CollectionsCreate mapped = HttpRequestUtil.sendAndParse(formData, baseUrl, token, client.getClient(),
+        CollectionsCreate mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
                 CollectionsCreate.class);
 
         int statusCode = mapped.getIrods_response().getStatus_code();
@@ -122,21 +117,14 @@ public class CollectionOperations {
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
-                "op", "remove",
+                "op", "stat",
                 "lpath", lpath,
-                "recurse", ticket ? "1" : "0"
+                "ticket", ticket ? "1" : "0"
         );
 
-        CollectionsStat mapped = HttpRequestUtil.sendAndParse(formData, baseUrl, token, client.getClient(),
+        CollectionsStat mapped = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient(),
                 CollectionsStat.class);
 
-        int statusCode = mapped.getIrods_response().getStatus_code();
-        String statusMessage = mapped.getIrods_response().getStatus_message();
-
-        // throws errors if found
-        statusCodeMessage(statusCode, statusMessage, "Could not find status");
-
-        //TODO: need to make sure it gets correctly parsed
         System.out.println(mapped);
 
     }
@@ -145,6 +133,25 @@ public class CollectionOperations {
         return new StatBuilder(this, user, lpath);
     }
 
+    protected void list(User user, String lpath, boolean recurse, boolean ticket) {
+        String token = user.getAuthToken();
+
+        // contains parameters for the HTTP request
+        Map<Object, Object> formData = Map.of(
+                "op", "list",
+                "lpath", lpath,
+                "recurse", ticket ? "1" : "0"
+                "ticket",
+        );
+    }
+
+    /**
+     * Helper method to give status code message if JSON displays it as null
+     * @param statusCode The status code number
+     * @param statusMessage The status message (may be null)
+     * @param errorMessage The error message that will be displayed
+     * @throws IrodsException
+     */
     private void statusCodeMessage(int statusCode, String statusMessage, String errorMessage) throws IrodsException {
 
         if (statusCode == -170000 && statusMessage == null) {

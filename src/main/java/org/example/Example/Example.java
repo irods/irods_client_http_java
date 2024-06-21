@@ -25,8 +25,10 @@ public class Example {
         User rods = new User("rods", "rods", client);
         User alice = new User("alice", "alicepass", client);
 
+        // client.info();
 
-       // client.collections().create(rods, "/tempZone/home/rods/test4").intermediates().execute();
+
+        //client.collections().create(rods, "/tempZone/home/rods/test4").intermediates().execute();
 
         //"/tempZone/home/rods/test"
         // test2
@@ -37,7 +39,7 @@ public class Example {
 
 //        System.out.println("Token is: " + rods.getAuthToken());
 
-        //client.collections().stat(rods, "/tempZone/home/rods/test4").execute();
+        client.collections().stat(rods, "/tempZone/home/rods/test4").execute();
 
     }
 }
