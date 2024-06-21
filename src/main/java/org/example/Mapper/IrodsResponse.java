@@ -14,7 +14,7 @@ public class IrodsResponse {
 
     @Override
     public String toString() {
-        return "status code: " + status_code +
-                "\nstatus message: " + status_message;
+        return " status code: " + status_code +
+                "\n status message: " + status_message;
     }
 }

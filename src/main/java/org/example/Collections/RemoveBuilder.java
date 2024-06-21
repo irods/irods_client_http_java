@@ -1,5 +1,6 @@
 package org.example.Collections;
 
+import org.example.IrodsException;
 import org.example.User;
 import java.io.IOException;
 
@@ -26,7 +27,7 @@ public class RemoveBuilder {
         return this;
     }
 
-    public void execute() throws IOException, InterruptedException {
+    public void execute() throws IOException, InterruptedException, IrodsException {
         operations.remove(user, lpath, recurse, noTrash);
     }
 

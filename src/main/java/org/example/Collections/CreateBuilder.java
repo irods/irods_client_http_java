@@ -1,5 +1,6 @@
 package org.example.Collections;
 
+import org.example.IrodsException;
 import org.example.User;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class CreateBuilder {
         return this;
     }
 
-    public void execute() throws IOException, InterruptedException {
+    public void execute() throws IOException, InterruptedException, IrodsException {
         operations.create(user, lpath, intermediates);
     }
 

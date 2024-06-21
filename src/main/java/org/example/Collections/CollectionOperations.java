@@ -3,7 +3,9 @@ package org.example.Collections;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.IrodsClient;
+import org.example.IrodsException;
 import org.example.Mapper.CollectionsCreate;
+import org.example.Mapper.CollectionsStat;
 import org.example.Mapper.IrodsResponse;
 import org.example.User;
 import org.example.Util.HttpRequestUtil;
@@ -37,7 +39,7 @@ public class CollectionOperations {
      * @throws IOException
      * @throws InterruptedException
      */
-    protected void create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException {
+    protected void create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -46,16 +48,16 @@ public class CollectionOperations {
                 "create-intermediates", intermediates ? "1" : "0"
         );
 
-        CollectionsCreate collectionsCreate = HttpRequestUtil.sendAndParse(formData, baseUrl, token, client.getClient(),
+        CollectionsCreate mapped = HttpRequestUtil.sendAndParse(formData, baseUrl, token, client.getClient(),
                 CollectionsCreate.class);
 
-        String message = collectionsCreate.getIrods_response().getStatus_message();
-        boolean created = collectionsCreate.isCreated();
+        String message = mapped.getIrods_response().getStatus_message();
+        boolean created = mapped.isCreated();
 
         if (created) {
-            System.out.println("System created successfully");
+            System.out.println("Collection created successfully");
         } else {
-            System.out.println("Failed to create collection: " + message);
+            throw new IrodsException("Failed to create collection: " + message);
         }
     }
 
@@ -80,7 +82,7 @@ public class CollectionOperations {
      * @throws IOException
      * @throws InterruptedException
      */
-    protected void remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException, InterruptedException {
+    protected void remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -93,7 +95,14 @@ public class CollectionOperations {
 
         CollectionsCreate mapped = HttpRequestUtil.sendAndParse(formData, baseUrl, token, client.getClient(),
                 CollectionsCreate.class);
-        //TODO: Have a better response
+
+        int statusCode = mapped.getIrods_response().getStatus_code();
+        String statusMessage = mapped.getIrods_response().getStatus_message();
+
+        // throws errors if found
+        statusCodeMessage(statusCode, statusMessage, "Could not remove collection");
+
+        System.out.println(statusCode);
         System.out.println(mapped.getIrods_response());
     }
 
@@ -107,4 +116,42 @@ public class CollectionOperations {
     public RemoveBuilder remove(User user, String lpath) {
         return  new RemoveBuilder(this, user, lpath);
     }
+
+    protected void stat(User user, String lpath, boolean ticket) throws IOException, InterruptedException, IrodsException {
+        String token = user.getAuthToken();
+
+        // contains parameters for the HTTP request
+        Map<Object, Object> formData = Map.of(
+                "op", "remove",
+                "lpath", lpath,
+                "recurse", ticket ? "1" : "0"
+        );
+
+        CollectionsStat mapped = HttpRequestUtil.sendAndParse(formData, baseUrl, token, client.getClient(),
+                CollectionsStat.class);
+
+        int statusCode = mapped.getIrods_response().getStatus_code();
+        String statusMessage = mapped.getIrods_response().getStatus_message();
+
+        // throws errors if found
+        statusCodeMessage(statusCode, statusMessage, "Could not find status");
+
+        //TODO: need to make sure it gets correctly parsed
+        System.out.println(mapped);
+
+    }
+
+    public StatBuilder stat(User user, String lpath) {
+        return new StatBuilder(this, user, lpath);
+    }
+
+    private void statusCodeMessage(int statusCode, String statusMessage, String errorMessage) throws IrodsException {
+
+        if (statusCode == -170000 && statusMessage == null) {
+            throw new IrodsException(errorMessage + ":  NOT_A_COLLECTION");
+        } else if (statusCode  == -170000) { // if statusCode does have a message
+            throw new IrodsException(errorMessage +  ": " + statusMessage);
+        }
+    }
+
 }
