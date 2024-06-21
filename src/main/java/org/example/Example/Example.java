@@ -20,16 +20,15 @@ public class Example {
                 .version(version)
                 .build();
 
-
         // Create users
         User rods = new User("rods", "rods", client);
         User alice = new User("alice", "alicepass", client);
 
 
-        client.collections().create(rods, "/tempZone/home/alice/test2", true);
+        client.collections().create(rods, "/tempZone/home/alice/test2").intermediates().execute();
 
-        client.collections().remove(rods, "/tempZone/home/alice/test2").noTrash().recurse().execute();
-        client.collections().remove(rods, "/tempZone/home/alice/test2").execute();
+//        client.collections().remove(rods, "/tempZone/home/alice/test2").noTrash().recurse().execute();
+//        client.collections().remove(rods, "/tempZone/home/alice/test2").execute();
 
 
         System.out.println("Token is: " + rods.getAuthToken());
