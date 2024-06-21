@@ -11,4 +11,10 @@ public class CollectionsCreate {
     public boolean isCreated() {
         return created;
     }
+
+    @Override
+    public String toString() {
+        return "irods_response: " + irods_response +
+                "\ncreated: " + created;
+    }
 }

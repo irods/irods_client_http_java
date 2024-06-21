@@ -1,13 +1,14 @@
 package org.example.Example;
 
 import org.example.IrodsClient;
+import org.example.IrodsException;
 import org.example.User;
 
 import java.io.IOException;
 
 public class Example {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, IrodsException {
         //http://52.91.145.195:8888/irods-http-api/0.3.0
         String address = "52.91.145.195";
         String port = "8888";
@@ -25,13 +26,18 @@ public class Example {
         User alice = new User("alice", "alicepass", client);
 
 
-        client.collections().create(rods, "/tempZone/home/alice/test2").intermediates().execute();
+       // client.collections().create(rods, "/tempZone/home/rods/test4").intermediates().execute();
 
-//        client.collections().remove(rods, "/tempZone/home/alice/test2").noTrash().recurse().execute();
-//        client.collections().remove(rods, "/tempZone/home/alice/test2").execute();
+        //"/tempZone/home/rods/test"
+        // test2
+        // test3
+
+//        client.collections().remove(rods, "/tempZone/home/rods/test").noTrash().recurse().execute();
 
 
-        System.out.println("Token is: " + rods.getAuthToken());
+//        System.out.println("Token is: " + rods.getAuthToken());
+
+        //client.collections().stat(rods, "/tempZone/home/rods/test4").execute();
 
     }
 }
