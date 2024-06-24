@@ -9,7 +9,7 @@ public class StatBuilder {
     private final CollectionOperations operations;
     private final User user;
     private final String lpath;
-    private boolean ticket = false;
+    private String ticket = null;
 
     public StatBuilder(CollectionOperations operations, User user, String lpath) {
         this.operations = operations;
@@ -17,8 +17,8 @@ public class StatBuilder {
         this.lpath = lpath;
     }
 
-    public StatBuilder ticket() {
-        ticket = true;
+    public StatBuilder ticket(String ticket) {
+        this.ticket = ticket;
         return this;
     }
 

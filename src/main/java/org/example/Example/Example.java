@@ -28,7 +28,7 @@ public class Example {
         // client.info();
 
 
-        //client.collections().create(rods, "/tempZone/home/rods/test4").intermediates().execute();
+        client.collections().create(rods, "/tempZone/home/rods/test").intermediates().execute();
 
         //"/tempZone/home/rods/test"
         // test2
@@ -39,7 +39,11 @@ public class Example {
 
 //        System.out.println("Token is: " + rods.getAuthToken());
 
-        client.collections().stat(rods, "/tempZone/home/rods/test4").execute();
+        //client.collections().stat(rods, "/tempZone/home/rods/test4").execute();
+
+        client.collections().list(rods, "/tempZone/home/rods").execute();
+        client.collections().remove(rods, "/tempZone/home/rods/test").noTrash().recurse().execute();
+//        client.collections().list(rods, "/tempZone/home/rods").execute();
 
     }
 }
