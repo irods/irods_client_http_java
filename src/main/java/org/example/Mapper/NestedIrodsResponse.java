@@ -1,6 +1,14 @@
 package org.example.Mapper;
 
-public class CollectionsCreate {
+/**
+ * For JSON responses that only include a nested irods_response
+ * Includes:
+ *  - collections.create()
+ *  - collections.remove()
+ *  - collections.set_permission()
+ */
+//TODO: see it's possible to transfer the other mapped classes into this one
+public class NestedIrodsResponse {
     private IrodsResponse irods_response; // nested JSON
     private boolean created;
 

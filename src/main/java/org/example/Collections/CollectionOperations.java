@@ -2,15 +2,13 @@ package org.example.Collections;
 
 import org.example.IrodsClient;
 import org.example.IrodsException;
-import org.example.Mapper.CollectionsCreate;
+import org.example.Mapper.NestedIrodsResponse;
 import org.example.Mapper.CollectionsList;
 import org.example.Mapper.CollectionsStat;
 import org.example.User;
 import org.example.Util.HttpRequestUtil;
 
 import java.io.IOException;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Map;
 
 /**
@@ -44,8 +42,8 @@ public class CollectionOperations {
                 "create-intermediates", intermediates ? "1" : "0"
         );
 
-        CollectionsCreate mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
-                CollectionsCreate.class);
+        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
+                NestedIrodsResponse.class);
 
         String message = mapped.getIrods_response().getStatus_message();
         boolean created = mapped.isCreated();
@@ -89,8 +87,8 @@ public class CollectionOperations {
                 "no-trash", noTrash ? "1" : "0"
         );
 
-        CollectionsCreate mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
-                CollectionsCreate.class);
+        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
+                NestedIrodsResponse.class);
 
         int statusCode = mapped.getIrods_response().getStatus_code();
         String statusMessage = mapped.getIrods_response().getStatus_message();
@@ -181,6 +179,34 @@ public class CollectionOperations {
     public ListBuilder list(User user,String lpath) {
         return new ListBuilder(this, user, lpath);
     }
+
+    protected void set_permission(User user, String lpath, String entityName, String permission, boolean admin) throws IOException, InterruptedException {
+        String token = user.getAuthToken();
+
+        // contains parameters for the HTTP request
+        Map<Object, Object> formData = Map.of(
+                "op", "set_permission",
+                "lpath", lpath,
+                "entity-name", entityName,
+                "permission", permission,
+                "admin", admin ? "1" : "0"
+        );
+
+        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), NestedIrodsResponse.class);
+
+        if (mapped.getIrods_response().getStatus_code() == 0) {
+            System.out.println("Permission for '" + entityName + "' set");
+        } else {
+            System.out.println(mapped);
+        }
+
+    }
+
+    public SetPermissionBuilder set_permission(User user, String lpath, String entityName, String permission) {
+        return new SetPermissionBuilder(this, user, lpath, entityName, permission);
+    }
+
 
     /**
      * Helper method to give status code message if JSON displays it as null
