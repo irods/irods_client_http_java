@@ -3,6 +3,7 @@ package org.example.Collections;
 import org.example.IrodsClient;
 import org.example.IrodsException;
 import org.example.Mapper.CollectionsCreate;
+import org.example.Mapper.CollectionsList;
 import org.example.Mapper.CollectionsStat;
 import org.example.User;
 import org.example.Util.HttpRequestUtil;
@@ -50,7 +51,7 @@ public class CollectionOperations {
         boolean created = mapped.isCreated();
 
         if (created) {
-            System.out.println("Collection created successfully");
+            System.out.println("Collection '" + lpath + "' created successfully");
         } else {
             throw new IrodsException("Failed to create collection: " + message);
         }
@@ -97,8 +98,9 @@ public class CollectionOperations {
         // throws errors if found
         statusCodeMessage(statusCode, statusMessage, "Could not remove collection");
 
-        System.out.println(statusCode);
-        System.out.println(mapped.getIrods_response());
+        if (statusCode == 0) {
+            System.out.println("'" + lpath +"' removed successfully");
+        }
     }
 
     //TODO: See if there's a way to throw an error if user forgets .execute()
@@ -112,15 +114,28 @@ public class CollectionOperations {
         return  new RemoveBuilder(this, user, lpath);
     }
 
-    protected void stat(User user, String lpath, boolean ticket) throws IOException, InterruptedException, IrodsException {
+    /**
+     * Returns information about a collection
+     * Protected, so it can only be accessed from this package. Enforces use of builder
+     * @param user The user making the request
+     * @param lpath The logical path for the collection
+     * @param ticket An optional parameter
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws IrodsException
+     */
+    protected void stat(User user, String lpath, String ticket) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "stat",
-                "lpath", lpath,
-                "ticket", ticket ? "1" : "0"
+                "lpath", lpath
         );
+
+        if (ticket != null) {
+            formData.put("ticket", ticket);
+        }
 
         CollectionsStat mapped = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient(),
                 CollectionsStat.class);
@@ -129,20 +144,42 @@ public class CollectionOperations {
 
     }
 
+    /**
+     * Initiates the stat operation of a collection
+     * @param user The user making the request
+     * @param lpath The logical path
+     * @return StatBuilder instance that allows for the user to chain optional parameters
+     */
     public StatBuilder stat(User user, String lpath) {
         return new StatBuilder(this, user, lpath);
     }
 
-    protected void list(User user, String lpath, boolean recurse, boolean ticket) {
+    protected void list(User user, String lpath, boolean recurse, String ticket) throws IOException, InterruptedException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "list",
                 "lpath", lpath,
-                "recurse", ticket ? "1" : "0"
-                "ticket",
+                "recurse", recurse ? "1" : "0"
         );
+
+        if (ticket != null) {
+            formData.put("ticket", ticket);
+        }
+
+        CollectionsList mapped = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient(),
+                CollectionsList.class);
+
+        if (mapped.getIrods_response().getStatus_code() == 0) {
+            System.out.println("Entries for '" + lpath + "':\n " + mapped.getEntries());
+        } else {
+            System.out.println(mapped.getIrods_response());
+        }
+    }
+
+    public ListBuilder list(User user,String lpath) {
+        return new ListBuilder(this, user, lpath);
     }
 
     /**
