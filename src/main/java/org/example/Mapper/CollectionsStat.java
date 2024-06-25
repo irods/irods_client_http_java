@@ -37,11 +37,11 @@ public class CollectionsStat {
 
     @Override
     public String toString() {
-        return "inheritance_enabled: " + inheritance_enabled +
-                "\nirods_response:\n" + irods_response +
-                "\nmodified_at: " + modified_at +
+        return "irods_response:\n" + irods_response +
+                "\ntype: '" + type + '\'' +
+                "\ninheritance_enabled: " + inheritance_enabled +
                 "\npermissions: " + permissions +
                 "\nregistered: " + registered +
-                "\ntype: '" + type + '\'';
+                "\nmodified_at: " + modified_at;
     }
 }

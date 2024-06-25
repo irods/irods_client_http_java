@@ -1,10 +1,12 @@
 package org.example.Example;
 
+import org.example.Collections.Permission;
 import org.example.IrodsClient;
 import org.example.IrodsException;
 import org.example.User;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Example {
 
@@ -28,7 +30,9 @@ public class Example {
         // client.info();
 
 
-        //client.collections().create(rods, "/tempZone/home/rods/test").intermediates().execute();
+//        client.collections().list(rods, "/tempZone/home/rods").execute();
+//        client.collections().remove(rods, "/tempZone/home/rods/test").noTrash().recurse().execute();
+//        client.collections().create(rods, "/tempZone/home/rods/test").intermediates().execute();
 
         //"/tempZone/home/rods/test"
         // test2
@@ -41,16 +45,23 @@ public class Example {
 
 
 
-        client.collections().list(rods, "/tempZone/home/rods").execute();
-        //client.collections().remove(rods, "/tempZone/home/rods/test").noTrash().recurse().execute();
-
-        System.out.println();
-        client.collections().stat(rods, "/tempZone/home/rods/test").execute();
-        System.out.println();
-        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice", "read").execute();
-        System.out.println();
-        client.collections().stat(rods, "/tempZone/home/rods/test").execute();
 //        client.collections().list(rods, "/tempZone/home/rods").execute();
+//        //client.collections().remove(rods, "/tempZone/home/rods/test").noTrash().recurse().execute();
+//
+//        System.out.println();
+//        client.collections().stat(rods, "/tempZone/home/rods/test").execute();
 
+        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice", Permission.READ).execute();
+        System.out.println();
+        client.collections().stat(rods, "/tempZone/home/rods/test").execute();
+        System.out.println();
+        List<String> entries = client.collections().list(rods, "/tempZone/home/rods").execute();
+        System.out.println(entries);
+
+        client.collections().set_inheritance(rods, "/tempZone/home/rods/test", false).admin().execute();
+
+        System.out.println();
+        client.collections().stat(rods, "/tempZone/home/rods/test").execute();
+        System.out.println();
     }
 }

@@ -28,7 +28,7 @@ public class ListBuilder {
         return this;
     }
 
-    public void execute() throws IOException, InterruptedException {
-        operations.list(user, lpath, recurse, ticket);
+    public List<String> execute() throws IOException, InterruptedException {
+        return operations.list(user, lpath, recurse, ticket);
     }
 }

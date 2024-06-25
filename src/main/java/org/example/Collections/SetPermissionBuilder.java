@@ -9,11 +9,11 @@ public class SetPermissionBuilder {
     private final User user;
     private final String lpath;
     private final String entityName;
-    private final String permission;
+    private final Permission permission;
     private boolean admin = false;
 
     public SetPermissionBuilder(CollectionOperations operations, User user, String lpath, String entityName,
-                                String permission) {
+                                Permission permission) {
         this.operations = operations;
         this.user = user;
         this.lpath = lpath;
@@ -29,6 +29,5 @@ public class SetPermissionBuilder {
     public void execute() throws IOException, InterruptedException {
         operations.set_permission(user, lpath, entityName, permission, admin);
     }
-
-
 }
+
