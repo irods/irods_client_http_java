@@ -9,6 +9,7 @@ import org.example.User;
 import org.example.Util.HttpRequestUtil;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -152,7 +153,7 @@ public class CollectionOperations {
         return new StatBuilder(this, user, lpath);
     }
 
-    protected void list(User user, String lpath, boolean recurse, String ticket) throws IOException, InterruptedException {
+    protected List<String> list(User user, String lpath, boolean recurse, String ticket) throws IOException, InterruptedException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -170,9 +171,11 @@ public class CollectionOperations {
                 CollectionsList.class);
 
         if (mapped.getIrods_response().getStatus_code() == 0) {
-            System.out.println("Entries for '" + lpath + "':\n " + mapped.getEntries());
+            //System.out.println("Entries for '" + lpath + "':\n " + mapped.getEntries());
+            return mapped.getEntries();
         } else {
             System.out.println(mapped.getIrods_response());
+            return null;
         }
     }
 
@@ -180,7 +183,9 @@ public class CollectionOperations {
         return new ListBuilder(this, user, lpath);
     }
 
-    protected void set_permission(User user, String lpath, String entityName, String permission, boolean admin) throws IOException, InterruptedException {
+    // uses Permission enum for permission parameter
+    protected void set_permission(User user, String lpath, String entityName, Permission permission,
+                                  boolean admin) throws IOException, InterruptedException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -188,7 +193,7 @@ public class CollectionOperations {
                 "op", "set_permission",
                 "lpath", lpath,
                 "entity-name", entityName,
-                "permission", permission,
+                "permission", permission.getValue(),
                 "admin", admin ? "1" : "0"
         );
 
@@ -200,11 +205,35 @@ public class CollectionOperations {
         } else {
             System.out.println(mapped);
         }
-
     }
 
-    public SetPermissionBuilder set_permission(User user, String lpath, String entityName, String permission) {
+    public SetPermissionBuilder set_permission(User user, String lpath, String entityName, Permission permission) {
         return new SetPermissionBuilder(this, user, lpath, entityName, permission);
+    }
+
+    protected void set_inheritance(User user, String lpath, boolean enable, boolean admin) throws IOException, InterruptedException {
+        String token = user.getAuthToken();
+
+        // contains parameters for the HTTP request
+        Map<Object, Object> formData = Map.of(
+                "op", "set_inheritance",
+                "lpath", lpath,
+                "enable", enable ? "1" : "0",
+                "boolean", admin ? "1" : "0"
+        );
+
+        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), NestedIrodsResponse.class);
+
+        if (mapped.getIrods_response().getStatus_code() == 0) {
+            System.out.println("Inheritance for '" + lpath + "' " + (enable ? "enabled" : "disabled"));
+        } else {
+            System.out.println(mapped);
+        }
+    }
+
+    public SetInheritanceBuilder set_inheritance(User user, String lpath, boolean enable) {
+        return new SetInheritanceBuilder(this, user, lpath, enable);
     }
 
 
