@@ -49,7 +49,6 @@ public class Example {
 
 
 //        client.collections().list(rods, "/tempZone/home/rods").execute();
-//        client.collections().remove(rods, "/tempZone/home/rods/test").noTrash().recurse().execute();
 //
 //        System.out.println();
 //        client.collections().stat(rods, "/tempZone/home/rods/test").execute();
@@ -61,6 +60,15 @@ public class Example {
         List<String> entries = client.collections().list(rods, "/tempZone/home/rods").execute();
         System.out.println(entries);
         System.out.println();
+
+//        client.collections().remove(rods, "/tempZone/home/rods/test1").noTrash().recurse().execute();
+//
+//        client.collections().create(rods, "/tempZone/home/rods/test1").intermediates().execute();
+//
+//        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice", Permission.READ).execute();
+
+
+
 //
 //        client.collections().create(rods,"/tempZone/home/rods/test1").execute();
 //
@@ -71,19 +79,18 @@ public class Example {
 //        client.collections().set_inheritance(rods, "/tempZone/home/rods/test", false).admin().execute();
 //
 //        System.out.println();
-//        client.collections().stat(rods, "/tempZone/home/rods/test4").execute();
+        client.collections().stat(rods, "/tempZone/home/rods/test").execute();
 //        System.out.println();
 //
-        List<PermissionJson> jsonParam = new ArrayList<>();
-        jsonParam.add(new PermissionJson("alice", Permission.READ));
-        client.collections().modify_permissions(rods, "/tempZone/home/rods/test", jsonParam).execute();
+//        List<PermissionJson> jsonParam = new ArrayList<>();
+//        jsonParam.add(new PermissionJson("alice", Permission.READ));
+//        client.collections().modify_permissions(rods, "/tempZone/home/rods/test", jsonParam).execute();
 //
 //        System.out.println();
 //        client.collections().stat(rods, "/tempZone/home/rods/test4").execute();
-//        System.out.println();
 
 //        client.collections().rename(rods, "/tempZone/home/rods/test4", "/tempZone/home/rods/test2" );
-//
+
 //        entries = client.collections().list(rods, "/tempZone/home/rods").execute();
 //        System.out.println(entries);
 //
