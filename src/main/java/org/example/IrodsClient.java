@@ -43,7 +43,7 @@ public class IrodsClient {
      * @throws IOException
      * @throws InterruptedException
      */
-    protected void authenticate(User user) throws IOException, InterruptedException {
+    public void authenticate(User user) throws IOException, InterruptedException {
         //TODO: consider what happens with proxies and if you can concatenate like this
 
         // creating authentication header

@@ -10,14 +10,10 @@ public class User {
     private final String username;
     private final String password;
     private String authToken;
-    private IrodsClient client;
 
-    public User (String username, String password, IrodsClient client) throws IOException, InterruptedException {
+    public User (String username, String password) throws IOException, InterruptedException {
         this.username = username;
         this.password = password;
-        this.client = client;
-
-        client.authenticate(this);
     }
 
 
