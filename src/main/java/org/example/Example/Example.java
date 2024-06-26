@@ -27,13 +27,15 @@ public class Example {
                 .build();
 
         // Create users
-        //TODO think about the way authentication is being done
-        User rods = new User("rods", "rods", client);
-        User alice = new User("alice", "alicepass", client);
+        User rods = new User("rods", "rods");
+        User alice = new User("alice", "alicepass");
+
+        // authenticate users
+        client.authenticate(rods);
+        client.authenticate(alice);
 
         // client.info();
 
-        // TODO think about builder notation
         List<String> entries = client.collections().list(rods, "/tempZone/home/rods", false, null);
         System.out.println(entries + "\n");
 
