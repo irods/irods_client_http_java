@@ -5,18 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/ModifyPermissionsBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/PermissionJson.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/TouchBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsModifyPermission.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/FailedOperation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsCreate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/Permission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/Permission.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/SetInheritanceBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/SetInheritanceBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/IrodsClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/IrodsClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/IrodsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/IrodsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsModifyPermission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsModifyPermission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsSetPermission.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/FailedOperation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/NestedIrodsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/NestedIrodsResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

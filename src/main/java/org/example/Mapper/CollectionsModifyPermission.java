@@ -1,146 +1,92 @@
 package org.example.Mapper;
 
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CollectionsModifyPermission {
+    private IrodsResponse irods_response;
 
-    @JsonProperty("irods_response")
-    private IrodsResponse irodsResponse;
-
-    // Getters and setters
-    public IrodsResponse getIrodsResponse() {
-        return irodsResponse;
+    public IrodsResponse getIrods_response() {
+        return irods_response;
     }
 
-    public void setIrodsResponse(IrodsResponse irodsResponse) {
-        this.irodsResponse = irodsResponse;
-    }
-
+    /**
+     * Nested IrodsResponse
+     * Different from main IrodsResponse class because includes another nested JSON caled failed_operation
+     */
     public static class IrodsResponse {
+        private int status_code;
+        private String status_message;
+        private FailedOperation failed_operation;
 
-        @JsonProperty("status_code")
-        private int statusCode;
-
-        @JsonProperty("status_message")
-        @JsonInclude(JsonInclude.Include.NON_NULL)
-        private String statusMessage;
-
-        @JsonProperty("failed_operation")
-        @JsonInclude(JsonInclude.Include.NON_NULL)
-        private FailedOperation failedOperation;
-
-        // Getters and setters
-        public int getStatusCode() {
-            return statusCode;
+        public int getStatus_code() {
+            return status_code;
+        }
+        public String getStatus_message() {
+            return status_message;
         }
 
-        public void setStatusCode(int statusCode) {
-            this.statusCode = statusCode;
-        }
-
-        public String getStatusMessage() {
-            return statusMessage;
-        }
-
-        public void setStatusMessage(String statusMessage) {
-            this.statusMessage = statusMessage;
-        }
-
-        public FailedOperation getFailedOperation() {
-            return failedOperation;
-        }
-
-        public void setFailedOperation(FailedOperation failedOperation) {
-            this.failedOperation = failedOperation;
+        public FailedOperation getFailed_operation() {
+            return failed_operation;
         }
 
         @Override
         public String toString() {
             return "IrodsResponse{" +
-                    "statusCode=" + statusCode +
-                    ", statusMessage='" + statusMessage + '\'' +
-                    ", failedOperation=" + failedOperation +
+                    "statusCode=" + status_code +
+                    ", statusMessage='" + status_message + '\'' +
+                    ", failedOperation=" + failed_operation +
                     '}';
         }
     }
 
+    /**
+     * JSON that is nested within the IrodsResponse
+     */
     public static class FailedOperation {
-
-        @JsonProperty("operation")
         private Operation operation;
+        private int operation_index;
+        private String status_message;
 
-        @JsonProperty("operation_index")
-        private int operationIndex;
-
-        @JsonProperty("status_message")
-        private String statusMessage;
-
-        // Getters and setters
         public Operation getOperation() {
             return operation;
         }
-
-        public void setOperation(Operation operation) {
-            this.operation = operation;
+        public int getOperation_index() {
+            return operation_index;
         }
-
-        public int getOperationIndex() {
-            return operationIndex;
-        }
-
-        public void setOperationIndex(int operationIndex) {
-            this.operationIndex = operationIndex;
-        }
-
-        public String getStatusMessage() {
-            return statusMessage;
-        }
-
-        public void setStatusMessage(String statusMessage) {
-            this.statusMessage = statusMessage;
+        public String getStatus_message() {
+            return status_message;
         }
 
         @Override
         public String toString() {
             return "FailedOperation{" +
                     "operation=" + operation +
-                    ", operationIndex=" + operationIndex +
-                    ", statusMessage='" + statusMessage + '\'' +
+                    ", operationIndex=" + operation_index +
+                    ", statusMessage='" + status_message + '\'' +
                     '}';
         }
     }
 
+    /**
+     * Nested JSON that is within the failed_operation JSON
+     */
     public static class Operation {
-
-        @JsonProperty("entity_name")
-        private String entityName;
-
-        @JsonProperty("acl")
+        private String entity_name;
         private String acl;
 
-        // Getters and setters
-        public String getEntityName() {
-            return entityName;
-        }
-
-        public void setEntityName(String entityName) {
-            this.entityName = entityName;
+        public String getEntity_name() {
+            return entity_name;
         }
 
         public String getAcl() {
             return acl;
         }
 
-        public void setAcl(String acl) {
-            this.acl = acl;
-        }
-
         @Override
         public String toString() {
             return "Operation{" +
-                    "entityName='" + entityName + '\'' +
+                    "entityName='" + entity_name + '\'' +
                     ", acl='" + acl + '\'' +
                     '}';
         }
@@ -149,7 +95,7 @@ public class CollectionsModifyPermission {
     @Override
     public String toString() {
         return "CollectionsModifyPermission{" +
-                "irodsResponse=" + irodsResponse +
+                "irodsResponse=" + irods_response +
                 '}';
     }
 }

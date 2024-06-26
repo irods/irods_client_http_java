@@ -7,12 +7,6 @@ import org.example.User;
 import org.example.Util.HttpRequestUtil;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -50,8 +44,8 @@ public class CollectionOperations {
                 "create-intermediates", intermediates ? "1" : "0"
         );
 
-        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
-                NestedIrodsResponse.class);
+        CollectionsCreate mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
+                CollectionsCreate.class);
 
         String message = mapped.getIrods_response().getStatus_message();
         boolean created = mapped.isCreated();
@@ -262,11 +256,10 @@ public class CollectionOperations {
                 "admin", admin ? "1" : "0"
         );
 
-
         CollectionsModifyPermission mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), CollectionsModifyPermission.class);
 
-        if (mapped.getIrodsResponse().getStatusCode() == 0) {
+        if (mapped.getIrods_response().getStatus_code() == 0) {
             System.out.println("Permissions successfully modified");
         } else {
             System.out.println(mapped);
