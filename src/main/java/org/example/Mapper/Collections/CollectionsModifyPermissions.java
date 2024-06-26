@@ -1,9 +1,14 @@
 package org.example.Mapper.Collections;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class CollectionsModifyPermission {
+/**
+ * Mapped JSON for:
+ *  - modify_permissions()
+ *  - modify_metadata()
+ */
+public class CollectionsModifyPermissions {
     private IrodsResponse irods_response;
 
     public IrodsResponse getIrods_response() {
@@ -43,6 +48,8 @@ public class CollectionsModifyPermission {
     /**
      * JSON that is nested within the IrodsResponse
      */
+    @JsonIgnoreProperties(ignoreUnknown = true)
+
     public static class FailedOperation {
         private Operation operation;
         private int operation_index;

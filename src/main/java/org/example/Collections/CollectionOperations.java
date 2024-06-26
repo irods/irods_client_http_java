@@ -251,8 +251,8 @@ public class CollectionOperations {
                 "admin", admin ? "1" : "0"
         );
 
-        CollectionsModifyPermission mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
-                client.getClient(), CollectionsModifyPermission.class);
+        CollectionsModifyPermissions mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), CollectionsModifyPermissions.class);
 
         if (mapped.getIrods_response().getStatus_code() == 0) {
             System.out.println("Permissions successfully modified");
@@ -263,6 +263,38 @@ public class CollectionOperations {
 
     public ModifyPermissionsBuilder modify_permissions(User user, String lpath, List<ModifyPermissionsOperations> jsonParam) {
         return new ModifyPermissionsBuilder(this, user, lpath, jsonParam);
+    }
+
+    protected void modify_metadata(User user, String lpath, List<ModifyMetadataOperations> jsonParam, boolean admin)
+            throws IOException, InterruptedException {
+        String token = user.getAuthToken();
+
+        // Serialize the operations parameter to JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String operationsJson = mapper.writeValueAsString(jsonParam);
+
+        // contains parameters for the HTTP request
+        Map<Object, Object> formData = Map.of(
+                "op", "modify_permissions",
+                "lpath", lpath,
+                "operations", operationsJson,
+                "admin", admin ? "1" : "0"
+        );
+
+        CollectionsModifyMetadata mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), CollectionsModifyMetadata.class);
+
+
+
+        if (mapped.getIrods_response().getStatus_code() == 0) {
+            System.out.println("Metadata successfully modified");
+        } else {
+            System.out.println(mapped);
+        }
+    }
+
+    public ModifyMetadataBuilder modify_metadata(User user, String lpath, List<ModifyMetadataOperations> jsonParam) {
+        return new ModifyMetadataBuilder(this, user, lpath, jsonParam);
     }
 
 

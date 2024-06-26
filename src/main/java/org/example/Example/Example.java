@@ -1,6 +1,7 @@
 package org.example.Example;
 
 import org.example.Collections.Permission;
+import org.example.Mapper.Collections.ModifyMetadataOperations;
 import org.example.Mapper.Collections.ModifyPermissionsOperations;
 import org.example.IrodsClient;
 import org.example.IrodsException;
@@ -51,9 +52,14 @@ public class Example {
 //        client.collections().set_inheritance(rods, "/tempZone/home/rods/test", false).admin().execute();
 
 
-        List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
-        jsonParam.add(new ModifyPermissionsOperations("alice", Permission.READ));
-        client.collections().modify_permissions(rods, "/tempZone/home/rods/test", jsonParam).execute();
+//        List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
+//        jsonParam.add(new ModifyPermissionsOperations("alice", Permission.READ));
+//        client.collections().modify_permissions(rods, "/tempZone/home/rods/test", jsonParam).execute();
+
+        List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
+        jsonParam2.add(new ModifyMetadataOperations("add", "test", "test1", "null"));
+        client.collections().modify_metadata(rods, "/tempZone/home/rods/test", jsonParam2).execute();
+
 
 //        client.collections().rename(rods, "/tempZone/home/rods/test4", "/tempZone/home/rods/test2" );
 
