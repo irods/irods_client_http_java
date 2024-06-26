@@ -5,13 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/ModifyMetadataBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyMetadata.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/ModifyMetadataOperations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/CreateBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/ListBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/ModifyMetadataBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/ModifyPermissionsBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/RemoveBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/SetInheritanceBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/SetPermissionBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/StatBuilder.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyPermission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyPermissions.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +30,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="collectionsNoBuilder" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -47,7 +56,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "collectionsBranch",
+    "git-widget-placeholder": "collectionsNoBuilder",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/samanthamau/IdeaProjects/http-api-test",
     "onboarding.tips.debug.path": "/Users/samanthamau/IdeaProjects/http-api-test/src/main/java/org/example/Main.java"
