@@ -3,28 +3,29 @@ package org.example.Collections;
 import org.example.User;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
-public class SetInheritanceBuilder {
+public class ModifyPermissionsBuilder {
     private final CollectionOperations operations;
     private final User user;
     private final String lpath;
-    private final boolean enable;
+    private final List<PermissionJson> jsonParam;
     private boolean admin = false;
 
-    public SetInheritanceBuilder(CollectionOperations operations, User user, String lpath, boolean enable) {
+    public ModifyPermissionsBuilder(CollectionOperations operations, User user,
+                                    String lpath, List<PermissionJson> jsonParam) {
         this.operations = operations;
         this.user = user;
         this.lpath = lpath;
-        this.enable = enable;
+        this.jsonParam = jsonParam;
     }
 
-    public SetInheritanceBuilder admin() {
+    public ModifyPermissionsBuilder admin() {
         admin = true;
         return this;
     }
 
     public void execute() throws IOException, InterruptedException {
-        operations.set_inheritance(user, lpath, enable, admin);
+        operations.modify_permissions(user, lpath, jsonParam, admin);
     }
 }

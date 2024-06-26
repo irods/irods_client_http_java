@@ -2,15 +2,22 @@ package org.example.Collections;
 
 import org.example.IrodsClient;
 import org.example.IrodsException;
-import org.example.Mapper.NestedIrodsResponse;
-import org.example.Mapper.CollectionsList;
-import org.example.Mapper.CollectionsStat;
+import org.example.Mapper.*;
 import org.example.User;
 import org.example.Util.HttpRequestUtil;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 /**
  * Class for all the Collections Operations
@@ -136,6 +143,9 @@ public class CollectionOperations {
             formData.put("ticket", ticket);
         }
 
+        String form = HttpRequestUtil.createRequestBody(formData);
+
+
         CollectionsStat mapped = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient(),
                 CollectionsStat.class);
 
@@ -219,7 +229,7 @@ public class CollectionOperations {
                 "op", "set_inheritance",
                 "lpath", lpath,
                 "enable", enable ? "1" : "0",
-                "boolean", admin ? "1" : "0"
+                "admin", admin ? "1" : "0"
         );
 
         NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
@@ -234,6 +244,98 @@ public class CollectionOperations {
 
     public SetInheritanceBuilder set_inheritance(User user, String lpath, boolean enable) {
         return new SetInheritanceBuilder(this, user, lpath, enable);
+    }
+
+    protected void modify_permissions(User user, String lpath, List<PermissionJson> jsonParam, boolean admin)
+            throws IOException, InterruptedException {
+        String token = user.getAuthToken();
+
+        // Serialize the operations parameter to JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String operationsJson = mapper.writeValueAsString(jsonParam);
+
+        // contains parameters for the HTTP request
+        Map<Object, Object> formData = Map.of(
+                "op", "modify_permissions",
+                "lpath", lpath,
+                "operations", operationsJson,
+                "admin", admin ? "1" : "0"
+        );
+
+
+        CollectionsModifyPermission mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), CollectionsModifyPermission.class);
+
+        if (mapped.getIrodsResponse().getStatusCode() == 0) {
+            System.out.println("Permissions successfully modified");
+        } else {
+            System.out.println(mapped);
+        }
+    }
+
+    public ModifyPermissionsBuilder modify_permissions(User user, String lpath, List<PermissionJson> jsonParam) {
+        return new ModifyPermissionsBuilder(this, user, lpath, jsonParam);
+    }
+
+
+    public void rename(User user, String oldPath, String newPath) throws IOException, InterruptedException {
+        String token = user.getAuthToken();
+
+        // contains parameters for the HTTP request
+        Map<Object, Object> formData = Map.of(
+                "op", "rename",
+                "old-lpath", oldPath,
+                "new-lpath", newPath
+        );
+
+        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), NestedIrodsResponse.class);
+
+//        if (mapped.getIrods_response().getStatus_code() == 0) {
+//            System.out.println("Inheritance for '" + lpath + "' " + (enable ? "enabled" : "disabled"));
+//        } else {
+//            System.out.println(mapped);
+//        }
+    }
+
+    // curl http://localhost:<port>/irods-http-api/<version>/collections \
+    //    -H 'Authorization: Bearer <token>' \
+    //    --data-urlencode 'op=touch' \
+    //    --data-urlencode 'lpath=<string>' \ # Absolute logical path to a collection.
+    //    --data-urlencode 'seconds-since-epoch=<integer>' \ # The mtime to assign to the collection. Optional.
+    //    --data-urlencode 'reference=<string>' # The absolute logical path of an object whose mtime will be copied to the collection. Optional.
+
+    protected void touch(User user, String lpath, int mtime, String reference) throws IOException, InterruptedException {
+        String token = user.getAuthToken();
+
+        // contains parameters for the HTTP request
+        Map<Object, Object> formData = Map.of(
+                "op", "touch",
+                "lpath", lpath
+        );
+
+        if (mtime != 0) {
+            formData.put("seconds-since-epoch", mtime);
+        }
+
+        if (reference != null) {
+            formData.put("reference", reference);
+        }
+
+        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), NestedIrodsResponse.class);
+
+
+        if (mapped.getIrods_response().getStatus_code() == 0) {
+            System.out.println("touch request executed correctly");
+        } else {
+            System.out.println(mapped);
+        }
+
+    }
+
+    public TouchBuilder touch(User user, String lpath) {
+        return new TouchBuilder(this, user, lpath);
     }
 
 

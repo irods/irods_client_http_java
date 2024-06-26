@@ -44,6 +44,8 @@ public class IrodsClient {
      * @throws InterruptedException
      */
     protected void authenticate(User user) throws IOException, InterruptedException {
+        //TODO: consider what happens with proxies and if you can concatenate like this
+
         // creating authentication header
         String auth = user.getUsername() + ":" + user.getPassword();
         // encodes user and password into a suitable format for HTTP basic authentication
