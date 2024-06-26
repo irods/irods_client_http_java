@@ -1,6 +1,8 @@
 package org.example.Collections;
 
-// for set_permission() method
+/**
+ * enum for set_permission() method to ensure user only inputs valid data
+ */
 public enum Permission {
     NULL("null"),
     READ("read"),

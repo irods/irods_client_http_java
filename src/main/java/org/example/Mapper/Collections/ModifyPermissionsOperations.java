@@ -1,21 +1,22 @@
-package org.example.Collections;
+package org.example.Mapper.Collections;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.example.Collections.Permission;
 
 /**
  * For the modify_permissions() method.
  * Represents the JSON object that is passed into the operations parameter
  */
-public class PermissionJson {
+public class ModifyPermissionsOperations {
     @JsonProperty("entity_name")
-    private String entityName;
+    private String entity_name;
 
     @JsonProperty("acl")
     private String acl;
 
-    public PermissionJson(String entityName, Permission acl) {
-        this.entityName = entityName;
+    public ModifyPermissionsOperations(String entity_name, Permission acl) {
+        this.entity_name = entity_name;
         this.acl = acl.getValue();
     }
 }
