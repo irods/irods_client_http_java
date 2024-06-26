@@ -1,7 +1,7 @@
 package org.example.Example;
 
 import org.example.Collections.Permission;
-import org.example.Collections.PermissionJson;
+import org.example.Mapper.Collections.ModifyPermissionsOperations;
 import org.example.IrodsClient;
 import org.example.IrodsException;
 import org.example.User;
@@ -37,63 +37,26 @@ public class Example {
 //        client.collections().remove(rods, "/tempZone/home/rods/test").noTrash().recurse().execute();
 //        client.collections().create(rods, "/tempZone/home/rods/test").intermediates().execute();
 
-        //"/tempZone/home/rods/test"
-        // test2
-        // test3
-
-//        client.collections().remove(rods, "/tempZone/home/rods/test").noTrash().recurse().execute();
-
-
-//        System.out.println("Token is: " + rods.getAuthToken());
-
-
-
-//        client.collections().list(rods, "/tempZone/home/rods").execute();
-//
-//        System.out.println();
 //        client.collections().stat(rods, "/tempZone/home/rods/test").execute();
 
 //        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice", Permission.READ).execute();
-//        System.out.println();
-//        client.collections().stat(rods, "/tempZone/home/rods/test").execute();
-//        System.out.println();
         List<String> entries = client.collections().list(rods, "/tempZone/home/rods").execute();
-        System.out.println(entries);
-        System.out.println();
+        System.out.println(entries + "\n");
 
-//        client.collections().remove(rods, "/tempZone/home/rods/test1").noTrash().recurse().execute();
-//
-//        client.collections().create(rods, "/tempZone/home/rods/test1").intermediates().execute();
-//
 //        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice", Permission.READ).execute();
 
-
-
-//
-//        client.collections().create(rods,"/tempZone/home/rods/test1").execute();
-//
-//        System.out.println();
 //        entries = client.collections().list(rods, "/tempZone/home/rods").execute();
-//        System.out.println(entries);
+//        System.out.println(entries + "\n");
 //
 //        client.collections().set_inheritance(rods, "/tempZone/home/rods/test", false).admin().execute();
-//
-//        System.out.println();
-        client.collections().stat(rods, "/tempZone/home/rods/test").execute();
-//        System.out.println();
-//
-//        List<PermissionJson> jsonParam = new ArrayList<>();
-//        jsonParam.add(new PermissionJson("alice", Permission.READ));
-//        client.collections().modify_permissions(rods, "/tempZone/home/rods/test", jsonParam).execute();
-//
-//        System.out.println();
-//        client.collections().stat(rods, "/tempZone/home/rods/test4").execute();
+
+
+        List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
+        jsonParam.add(new ModifyPermissionsOperations("alice", Permission.READ));
+        client.collections().modify_permissions(rods, "/tempZone/home/rods/test", jsonParam).execute();
 
 //        client.collections().rename(rods, "/tempZone/home/rods/test4", "/tempZone/home/rods/test2" );
 
-//        entries = client.collections().list(rods, "/tempZone/home/rods").execute();
-//        System.out.println(entries);
-//
-//        client.collections().touch(rods, "/tempZone/home/rods/test4").execute();
+//        client.collections().touch(rods, "/tempZone/home/rods/test").mtime(1).execute();
     }
 }

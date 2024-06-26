@@ -1,4 +1,6 @@
-package org.example.Mapper;
+package org.example.Mapper.Collections;
+
+import org.example.Mapper.IrodsResponse;
 
 /**
  * For JSON responses that ONLY include a nested irods_response and no other items

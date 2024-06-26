@@ -1,4 +1,6 @@
-package org.example.Mapper;
+package org.example.Mapper.Collections;
+
+import org.example.Mapper.IrodsResponse;
 
 public class CollectionsCreate {
     private IrodsResponse irods_response;

@@ -1,5 +1,7 @@
-package org.example.Mapper;
+package org.example.Mapper.Collections;
 
+
+import org.example.Mapper.IrodsResponse;
 
 import java.util.List;
 

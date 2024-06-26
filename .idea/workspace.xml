@@ -5,14 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsCreate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/ModifyPermissionsBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/ModifyPermissionsBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/Permission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/Permission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/PermissionJson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/ModifyPermissionsOperations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsModifyPermission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsModifyPermission.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsSetPermission.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/FailedOperation.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/NestedIrodsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/NestedIrodsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsCreate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsCreate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsModifyPermission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyPermission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/CollectionsStat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsStat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/NestedIrodsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/NestedIrodsResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,19 +44,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Example.executor": "Run",
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "workingBranch",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/samanthamau/IdeaProjects/http-api-test",
-    "onboarding.tips.debug.path": "/Users/samanthamau/IdeaProjects/http-api-test/src/main/java/org/example/Main.java"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Example.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;workingBranch&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/samanthamau/IdeaProjects/http-api-test&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/samanthamau/IdeaProjects/http-api-test/src/main/java/org/example/Main.java&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Example" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Example.Example" />

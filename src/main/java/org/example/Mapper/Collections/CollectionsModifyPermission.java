@@ -1,4 +1,4 @@
-package org.example.Mapper;
+package org.example.Mapper.Collections;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

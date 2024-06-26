@@ -1,5 +1,6 @@
 package org.example.Collections;
 
+import org.example.Mapper.Collections.ModifyPermissionsOperations;
 import org.example.User;
 
 import java.io.IOException;
@@ -9,11 +10,11 @@ public class ModifyPermissionsBuilder {
     private final CollectionOperations operations;
     private final User user;
     private final String lpath;
-    private final List<PermissionJson> jsonParam;
+    private final List<ModifyPermissionsOperations> jsonParam;
     private boolean admin = false;
 
     public ModifyPermissionsBuilder(CollectionOperations operations, User user,
-                                    String lpath, List<PermissionJson> jsonParam) {
+                                    String lpath, List<ModifyPermissionsOperations> jsonParam) {
         this.operations = operations;
         this.user = user;
         this.lpath = lpath;
