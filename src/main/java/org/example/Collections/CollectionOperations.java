@@ -36,7 +36,7 @@ public class CollectionOperations {
      * @throws IOException
      * @throws InterruptedException
      */
-    protected void create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException, IrodsException {
+    public void create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -59,17 +59,6 @@ public class CollectionOperations {
     }
 
     /**
-     * Initiates the creation of a collection
-     * @param user The user making the request
-     * @param lpath The logical path
-     * @return CreateBuilder instance that allows for the user to chain optional parameters
-     */
-    public CreateBuilder create(User user, String lpath) {
-        return new CreateBuilder(this, user, lpath);
-    }
-
-
-    /**
      * Removes a collection
      * Protected, so it can only be accessed from this package. Enforces use of builder
      * @param user The user making the request
@@ -79,7 +68,7 @@ public class CollectionOperations {
      * @throws IOException
      * @throws InterruptedException
      */
-    protected void remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException, InterruptedException, IrodsException {
+    public void remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -104,16 +93,6 @@ public class CollectionOperations {
         }
     }
 
-    //TODO: See if there's a way to throw an error if user forgets .execute()
-    /**
-     * Initiates the removal of a collection
-     * @param user The user making the request
-     * @param lpath The logical path
-     * @return RemoveBuilder instance that allows for the user to chain optional parameters
-     */
-    public RemoveBuilder remove(User user, String lpath) {
-        return  new RemoveBuilder(this, user, lpath);
-    }
 
     /**
      * Returns information about a collection
@@ -125,7 +104,7 @@ public class CollectionOperations {
      * @throws InterruptedException
      * @throws IrodsException
      */
-    protected void stat(User user, String lpath, String ticket) throws IOException, InterruptedException, IrodsException {
+    public void stat(User user, String lpath, String ticket) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -142,17 +121,7 @@ public class CollectionOperations {
         System.out.println(mapped);
     }
 
-    /**
-     * Initiates the stat operation of a collection
-     * @param user The user making the request
-     * @param lpath The logical path
-     * @return StatBuilder instance that allows for the user to chain optional parameters
-     */
-    public StatBuilder stat(User user, String lpath) {
-        return new StatBuilder(this, user, lpath);
-    }
-
-    protected List<String> list(User user, String lpath, boolean recurse, String ticket) throws IOException, InterruptedException {
+    public List<String> list(User user, String lpath, boolean recurse, String ticket) throws IOException, InterruptedException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -178,12 +147,8 @@ public class CollectionOperations {
         }
     }
 
-    public ListBuilder list(User user,String lpath) {
-        return new ListBuilder(this, user, lpath);
-    }
-
     // uses Permission enum for permission parameter
-    protected void set_permission(User user, String lpath, String entityName, Permission permission,
+    public void set_permission(User user, String lpath, String entityName, Permission permission,
                                   boolean admin) throws IOException, InterruptedException {
         String token = user.getAuthToken();
 
@@ -206,11 +171,8 @@ public class CollectionOperations {
         }
     }
 
-    public SetPermissionBuilder set_permission(User user, String lpath, String entityName, Permission permission) {
-        return new SetPermissionBuilder(this, user, lpath, entityName, permission);
-    }
-
-    protected void set_inheritance(User user, String lpath, boolean enable, boolean admin) throws IOException, InterruptedException {
+    public void set_inheritance(User user, String lpath, boolean enable,
+                                boolean admin) throws IOException, InterruptedException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -231,11 +193,7 @@ public class CollectionOperations {
         }
     }
 
-    public SetInheritanceBuilder set_inheritance(User user, String lpath, boolean enable) {
-        return new SetInheritanceBuilder(this, user, lpath, enable);
-    }
-
-    protected void modify_permissions(User user, String lpath, List<ModifyPermissionsOperations> jsonParam, boolean admin)
+    public void modify_permissions(User user, String lpath, List<ModifyPermissionsOperations> jsonParam, boolean admin)
             throws IOException, InterruptedException {
         String token = user.getAuthToken();
 
@@ -261,11 +219,7 @@ public class CollectionOperations {
         }
     }
 
-    public ModifyPermissionsBuilder modify_permissions(User user, String lpath, List<ModifyPermissionsOperations> jsonParam) {
-        return new ModifyPermissionsBuilder(this, user, lpath, jsonParam);
-    }
-
-    protected void modify_metadata(User user, String lpath, List<ModifyMetadataOperations> jsonParam, boolean admin)
+    public void modify_metadata(User user, String lpath, List<ModifyMetadataOperations> jsonParam, boolean admin)
             throws IOException, InterruptedException {
         String token = user.getAuthToken();
 
@@ -284,8 +238,6 @@ public class CollectionOperations {
         CollectionsModifyMetadata mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), CollectionsModifyMetadata.class);
 
-
-
         if (mapped.getIrods_response().getStatus_code() == 0) {
             System.out.println("Metadata successfully modified");
         } else {
@@ -293,12 +245,7 @@ public class CollectionOperations {
         }
     }
 
-    public ModifyMetadataBuilder modify_metadata(User user, String lpath, List<ModifyMetadataOperations> jsonParam) {
-        return new ModifyMetadataBuilder(this, user, lpath, jsonParam);
-    }
-
-
-    public void rename(User user, String oldPath, String newPath) throws IOException, InterruptedException {
+    public void rename(User user, String oldPath, String newPath) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -311,14 +258,17 @@ public class CollectionOperations {
         NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), NestedIrodsResponse.class);
 
-//        if (mapped.getIrods_response().getStatus_code() == 0) {
-//            System.out.println("Inheritance for '" + lpath + "' " + (enable ? "enabled" : "disabled"));
-//        } else {
-//            System.out.println(mapped);
-//        }
+        int statusCode = mapped.getIrods_response().getStatus_code();
+        String statusMessage = mapped.getIrods_response().getStatus_message();
+
+        if (statusCode == 0) {
+            System.out.println("'" + oldPath + "' renamed to '" + newPath + "'");
+        } else {
+            statusCodeMessage(statusCode, statusMessage, "Cannot rename");
+        }
     }
 
-    protected void touch(User user, String lpath, int mtime, String reference) throws IOException, InterruptedException {
+    public void touch(User user, String lpath, int mtime, String reference) throws IOException, InterruptedException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -341,10 +291,6 @@ public class CollectionOperations {
             System.out.println(mapped);
         }
 
-    }
-
-    public TouchBuilder touch(User user, String lpath) {
-        return new TouchBuilder(this, user, lpath);
     }
 
 

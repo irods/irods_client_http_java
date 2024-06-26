@@ -34,35 +34,40 @@ public class Example {
         // client.info();
 
         // TODO think about builder notation
-//        client.collections().list(rods, "/tempZone/home/rods").execute();
-//        client.collections().remove(rods, "/tempZone/home/rods/test").noTrash().recurse().execute();
-//        client.collections().create(rods, "/tempZone/home/rods/test").intermediates().execute();
-
-//        client.collections().stat(rods, "/tempZone/home/rods/test").execute();
-
-//        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice", Permission.READ).execute();
-        List<String> entries = client.collections().list(rods, "/tempZone/home/rods").execute();
+        List<String> entries = client.collections().list(rods, "/tempZone/home/rods", false, null);
         System.out.println(entries + "\n");
+
+//        client.collections().list(rods, "/tempZone/home/rods").execute();
+//        client.collections().remove(rods, "/tempZone/home/rods/test3", false, false);
+//        client.collections().create(rods, "/tempZone/home/rods/test3", false);
+
+
+
+//        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice",
+//                Permission.NULL, true);
+
 
 //        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice", Permission.READ).execute();
 
 //        entries = client.collections().list(rods, "/tempZone/home/rods").execute();
 //        System.out.println(entries + "\n");
 //
-//        client.collections().set_inheritance(rods, "/tempZone/home/rods/test", false).admin().execute();
+//        client.collections().set_inheritance(rods, "/tempZone/home/rods/test", false, true);
+//        client.collections().stat(rods, "/tempZone/home/rods/test", null);
+
 
 
 //        List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
 //        jsonParam.add(new ModifyPermissionsOperations("alice", Permission.READ));
-//        client.collections().modify_permissions(rods, "/tempZone/home/rods/test", jsonParam).execute();
+//        client.collections().modify_permissions(rods, "/tempZone/home/rods/test", jsonParam, true);
 
-        List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
-        jsonParam2.add(new ModifyMetadataOperations("add", "test", "test1", "null"));
-        client.collections().modify_metadata(rods, "/tempZone/home/rods/test", jsonParam2).execute();
+//        List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
+//        jsonParam2.add(new ModifyMetadataOperations("add", "test", "test1", "null"));
+//        client.collections().modify_metadata(rods, "/tempZone/home/rods/test", jsonParam2, true);
 
 
-//        client.collections().rename(rods, "/tempZone/home/rods/test4", "/tempZone/home/rods/test2" );
+//        client.collections().rename(rods, "/tempZone/home/rods/test3", "/tempZone/home/rods/test1" );
 
-//        client.collections().touch(rods, "/tempZone/home/rods/test").mtime(1).execute();
+        client.collections().touch(rods, "/tempZone/home/rods/test", 0, null);
     }
 }
