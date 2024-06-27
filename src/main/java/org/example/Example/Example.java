@@ -26,7 +26,7 @@ public class Example {
                 .version(version)
                 .build();
 
-        // Create users
+        // create users
         User rods = new User("rods", "rods");
         User alice = new User("alice", "alicepass");
 
@@ -40,8 +40,8 @@ public class Example {
         System.out.println(entries + "\n");
 
 //        client.collections().list(rods, "/tempZone/home/rods").execute();
-//        client.collections().remove(rods, "/tempZone/home/rods/test3", false, false);
-//        client.collections().create(rods, "/tempZone/home/rods/test3", false);
+        client.collections().remove(rods, "/tempZone/home/rods/test3", false, false);
+        client.collections().create(rods, "/tempZone/home/rods/test3", false);
 
 
 
