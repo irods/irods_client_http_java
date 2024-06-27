@@ -43,7 +43,7 @@ public class IrodsClient {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void authenticate(User user) throws IOException, InterruptedException {
+    public void authenticate(User user) throws IOException, InterruptedException, IrodsException {
         //TODO: consider what happens with proxies and if you can concatenate like this
 
         // creating authentication header
@@ -64,7 +64,7 @@ public class IrodsClient {
         if (response.statusCode() == 200) {
             user.setAuthToken(response.body());
         } else {
-            throw new RuntimeException("Failed to authenticate: " + response.statusCode());
+            throw new IrodsException("Failed to authenticate: " + response.statusCode());
         }
     }
 

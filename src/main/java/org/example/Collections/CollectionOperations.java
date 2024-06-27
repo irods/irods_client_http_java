@@ -3,6 +3,7 @@ package org.example.Collections;
 import org.example.IrodsClient;
 import org.example.IrodsException;
 import org.example.Mapper.Collections.*;
+import org.example.Mapper.IrodsResponse;
 import org.example.User;
 import org.example.Util.HttpRequestUtil;
 
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 /**
  * Class for all the Collections Operations
@@ -51,6 +51,9 @@ public class CollectionOperations {
         String message = mapped.getIrods_response().getStatus_message();
         boolean created = mapped.isCreated();
 
+        // checks status code number given by irods_response JSON
+        statusCodeMessage(mapped.getIrods_response(), "Unable to create ' " + lpath + "' colleciton");
+
         if (created) {
             System.out.println("Collection '" + lpath + "' created successfully");
         } else {
@@ -83,10 +86,9 @@ public class CollectionOperations {
                 NestedIrodsResponse.class);
 
         int statusCode = mapped.getIrods_response().getStatus_code();
-        String statusMessage = mapped.getIrods_response().getStatus_message();
 
         // throws errors if found
-        statusCodeMessage(statusCode, statusMessage, "Could not remove collection");
+        statusCodeMessage(mapped.getIrods_response(), "Could not remove collection");
 
         if (statusCode == 0) {
             System.out.println("'" + lpath +"' removed successfully");
@@ -259,12 +261,11 @@ public class CollectionOperations {
                 client.getClient(), NestedIrodsResponse.class);
 
         int statusCode = mapped.getIrods_response().getStatus_code();
-        String statusMessage = mapped.getIrods_response().getStatus_message();
 
         if (statusCode == 0) {
             System.out.println("'" + oldPath + "' renamed to '" + newPath + "'");
         } else {
-            statusCodeMessage(statusCode, statusMessage, "Cannot rename");
+            statusCodeMessage(mapped.getIrods_response(), "Cannot rename");
         }
     }
 
@@ -296,12 +297,13 @@ public class CollectionOperations {
 
     /**
      * Helper method to give status code message if JSON displays it as null
-     * @param statusCode The status code number
-     * @param statusMessage The status message (may be null)
      * @param errorMessage The error message that will be displayed
      * @throws IrodsException
      */
-    private void statusCodeMessage(int statusCode, String statusMessage, String errorMessage) throws IrodsException {
+    //private void statusCodeMessage(int statusCode, String statusMessage, String errorMessage) throws IrodsException {
+    private void statusCodeMessage(IrodsResponse irodsResponse, String errorMessage) throws IrodsException {
+        int statusCode = irodsResponse.getStatus_code();
+        String statusMessage = irodsResponse.getStatus_message();
 
         if (statusCode == -170000 && statusMessage == null) {
             throw new IrodsException(errorMessage + ":  NOT_A_COLLECTION");
@@ -309,5 +311,21 @@ public class CollectionOperations {
             throw new IrodsException(errorMessage +  ": " + statusMessage);
         }
     }
+
+    /**
+     * Handles response from the HTTP request and displays a success message or throws an exception
+     */
+//    private void handleResponse(boolean success) {
+////        int statusCode = response.getStatus_code();
+////        String statusMessage = response.getStatus_message();
+////        System.out.println(statusCode);
+//
+//        if (success) {
+//            System.out.println("Collection '" + lpath + "' created successfully");
+//        } else {
+//            throw new IrodsException("Failed to create collection: " + message);
+//        }
+
+//    }
 
 }

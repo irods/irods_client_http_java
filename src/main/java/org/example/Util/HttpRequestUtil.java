@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 public class HttpRequestUtil {
     private static final ObjectMapper mapper = new ObjectMapper();
+    private static HttpResponse<String> response;
 
     public static String createRequestBody(Map<Object, Object> formData) {
         return formData.entrySet()
@@ -40,7 +41,12 @@ public class HttpRequestUtil {
 
     public static HttpResponse<String> sendRequest(HttpClient client, HttpRequest request)
             throws IOException, InterruptedException {
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response;
+    }
+
+    public static HttpResponse<String> getResponse() {
+        return response;
     }
 
     public static <T> T parseResponse(HttpResponse<String> response, Class<T> responseType) throws JsonProcessingException {

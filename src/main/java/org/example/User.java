@@ -9,9 +9,9 @@ import java.util.Base64;
 public class User {
     private final String username;
     private final String password;
-    private String authToken;
+    private String authToken = null;
 
-    public User (String username, String password) throws IOException, InterruptedException {
+    public User (String username, String password) {
         this.username = username;
         this.password = password;
     }
