@@ -5,19 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Mapped.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsCreate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsCreate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyMetadata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyMetadata.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyPermissions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyPermissions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsStat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsStat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/NestedIrodsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/NestedIrodsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/ModifyMetadataOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/Serialize/ModifyMetadataOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/ModifyPermissionsOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/Serialize/ModifyPermissionsOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/NestedIrodsResponse.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/IrodsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/IrodsResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/IrodsClientTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/IrodsClientTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Mapped.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Mapped.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

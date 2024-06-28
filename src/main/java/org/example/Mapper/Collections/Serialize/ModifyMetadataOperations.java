@@ -1,7 +1,11 @@
-package org.example.Mapper.Collections;
+package org.example.Mapper.Collections.Serialize;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * For the modify_metadata() method.
+ * Represents the JSON object that is passed into the operations parameter
+ */
 public class ModifyMetadataOperations {
     @JsonProperty("operation")
     private String operation;

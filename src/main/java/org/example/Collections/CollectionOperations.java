@@ -4,6 +4,9 @@ import org.example.IrodsClient;
 import org.example.IrodsException;
 import org.example.Mapper.Collections.*;
 //import org.example.Mapper.IrodsResponse;
+import org.example.Mapper.Collections.Serialize.ModifyMetadataOperations;
+import org.example.Mapper.Collections.Serialize.ModifyPermissionsOperations;
+import org.example.Mapper.IrodsResponse;
 import org.example.Mapper.Mapped;
 import org.example.User;
 import org.example.Util.HttpRequestUtil;
@@ -86,8 +89,8 @@ public class CollectionOperations {
                 "no-trash", noTrash ? "1" : "0"
         );
 
-        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
-                NestedIrodsResponse.class);
+        IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
+                IrodsResponse.class);
 
         int statusCode = mapped.getIrods_response().getStatus_code();
 
@@ -169,8 +172,8 @@ public class CollectionOperations {
                 "admin", admin ? "1" : "0"
         );
 
-        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
-                client.getClient(), NestedIrodsResponse.class);
+        IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), IrodsResponse.class);
 
         if (mapped.getIrods_response().getStatus_code() == 0) {
             System.out.println("Permission for '" + entityName + "' set");
@@ -192,8 +195,8 @@ public class CollectionOperations {
                 "admin", admin ? "1" : "0"
         );
 
-        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
-                client.getClient(), NestedIrodsResponse.class);
+        IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), IrodsResponse.class);
 
         if (mapped.getIrods_response().getStatus_code() == 0) {
             System.out.println("Inheritance for '" + lpath + "' " + (enable ? "enabled" : "disabled"));
@@ -266,8 +269,8 @@ public class CollectionOperations {
                 "new-lpath", newPath
         );
 
-        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
-                client.getClient(), NestedIrodsResponse.class);
+        IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), IrodsResponse.class);
 
         int statusCode = mapped.getIrods_response().getStatus_code();
 
@@ -292,8 +295,8 @@ public class CollectionOperations {
             formData.put("reference", reference);
         }
 
-        NestedIrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
-                client.getClient(), NestedIrodsResponse.class);
+        IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), IrodsResponse.class);
 
         if (mapped.getIrods_response().getStatus_code() == 0) {
             System.out.println("touch request executed correctly");
