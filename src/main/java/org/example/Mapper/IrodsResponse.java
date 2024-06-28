@@ -1,14 +1,15 @@
-//package org.example.Mapper;
-//
-//public class IrodsResponse extends Mapped {
-//    private int status_code;
-//    private String status_message;
-//
-//    public int getStatus_code() {
-//        return status_code;
-//    }
-//
-//    public String getStatus_message() {
-//        return status_message;
-//    }
-//}
+package org.example.Mapper;
+
+import org.example.Mapper.Mapped;
+//import org.example.Mapper.IrodsResponse;
+
+/**
+ * For JSON responses that ONLY include an irods_response and no other items. Empty because it's an extension
+ * from Mapped.
+ * Used in:
+ *  - collections.remove()
+ *  - collections.set_permission()
+ *  - collections.set_inheritance()
+ */
+public class IrodsResponse extends Mapped {
+}
