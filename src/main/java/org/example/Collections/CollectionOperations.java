@@ -3,7 +3,8 @@ package org.example.Collections;
 import org.example.IrodsClient;
 import org.example.IrodsException;
 import org.example.Mapper.Collections.*;
-import org.example.Mapper.IrodsResponse;
+//import org.example.Mapper.IrodsResponse;
+import org.example.Mapper.Mapped;
 import org.example.User;
 import org.example.Util.HttpRequestUtil;
 
@@ -49,16 +50,18 @@ public class CollectionOperations {
                 CollectionsCreate.class);
 
         String message = mapped.getIrods_response().getStatus_message();
-        boolean created = mapped.isCreated();
 
         // checks status code number given by irods_response JSON
-        statusCodeMessage(mapped.getIrods_response(), "Unable to create ' " + lpath + "' colleciton");
+        //statusCodeMessage(mapped.getIrods_response(), "Unable to create ' " + lpath + "' collection");
 
-        if (created) {
+        if (mapped.isCreated()) {
             System.out.println("Collection '" + lpath + "' created successfully");
         } else {
             throw new IrodsException("Failed to create collection: " + message);
         }
+
+        System.out.println(mapped);
+
     }
 
     /**
@@ -71,7 +74,8 @@ public class CollectionOperations {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException, InterruptedException, IrodsException {
+    public void remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException,
+            InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -88,11 +92,13 @@ public class CollectionOperations {
         int statusCode = mapped.getIrods_response().getStatus_code();
 
         // throws errors if found
-        statusCodeMessage(mapped.getIrods_response(), "Could not remove collection");
+        //statusCodeMessage(mapped.getIrods_response(), "Could not remove collection");
 
         if (statusCode == 0) {
             System.out.println("'" + lpath +"' removed successfully");
         }
+
+        System.out.println(mapped);
     }
 
 
@@ -171,6 +177,7 @@ public class CollectionOperations {
         } else {
             System.out.println(mapped);
         }
+
     }
 
     public void set_inheritance(User user, String lpath, boolean enable,
@@ -219,6 +226,8 @@ public class CollectionOperations {
         } else {
             System.out.println(mapped);
         }
+
+        System.out.println(mapped);
     }
 
     public void modify_metadata(User user, String lpath, List<ModifyMetadataOperations> jsonParam, boolean admin)
@@ -262,11 +271,11 @@ public class CollectionOperations {
 
         int statusCode = mapped.getIrods_response().getStatus_code();
 
-        if (statusCode == 0) {
-            System.out.println("'" + oldPath + "' renamed to '" + newPath + "'");
-        } else {
-            statusCodeMessage(mapped.getIrods_response(), "Cannot rename");
-        }
+//        if (statusCode == 0) {
+//            System.out.println("'" + oldPath + "' renamed to '" + newPath + "'");
+//        } else {
+//            statusCodeMessage(mapped.getIrods_response(), "Cannot rename");
+//        }
     }
 
     public void touch(User user, String lpath, int mtime, String reference) throws IOException, InterruptedException {
@@ -301,7 +310,7 @@ public class CollectionOperations {
      * @throws IrodsException
      */
     //private void statusCodeMessage(int statusCode, String statusMessage, String errorMessage) throws IrodsException {
-    private void statusCodeMessage(IrodsResponse irodsResponse, String errorMessage) throws IrodsException {
+    private void statusCodeMessage(Mapped.IrodsResponse irodsResponse, String errorMessage) throws IrodsException {
         int statusCode = irodsResponse.getStatus_code();
         String statusMessage = irodsResponse.getStatus_message();
 

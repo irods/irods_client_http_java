@@ -1,6 +1,7 @@
 package org.example.Example;
 
 import org.example.Collections.Permission;
+import org.example.Mapper.Collections.CollectionsCreate;
 import org.example.Mapper.Collections.ModifyMetadataOperations;
 import org.example.Mapper.Collections.ModifyPermissionsOperations;
 import org.example.IrodsClient;
@@ -40,16 +41,17 @@ public class Example {
         System.out.println(entries + "\n");
 
 //        client.collections().list(rods, "/tempZone/home/rods").execute();
-        client.collections().remove(rods, "/tempZone/home/rods/test3", false, false);
-        client.collections().create(rods, "/tempZone/home/rods/test3", false);
+//        client.collections().remove(rods, "/tempZone/home/rods/test3", false, false);
+//
+//
+//        client.collections().create(rods, "/tempZone/home/rods/test3", false);
+//        System.out.println(test);
 
 
 
 //        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice",
 //                Permission.NULL, true);
 
-
-//        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice", Permission.READ).execute();
 
 //        entries = client.collections().list(rods, "/tempZone/home/rods").execute();
 //        System.out.println(entries + "\n");
@@ -63,13 +65,13 @@ public class Example {
 //        jsonParam.add(new ModifyPermissionsOperations("alice", Permission.READ));
 //        client.collections().modify_permissions(rods, "/tempZone/home/rods/test", jsonParam, true);
 
-//        List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
-//        jsonParam2.add(new ModifyMetadataOperations("add", "test", "test1", "null"));
-//        client.collections().modify_metadata(rods, "/tempZone/home/rods/test", jsonParam2, true);
+        List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
+        jsonParam2.add(new ModifyMetadataOperations("add", "test", "test1", "null"));
+        client.collections().modify_metadata(rods, "/tempZone/home/rods/test", jsonParam2, true);
 
 
 //        client.collections().rename(rods, "/tempZone/home/rods/test3", "/tempZone/home/rods/test1" );
 
-        client.collections().touch(rods, "/tempZone/home/rods/test", 0, null);
+//        client.collections().touch(rods, "/tempZone/home/rods/test", 0, null);
     }
 }

@@ -1,6 +1,8 @@
 package org.example.Mapper.Collections;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CollectionsModifyMetadata {
     private IrodsResponse irods_response;
@@ -99,9 +101,11 @@ public class CollectionsModifyMetadata {
 
     @Override
     public String toString() {
-        return "CollectionsModifyMetadata{" +
-                "irodsResponse=" + irods_response +
-                '}';
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return "{ \"error\": \"Unable to serialize to JSON\" }";
+        }
     }
 }
-

@@ -2,12 +2,47 @@ package org.example.Mapper.Collections;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.Mapper.Mapped;
+//public class CollectionsModifyPermissions extends Mapped {
+//    private FailedOperation failed_operation;
+//
+//    public FailedOperation getFailed_operation() {
+//        return failed_operation;
+//    }
+//
+//    @JsonIgnoreProperties(ignoreUnknown = true)
+//    public static class FailedOperation {
+//        private Operation operation;
+//        private int operation_index;
+//        private String status_message;
+//
+//        public Operation getOperation() {
+//            return operation;
+//        }
+//        public int getOperation_index() {
+//            return operation_index;
+//        }
+//        public String getStatus_message() {
+//            return status_message;
+//        }
+//    }
+//
+//    public static class Operation {
+//        private String entity_name;
+//        private String acl;
+//
+//        public String getEntity_name() {
+//            return entity_name;
+//        }
+//
+//        public String getAcl() {
+//            return acl;
+//        }
+//    }
+//}
 
-/**
- * Mapped JSON for:
- *  - modify_permissions()
- *  - modify_metadata()
- */
 public class CollectionsModifyPermissions {
     private IrodsResponse irods_response;
 
@@ -35,74 +70,48 @@ public class CollectionsModifyPermissions {
             return failed_operation;
         }
 
-        @Override
-        public String toString() {
-            return "IrodsResponse{" +
-                    "statusCode=" + status_code +
-                    ", statusMessage='" + status_message + '\'' +
-                    ", failedOperation=" + failed_operation +
-                    '}';
+        /**
+         * JSON that is nested within the IrodsResponse
+         */
+        @JsonIgnoreProperties(ignoreUnknown = true)
+        public static class FailedOperation {
+            private Operation operation;
+            private int operation_index;
+            private String status_message;
+
+            public Operation getOperation() {
+                return operation;
+            }
+            public int getOperation_index() {
+                return operation_index;
+            }
+            public String getStatus_message() {
+                return status_message;
+            }
+
+            /**
+             * Nested JSON that is within the failed_operation JSON
+             */
+            public static class Operation {
+                private String entity_name;
+                private String acl;
+
+                public String getEntity_name() {
+                    return entity_name;
+                }
+                public String getAcl() {
+                    return acl;
+                }
+            }
         }
     }
-
-    /**
-     * JSON that is nested within the IrodsResponse
-     */
-    @JsonIgnoreProperties(ignoreUnknown = true)
-
-    public static class FailedOperation {
-        private Operation operation;
-        private int operation_index;
-        private String status_message;
-
-        public Operation getOperation() {
-            return operation;
-        }
-        public int getOperation_index() {
-            return operation_index;
-        }
-        public String getStatus_message() {
-            return status_message;
-        }
-
-        @Override
-        public String toString() {
-            return "FailedOperation{" +
-                    "operation=" + operation +
-                    ", operationIndex=" + operation_index +
-                    ", statusMessage='" + status_message + '\'' +
-                    '}';
-        }
-    }
-
-    /**
-     * Nested JSON that is within the failed_operation JSON
-     */
-    public static class Operation {
-        private String entity_name;
-        private String acl;
-
-        public String getEntity_name() {
-            return entity_name;
-        }
-
-        public String getAcl() {
-            return acl;
-        }
-
-        @Override
-        public String toString() {
-            return "Operation{" +
-                    "entityName='" + entity_name + '\'' +
-                    ", acl='" + acl + '\'' +
-                    '}';
-        }
-    }
-
     @Override
     public String toString() {
-        return "CollectionsModifyPermission{" +
-                "irodsResponse=" + irods_response +
-                '}';
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return "{ \"error\": \"Unable to serialize to JSON\" }";
+        }
     }
 }
