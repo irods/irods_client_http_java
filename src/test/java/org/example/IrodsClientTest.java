@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class IrodsClientTest {
     private static IrodsClient client;
@@ -23,6 +24,7 @@ class IrodsClientTest {
     }
     @Test
     public void testAuthenticateValidUser() throws IOException, InterruptedException {
+        IrodsClient mockClient = mock(IrodsClient.class);
         client = IrodsClient.newBuilder()
                 .address(address)
                 .port(port)
