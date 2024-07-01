@@ -1,22 +1,19 @@
 package org.example.Mapper.Collections;
 
 //import org.example.Mapper.IrodsResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Mapper.Mapped;
 
 import java.security.Permission;
 import java.util.List;
 
 public class CollectionsStat extends Mapped {
-//    private IrodsResponse irods_response; // nested JSON
     private String type;
     private boolean inheritance_enabled;
     private List<Permissions> permissions; // nested JSON
     private boolean registered;
     private int modified_at;
-
-//    public IrodsResponse getIrods_response() {
-//        return irods_response;
-//    }
 
     public String getType() {
         return type;
@@ -37,17 +34,6 @@ public class CollectionsStat extends Mapped {
     public int getModified_at() {
         return modified_at;
     }
-
-//    @Override
-//    public String toString() {
-//        return "irods_response:\n" + irods_response +
-//                "\ntype: '" + type + '\'' +
-//                "\ninheritance_enabled: " + inheritance_enabled +
-//                "\npermissions: " + permissions +
-//                "\nregistered: " + registered +
-//                "\nmodified_at: " + modified_at;
-//    }
-
     public static class Permissions {
         private String name;
         private String zone;
@@ -68,6 +54,16 @@ public class CollectionsStat extends Mapped {
 
         public String getPerm() {
             return perm;
+        }
+
+        @Override
+        public String toString() {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+            } catch (JsonProcessingException e) {
+                return "{ \"error\": \"Unable to serialize to JSON\" }";
+            }
         }
     }
 }

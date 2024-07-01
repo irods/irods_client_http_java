@@ -1,6 +1,7 @@
 package org.example.Example;
 
 import org.example.Collections.Permission;
+import org.example.Mapper.Collections.CollectionsStat;
 import org.example.Mapper.Collections.Serialize.ModifyMetadataOperations;
 import org.example.Mapper.Collections.Serialize.ModifyPermissionsOperations;
 import org.example.IrodsClient;
@@ -36,12 +37,11 @@ public class Example {
 
         // client.info();
 
-//        List<String> entries = client.collections().list(rods, "/tempZone/home/rods", false, null);
-//        System.out.println(entries + "\n");
+        List<String> entries = client.collections().list(rods, "/tempZone/home/rods", false, null);
+        System.out.println(entries + "\n");
 
-//        client.collections().list(rods, "/tempZone/home/rods").execute();
-        client.collections().remove(rods, "/tempZone/home/rods/test3", false, false);
-        client.collections().create(rods, "/tempZone/home/rods/test3", false);
+//        client.collections().remove(rods, "/tempZone/home/rods/test3", false, false);
+//        client.collections().create(rods, "/tempZone/home/rods/test3", false);
 //        System.out.println(test);
 
 
@@ -54,17 +54,17 @@ public class Example {
 //        System.out.println(entries + "\n");
 //
 //        client.collections().set_inheritance(rods, "/tempZone/home/rods/test", false, true);
-//        client.collections().stat(rods, "/tempZone/home/rods/test", null);
+//        CollectionsStat stat = client.collections().stat(rods, "/tempZone/home/rods/test", null);
 
 
 
-        List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
-        jsonParam.add(new ModifyPermissionsOperations("test", Permission.READ));
-        client.collections().modify_permissions(rods, "/tempZone/home/rods/test", jsonParam, true);
-
-        List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
-        jsonParam2.add(new ModifyMetadataOperations("add", "test", "test1", "null"));
-        client.collections().modify_metadata(rods, "/tempZone/home/rods/test", jsonParam2, true);
+//        List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
+//        jsonParam.add(new ModifyPermissionsOperations("test", Permission.READ));
+//        client.collections().modify_permissions(rods, "/tempZone/home/rods/test", jsonParam, true);
+//
+//        List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
+//        jsonParam2.add(new ModifyMetadataOperations("add", "test", "test1", "null"));
+//        client.collections().modify_metadata(rods, "/tempZone/home/rods/test", jsonParam2, true);
 
 
 //        client.collections().rename(rods, "/tempZone/home/rods/test3", "/tempZone/home/rods/test1" );

@@ -1,8 +1,5 @@
 package org.example.Mapper;
 
-import org.example.Mapper.Mapped;
-//import org.example.Mapper.IrodsResponse;
-
 /**
  * For JSON responses that ONLY include an irods_response and no other items. Empty because it's an extension
  * from Mapped.
