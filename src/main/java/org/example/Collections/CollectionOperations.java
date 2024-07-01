@@ -346,7 +346,6 @@ public class CollectionOperations {
      * @param errorMessage The error message that will be displayed
      * @throws IrodsException
      */
-    //private void statusCodeMessage(int statusCode, String statusMessage, String errorMessage) throws IrodsException {
     private void statusCodeMessage(Mapped.IrodsResponse irodsResponse, String errorMessage) throws IrodsException {
         int statusCode = irodsResponse.getStatus_code();
         String statusMessage = irodsResponse.getStatus_message();
