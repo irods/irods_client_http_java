@@ -1,7 +1,6 @@
 package org.example.Mapper.Collections;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.example.Mapper.Mapped;
 public class CollectionsModifyPermissions extends Mapped {
     public static class Operation extends IrodsResponse.FailedOperation {

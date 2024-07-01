@@ -3,7 +3,6 @@ package org.example.Collections;
 import org.example.IrodsClient;
 import org.example.IrodsException;
 import org.example.Mapper.Collections.*;
-//import org.example.Mapper.IrodsResponse;
 import org.example.Mapper.Collections.Serialize.ModifyMetadataOperations;
 import org.example.Mapper.Collections.Serialize.ModifyPermissionsOperations;
 import org.example.Mapper.IrodsResponse;
@@ -40,7 +39,7 @@ public class CollectionOperations {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException, IrodsException {
+    public CollectionsCreate create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -55,16 +54,20 @@ public class CollectionOperations {
         String message = mapped.getIrods_response().getStatus_message();
 
         // checks status code number given by irods_response JSON
-        //statusCodeMessage(mapped.getIrods_response(), "Unable to create ' " + lpath + "' collection");
+        statusCodeMessage(mapped.getIrods_response(), "Failed to created collection: '" + lpath + "'");
 
         if (mapped.isCreated()) {
             System.out.println("Collection '" + lpath + "' created successfully");
         } else {
-            throw new IrodsException("Failed to create collection: " + message);
+            // status code = 0, null message, and isCreated() = false means that it is a duplicate?
+            if (message == null) {
+                throw new IrodsException("Failed to created collection: '" + lpath + "' already exists");
+            } else {
+                throw new IrodsException("Failed to create collection '" + lpath + "': " + message);
+            }
         }
 
-        System.out.println(mapped);
-
+        return mapped;
     }
 
     /**
@@ -77,7 +80,7 @@ public class CollectionOperations {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException,
+    public IrodsResponse remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException,
             InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
@@ -92,16 +95,18 @@ public class CollectionOperations {
         IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
                 IrodsResponse.class);
 
-        int statusCode = mapped.getIrods_response().getStatus_code();
-
         // throws errors if found
-        //statusCodeMessage(mapped.getIrods_response(), "Could not remove collection");
+        statusCodeMessage(mapped.getIrods_response(), "Failed to remove collection: '" + lpath + "'");
 
+        int statusCode = mapped.getIrods_response().getStatus_code();
+        String message = mapped.getIrods_response().getStatus_message();
         if (statusCode == 0) {
-            System.out.println("'" + lpath +"' removed successfully");
+            System.out.println("Collection '" + lpath +"' removed successfully");
+        } else {
+            throw new IrodsException("Failed to remove collection '" + lpath + "': " + message);
         }
 
-        System.out.println(mapped);
+        return mapped;
     }
 
 
@@ -115,7 +120,7 @@ public class CollectionOperations {
      * @throws InterruptedException
      * @throws IrodsException
      */
-    public void stat(User user, String lpath, String ticket) throws IOException, InterruptedException, IrodsException {
+    public CollectionsStat stat(User user, String lpath, String ticket) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -129,10 +134,18 @@ public class CollectionOperations {
         CollectionsStat mapped = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient(),
                 CollectionsStat.class);
 
-        System.out.println(mapped);
+        statusCodeMessage(mapped.getIrods_response(), "Failed to retrieve information for '" + lpath + "'");
+        int statusCode = mapped.getIrods_response().getStatus_code();
+        String message = mapped.getIrods_response().getStatus_message();
+        if (statusCode == 0) {
+            System.out.println("Information for '" + lpath +"' retrieved successfully");
+        } else {
+            throw new IrodsException("Failed to retrieve information for '" + lpath + "': " + message);
+        }
+        return mapped;
     }
 
-    public List<String> list(User user, String lpath, boolean recurse, String ticket) throws IOException, InterruptedException {
+    public List<String> list(User user, String lpath, boolean recurse, String ticket) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -149,18 +162,20 @@ public class CollectionOperations {
         CollectionsList mapped = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient(),
                 CollectionsList.class);
 
-        if (mapped.getIrods_response().getStatus_code() == 0) {
-            //System.out.println("Entries for '" + lpath + "':\n " + mapped.getEntries());
+        statusCodeMessage(mapped.getIrods_response(), "Failed to retrieve list for '" + lpath + "'");
+        int statusCode = mapped.getIrods_response().getStatus_code();
+        String message = mapped.getIrods_response().getStatus_message();
+        if (statusCode == 0) {
+            System.out.println("List for '" + lpath + "' retrieved successfully");
             return mapped.getEntries();
         } else {
-            System.out.println(mapped.getIrods_response());
-            return null;
+            throw new IrodsException("Failed to retrieve list for '" + lpath + "': " + message);
         }
     }
 
     // uses Permission enum for permission parameter
-    public void set_permission(User user, String lpath, String entityName, Permission permission,
-                                  boolean admin) throws IOException, InterruptedException {
+    public IrodsResponse set_permission(User user, String lpath, String entityName, Permission permission,
+                                  boolean admin) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -175,16 +190,20 @@ public class CollectionOperations {
         IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), IrodsResponse.class);
 
-        if (mapped.getIrods_response().getStatus_code() == 0) {
+        statusCodeMessage(mapped.getIrods_response(), "Failed to change permissions for '" + lpath + "'");
+        int statusCode = mapped.getIrods_response().getStatus_code();
+        String message = mapped.getIrods_response().getStatus_message();
+        if (statusCode == 0) {
             System.out.println("Permission for '" + entityName + "' set");
+            return mapped;
         } else {
-            System.out.println(mapped);
+            throw new IrodsException("Failed to change permissions for '" + lpath + "': " + message);
         }
 
     }
 
-    public void set_inheritance(User user, String lpath, boolean enable,
-                                boolean admin) throws IOException, InterruptedException {
+    public IrodsResponse set_inheritance(User user, String lpath, boolean enable,
+                                boolean admin) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -198,15 +217,19 @@ public class CollectionOperations {
         IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), IrodsResponse.class);
 
-        if (mapped.getIrods_response().getStatus_code() == 0) {
+        statusCodeMessage(mapped.getIrods_response(), "Failed to change inheritance for '" + lpath + "'");
+        int statusCode = mapped.getIrods_response().getStatus_code();
+        String message = mapped.getIrods_response().getStatus_message();
+        if (statusCode == 0) {
             System.out.println("Inheritance for '" + lpath + "' " + (enable ? "enabled" : "disabled"));
+            return mapped;
         } else {
-            System.out.println(mapped);
+            throw new IrodsException("Failed to change inheritance for '" + lpath + "': " + message);
         }
     }
 
-    public void modify_permissions(User user, String lpath, List<ModifyPermissionsOperations> jsonParam, boolean admin)
-            throws IOException, InterruptedException {
+    public CollectionsModifyPermissions modify_permissions(User user, String lpath, List<ModifyPermissionsOperations> jsonParam, boolean admin)
+            throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // Serialize the operations parameter to JSON
@@ -224,17 +247,19 @@ public class CollectionOperations {
         CollectionsModifyPermissions mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), CollectionsModifyPermissions.class);
 
-        if (mapped.getIrods_response().getStatus_code() == 0) {
+        statusCodeMessage(mapped.getIrods_response(), "Failed to modify permission for '" + lpath + "'");
+        int statusCode = mapped.getIrods_response().getStatus_code();
+        String message = mapped.getIrods_response().getStatus_message();
+        if (statusCode == 0) {
             System.out.println("Permissions successfully modified");
+            return mapped;
         } else {
-            System.out.println(mapped);
+            throw new IrodsException("Failed to modify permission for '" + lpath + "'" + message);
         }
-
-        System.out.println(mapped);
     }
 
-    public void modify_metadata(User user, String lpath, List<ModifyMetadataOperations> jsonParam, boolean admin)
-            throws IOException, InterruptedException {
+    public CollectionsModifyMetadata CollectionsModifyMetadata(User user, String lpath, List<ModifyMetadataOperations> jsonParam, boolean admin)
+            throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // Serialize the operations parameter to JSON
@@ -252,14 +277,18 @@ public class CollectionOperations {
         CollectionsModifyMetadata mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), CollectionsModifyMetadata.class);
 
-        if (mapped.getIrods_response().getStatus_code() == 0) {
+        statusCodeMessage(mapped.getIrods_response(), "Failed to modify metadata for '" + lpath + "'");
+        int statusCode = mapped.getIrods_response().getStatus_code();
+        String message = mapped.getIrods_response().getStatus_message();
+        if (statusCode == 0) {
             System.out.println("Metadata successfully modified");
+            return mapped;
         } else {
-            System.out.println(mapped);
+            throw new IrodsException("Failed to modify metadata for '" + lpath + "': " + message);
         }
     }
 
-    public void rename(User user, String oldPath, String newPath) throws IOException, InterruptedException, IrodsException {
+    public IrodsResponse rename(User user, String oldPath, String newPath) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -272,16 +301,18 @@ public class CollectionOperations {
         IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), IrodsResponse.class);
 
+        statusCodeMessage(mapped.getIrods_response(), "Failed to rename '" + oldPath + "'");
         int statusCode = mapped.getIrods_response().getStatus_code();
-
-//        if (statusCode == 0) {
-//            System.out.println("'" + oldPath + "' renamed to '" + newPath + "'");
-//        } else {
-//            statusCodeMessage(mapped.getIrods_response(), "Cannot rename");
-//        }
+        String message = mapped.getIrods_response().getStatus_message();
+        if (statusCode == 0) {
+            System.out.println("'" + oldPath + "' renamed to '" + newPath + "'");
+            return mapped;
+        } else {
+            throw new IrodsException("Failed to rename '" + oldPath + "': " + message);
+        }
     }
 
-    public void touch(User user, String lpath, int mtime, String reference) throws IOException, InterruptedException {
+    public IrodsResponse touch(User user, String lpath, int mtime, String reference) throws IOException, InterruptedException, IrodsException {
         String token = user.getAuthToken();
 
         // contains parameters for the HTTP request
@@ -298,12 +329,15 @@ public class CollectionOperations {
         IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), IrodsResponse.class);
 
-        if (mapped.getIrods_response().getStatus_code() == 0) {
-            System.out.println("touch request executed correctly");
+        statusCodeMessage(mapped.getIrods_response(), "Failed to update mtime of '" + lpath + "'");
+        int statusCode = mapped.getIrods_response().getStatus_code();
+        String message = mapped.getIrods_response().getStatus_message();
+        if (statusCode == 0) {
+            System.out.println("Updated mtime successfully");
+            return mapped;
         } else {
-            System.out.println(mapped);
+            throw new IrodsException("Failed to update mtime of '" + lpath + "': " + message);
         }
-
     }
 
 
@@ -323,21 +357,4 @@ public class CollectionOperations {
             throw new IrodsException(errorMessage +  ": " + statusMessage);
         }
     }
-
-    /**
-     * Handles response from the HTTP request and displays a success message or throws an exception
-     */
-//    private void handleResponse(boolean success) {
-////        int statusCode = response.getStatus_code();
-////        String statusMessage = response.getStatus_message();
-////        System.out.println(statusCode);
-//
-//        if (success) {
-//            System.out.println("Collection '" + lpath + "' created successfully");
-//        } else {
-//            throw new IrodsException("Failed to create collection: " + message);
-//        }
-
-//    }
-
 }

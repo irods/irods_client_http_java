@@ -18,7 +18,6 @@ public abstract class Mapped {
     public IrodsResponse getIrods_response() {
         return irods_response;
     }
-
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
@@ -55,7 +54,6 @@ public abstract class Mapped {
             private Object operation;
             private int operation_index;
             private String status_message;
-
             public Object getOperation() {
                 return operation;
             }
@@ -70,5 +68,16 @@ public abstract class Mapped {
                 return status_message;
             }
         }
+
+        @Override
+        public String toString() {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+            } catch (JsonProcessingException e) {
+                return "{ \"error\": \"Unable to serialize to JSON\" }";
+            }
+        }
     }
+
 }
