@@ -36,21 +36,21 @@ public class Example {
         List<String> entries = client.collections().list(rods, "/tempZone/home/rods", false, null);
         System.out.println(entries + "\n");
 
-//        client.collections().remove(rods, "/tempZone/home//rods/test3", false, false);
+//        client.collections().remove(rods, "/tempZone/home/rods/test3", false, false);
 //        client.collections().create(rods, "/tempZone/home//rods/test3", false);
 //        System.out.println(test);
 
 
 
-        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice",
-                Permission.NULL, true);
+//        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice",
+//                Permission.NULL, true);
 
 
 //        entries = client.collections().list(rods, "/tempZone/home/rods").execute();
 //        System.out.println(entries + "\n");
 //
 //        client.collections().set_inheritance(rods, "/tempZone/home/rods/test", false, true);
-//        CollectionsStat stat = client.collections().stat(rods, "/tempZone/home/rods/test", null);
+//         client.collections().stat(rods, "/tempZone/home/rods/test", null);
 
 
 
