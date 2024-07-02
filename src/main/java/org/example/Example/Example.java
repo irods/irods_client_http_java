@@ -1,15 +1,11 @@
 package org.example.Example;
 
 import org.example.Collections.Permission;
-import org.example.Mapper.Collections.CollectionsStat;
-import org.example.Mapper.Collections.Serialize.ModifyMetadataOperations;
-import org.example.Mapper.Collections.Serialize.ModifyPermissionsOperations;
 import org.example.IrodsClient;
 import org.example.IrodsException;
 import org.example.User;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Example {
@@ -40,14 +36,14 @@ public class Example {
         List<String> entries = client.collections().list(rods, "/tempZone/home/rods", false, null);
         System.out.println(entries + "\n");
 
-//        client.collections().remove(rods, "/tempZone/home/rods/test3", false, false);
-//        client.collections().create(rods, "/tempZone/home/rods/test3", false);
+//        client.collections().remove(rods, "/tempZone/home//rods/test3", false, false);
+//        client.collections().create(rods, "/tempZone/home//rods/test3", false);
 //        System.out.println(test);
 
 
 
-//        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice",
-//                Permission.NULL, true);
+        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice",
+                Permission.NULL, true);
 
 
 //        entries = client.collections().list(rods, "/tempZone/home/rods").execute();

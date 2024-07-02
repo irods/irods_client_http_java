@@ -8,11 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsCreate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsCreate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyPermissions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyPermissions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsStat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsStat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/IrodsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/IrodsResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Mapped.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Mapped.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,34 +42,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Example.executor": "Run",
-    "Application.Main.executor": "Run",
-    "JUnit.IrodsClientTest.executor": "Run",
-    "JUnit.IrodsClientTest.testAuthenticate.executor": "Run",
-    "JUnit.IrodsClientTest.testAuthenticateInvalid.executor": "Run",
-    "JUnit.IrodsClientTest.testAuthenticateInvalidUser.executor": "Run",
-    "JUnit.IrodsClientTest.testClientInvalidAddress.executor": "Run",
-    "JUnit.IrodsClientTest.testClientInvalidPort.executor": "Run",
-    "JUnit.IrodsClientTest.testClientInvalidVersion.executor": "Run",
-    "JUnit.IrodsClientTest.testClientValidParams.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "collectionsNoBuilder",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "/Users/samanthamau/IdeaProjects/http-api-test/src/test/java",
-    "last_opened_file_path": "/Users/samanthamau/IdeaProjects/http-api-test",
-    "onboarding.tips.debug.path": "/Users/samanthamau/IdeaProjects/http-api-test/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Example.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.IrodsClientTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.IrodsClientTest.testAuthenticate.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.IrodsClientTest.testAuthenticateInvalid.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.IrodsClientTest.testAuthenticateInvalidUser.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.IrodsClientTest.testClientInvalidAddress.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.IrodsClientTest.testClientInvalidPort.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.IrodsClientTest.testClientInvalidVersion.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.IrodsClientTest.testClientValidParams.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;collectionsNoBuilder&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;/Users/samanthamau/IdeaProjects/http-api-test/src/test/java&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/samanthamau/IdeaProjects/http-api-test&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/samanthamau/IdeaProjects/http-api-test/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
