@@ -55,7 +55,7 @@ public class HttpRequestUtil {
 
     /**
      * Sends a POST HTTP request and parses the JSON using the methods above
-     * @param formData
+     * @param formData Contains the parameters of the HTTP request
      * @param baseUrl
      * @param token
      * @param responseType Class type of the response object

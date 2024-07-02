@@ -28,30 +28,29 @@ public class Example {
         User alice = new User("alice", "alicepass");
 
         // authenticate users
-        client.authenticate(rods);
-        client.authenticate(alice);
+//        client.authenticate(rods);
+//        client.authenticate(alice);
+        rods.setAuthToken("ad9f2345-129d-40ac-b23e-2f3a77303d7f");
 
-        // client.info();
+//        System.out.println(rods.getAuthToken());
 
         List<String> entries = client.collections().list(rods, "/tempZone/home/rods", false, null);
         System.out.println(entries + "\n");
+
+//        List<String> entries = client.collections().list(alice, "/tempZone/home/alice", false, null);
+//        System.out.println(entries + "\n");
+
+//        client.collections().create(alice, "/tempZone/home/alice/test1", false);
 
 //        client.collections().remove(rods, "/tempZone/home/rods/test3", false, false);
 //        client.collections().create(rods, "/tempZone/home//rods/test3", false);
 //        System.out.println(test);
 
+//        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice", Permission.NULL, true);
 
-
-//        client.collections().set_permission(rods, "/tempZone/home/rods/test","alice",
-//                Permission.NULL, true);
-
-
-//        entries = client.collections().list(rods, "/tempZone/home/rods").execute();
-//        System.out.println(entries + "\n");
 //
 //        client.collections().set_inheritance(rods, "/tempZone/home/rods/test", false, true);
-//         client.collections().stat(rods, "/tempZone/home/rods/test", null);
-
+//        client.collections().stat(rods, "/tempZone/home/rods/test", null);
 
 
 //        List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
@@ -61,7 +60,6 @@ public class Example {
 //        List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
 //        jsonParam2.add(new ModifyMetadataOperations("add", "test", "test1", "null"));
 //        client.collections().modify_metadata(rods, "/tempZone/home/rods/test", jsonParam2, true);
-
 
 //        client.collections().rename(rods, "/tempZone/home/rods/test3", "/tempZone/home/rods/test1" );
 
