@@ -352,6 +352,8 @@ public class CollectionOperations {
 
         if (statusCode == -170000 && statusMessage == null) {
             throw new IrodsException(errorMessage + ":  NOT_A_COLLECTION");
+        } else if (statusCode == -814000 && statusMessage == null) {
+            throw new IrodsException(errorMessage + ":  CAT_UNKNOWN_COLLECTION");
         } else if (statusCode  == -170000) { // if statusCode does have a message
             throw new IrodsException(errorMessage +  ": " + statusMessage);
         }
