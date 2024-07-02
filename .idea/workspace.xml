@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/DataObjects/DataObjectCalculateSum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/DataObjects/DataObjectRemove.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/DataObjects/DataObjectTouch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/DataObjects/DataObjectVertifyChecksum.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Example.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/DataObjectOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/DataObjectOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/Operations/DataObjectOperationsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/Operations/DataObjectOperationsTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +23,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit5 Test Class" />
+        <option value="JUnit3 Test Class" />
         <option value="Class" />
       </list>
     </option>
@@ -42,115 +48,165 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Example.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testAuthenticate.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testAuthenticateInvalid.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testAuthenticateInvalidUser.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testClientInvalidAddress.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testClientInvalidPort.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testClientInvalidVersion.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testClientValidParams.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;collectionsNoBuilder&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_directory_selection&quot;: &quot;/Users/samanthamau/IdeaProjects/http-api-test/src/test/java&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/samanthamau/IdeaProjects/http-api-test&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/samanthamau/IdeaProjects/http-api-test/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Example (1).executor": "Run",
+    "Application.Example.executor": "Run",
+    "Application.Main.executor": "Run",
+    "JUnit.CollectionOperationsFunctionalityTest.executor": "Run",
+    "JUnit.CollectionOperationsTest.addCollectionMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.createCollectionFunctionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.createCollectionMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.createFunctionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.create_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.create_mapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.executor": "Run",
+    "JUnit.CollectionOperationsTest.listMethod.executor": "Run",
+    "JUnit.CollectionOperationsTest.listNoEntriesMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.list_NoEntries_Mapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.list_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.list_no_entries_mapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.modify_metadata_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.modify_permissions_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.removeMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.remove_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.remove_mapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.rename_functinoality.executor": "Run",
+    "JUnit.CollectionOperationsTest.set_inheritance_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.set_permission_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.stat_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.stat_mapped.executor": "Run",
+    "JUnit.DataObjectOperationsTest.calculate_sum_functionality.executor": "Run",
+    "JUnit.DataObjectOperationsTest.executor": "Run",
+    "JUnit.DataObjectOperationsTest.remove_functinoality.executor": "Run",
+    "JUnit.DataObjectOperationsTest.touch_functionality.executor": "Run",
+    "JUnit.DataObjectOperationsTest.verify_checksum.executor": "Run",
+    "JUnit.DataObjectOperationsTest.vertify_checksum.executor": "Run",
+    "JUnit.IrodsClientTest.executor": "Run",
+    "JUnit.IrodsClientTest.testAuthenticate.executor": "Run",
+    "JUnit.IrodsClientTest.testAuthenticateInvalid.executor": "Run",
+    "JUnit.IrodsClientTest.testAuthenticateInvalidUser.executor": "Run",
+    "JUnit.IrodsClientTest.testClientInvalidAddress.executor": "Run",
+    "JUnit.IrodsClientTest.testClientInvalidPort.executor": "Run",
+    "JUnit.IrodsClientTest.testClientInvalidVersion.executor": "Run",
+    "JUnit.IrodsClientTest.testClientValidParams.executor": "Run",
+    "JUnit.WrapperTest.authenticate_nonexistent_user.executor": "Run",
+    "JUnit.WrapperTest.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit3",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3": "junit.framework.TestCase",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "workingBranch",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "/Users/samanthamau/IdeaProjects/http-api-test/src/test/java/org/example",
+    "last_opened_file_path": "/Users/samanthamau/IdeaProjects/http-api-test",
+    "onboarding.tips.debug.path": "/Users/samanthamau/IdeaProjects/http-api-test/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
+      <recent name="junit.framework.TestCase" />
       <recent name="" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java" />
+      <recent name="$PROJECT_DIR$/src/main" />
+      <recent name="$PROJECT_DIR$/src/test/org/example" />
+      <recent name="$PROJECT_DIR$/src/Example" />
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.example.Operations" />
+      <recent name="org.example" />
+    </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.example.Operations" />
       <recent name="org.example" />
       <recent name="org.example.Collections" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Example">
-    <configuration name="Example" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.example.Example.Example" />
+  <component name="RunManager" selected="JUnit.DataObjectOperationsTest.verify_checksum">
+    <configuration name="DataObjectOperationsTest.calculate_sum_functionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.Example.*" />
+          <option name="PATTERN" value="org.example.Operations.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="IrodsClientTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="http-api-test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.IrodsClientTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="IrodsClientTest.testClientInvalidAddress" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="http-api-test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.IrodsClientTest" />
-      <option name="METHOD_NAME" value="testClientInvalidAddress" />
+      <option name="PACKAGE_NAME" value="org.example.Operations" />
+      <option name="MAIN_CLASS_NAME" value="org.example.Operations.DataObjectOperationsTest" />
+      <option name="METHOD_NAME" value="calculate_sum_functionality" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="IrodsClientTest.testClientInvalidPort" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="DataObjectOperationsTest.remove_functinoality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="org.example.Operations.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.IrodsClientTest" />
-      <option name="METHOD_NAME" value="testClientInvalidPort" />
+      <option name="PACKAGE_NAME" value="org.example.Operations" />
+      <option name="MAIN_CLASS_NAME" value="org.example.Operations.DataObjectOperationsTest" />
+      <option name="METHOD_NAME" value="remove_functinoality" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="IrodsClientTest.testClientInvalidVersion" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="DataObjectOperationsTest.touch_functionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="org.example.Operations.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.IrodsClientTest" />
-      <option name="METHOD_NAME" value="testClientInvalidVersion" />
+      <option name="PACKAGE_NAME" value="org.example.Operations" />
+      <option name="MAIN_CLASS_NAME" value="org.example.Operations.DataObjectOperationsTest" />
+      <option name="METHOD_NAME" value="touch_functionality" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DataObjectOperationsTest.verify_checksum" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="http-api-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.Operations.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.Operations" />
+      <option name="MAIN_CLASS_NAME" value="org.example.Operations.DataObjectOperationsTest" />
+      <option name="METHOD_NAME" value="verify_checksum" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DataObjectOperationsTest.vertify_checksum" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="http-api-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.Operations.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.Operations" />
+      <option name="MAIN_CLASS_NAME" value="org.example.Operations.DataObjectOperationsTest" />
+      <option name="METHOD_NAME" value="vertify_checksum" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -158,11 +214,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Example" />
-        <item itemvalue="JUnit.IrodsClientTest" />
-        <item itemvalue="JUnit.IrodsClientTest.testClientInvalidVersion" />
-        <item itemvalue="JUnit.IrodsClientTest.testClientInvalidPort" />
-        <item itemvalue="JUnit.IrodsClientTest.testClientInvalidAddress" />
+        <item itemvalue="JUnit.DataObjectOperationsTest.verify_checksum" />
+        <item itemvalue="JUnit.DataObjectOperationsTest.vertify_checksum" />
+        <item itemvalue="JUnit.DataObjectOperationsTest.calculate_sum_functionality" />
+        <item itemvalue="JUnit.DataObjectOperationsTest.remove_functinoality" />
+        <item itemvalue="JUnit.DataObjectOperationsTest.touch_functionality" />
       </list>
     </recent_temporary>
   </component>
@@ -212,7 +268,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="collectionsBranch" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>
