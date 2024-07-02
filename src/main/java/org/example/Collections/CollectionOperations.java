@@ -13,6 +13,8 @@ import org.example.Util.HttpRequestUtil;
 import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +43,8 @@ public class CollectionOperations {
      * @throws IOException
      * @throws InterruptedException
      */
-    public CollectionsCreate create(User user, String lpath, boolean intermediates) throws IOException, InterruptedException, IrodsException {
-        String token = user.getAuthToken();
+    public CollectionsCreate create(String lpath, boolean intermediates) throws IOException, InterruptedException, IrodsException {
+        String token = getToken();
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "create",
@@ -83,9 +85,9 @@ public class CollectionOperations {
      * @throws IOException
      * @throws InterruptedException
      */
-    public IrodsResponse remove(User user, String lpath, boolean recurse, boolean noTrash) throws IOException,
+    public IrodsResponse remove(String lpath, boolean recurse, boolean noTrash) throws IOException,
             InterruptedException, IrodsException {
-        String token = user.getAuthToken();
+        String token = getToken();
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -115,9 +117,9 @@ public class CollectionOperations {
      * @throws InterruptedException
      * @throws IrodsException
      */
-    public CollectionsStat stat(User user, String lpath, String ticket)
+    public CollectionsStat stat(String lpath, String ticket)
             throws IOException, InterruptedException, IrodsException {
-        String token = user.getAuthToken();
+        String token = getToken();
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
@@ -137,9 +139,9 @@ public class CollectionOperations {
         return mapped;
     }
 
-    public List<String> list(User user, String lpath, boolean recurse, String ticket)
+    public List<String> list(String lpath, boolean recurse, String ticket)
             throws IOException, InterruptedException, IrodsException {
-        String token = user.getAuthToken();
+        String token = getToken();
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -162,9 +164,9 @@ public class CollectionOperations {
     }
 
     // uses Permission enum for permission parameter
-    public IrodsResponse set_permission(User user, String lpath, String entityName, Permission permission,
+    public IrodsResponse set_permission(String lpath, String entityName, Permission permission,
                                   boolean admin) throws IOException, InterruptedException, IrodsException {
-        String token = user.getAuthToken();
+        String token = getToken();
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -185,9 +187,9 @@ public class CollectionOperations {
         return mapped;
     }
 
-    public IrodsResponse set_inheritance(User user, String lpath, boolean enable,
+    public IrodsResponse set_inheritance(String lpath, boolean enable,
                                 boolean admin) throws IOException, InterruptedException, IrodsException {
-        String token = user.getAuthToken();
+        String token = getToken();
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -207,10 +209,10 @@ public class CollectionOperations {
         return mapped;
     }
 
-    public CollectionsModifyPermissions modify_permissions(User user, String lpath,
+    public CollectionsModifyPermissions modify_permissions(String lpath,
                                                            List<ModifyPermissionsOperations> jsonParam, boolean admin)
             throws IOException, InterruptedException, IrodsException {
-        String token = user.getAuthToken();
+        String token = getToken();
 
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
@@ -234,10 +236,10 @@ public class CollectionOperations {
         return mapped;
     }
 
-    public CollectionsModifyMetadata CollectionsModifyMetadata(User user, String lpath,
-                                                               List<ModifyMetadataOperations> jsonParam, boolean admin)
+    public CollectionsModifyMetadata modify_metadata(String lpath, List<ModifyMetadataOperations> jsonParam,
+                                                               boolean admin)
             throws IOException, InterruptedException, IrodsException {
-        String token = user.getAuthToken();
+        String token = getToken();
 
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
@@ -261,9 +263,9 @@ public class CollectionOperations {
         return mapped;
     }
 
-    public IrodsResponse rename(User user, String oldPath, String newPath)
+    public IrodsResponse rename(String oldPath, String newPath)
             throws IOException, InterruptedException, IrodsException {
-        String token = user.getAuthToken();
+        String token = getToken();
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -275,6 +277,7 @@ public class CollectionOperations {
         IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), IrodsResponse.class);
 
+
         String failMessage = "Failed to rename '" + oldPath + "'";
         String successMessage = "'" + oldPath + "' renamed to '" + newPath + "'";
         handleErrors(mapped.getIrods_response(), failMessage, successMessage);
@@ -282,9 +285,9 @@ public class CollectionOperations {
         return mapped;
     }
 
-    public IrodsResponse touch(User user, String lpath, int mtime, String reference)
+    public IrodsResponse touch(String lpath, int mtime, String reference)
             throws IOException, InterruptedException, IrodsException {
-        String token = user.getAuthToken();
+        String token = getToken();
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
@@ -322,7 +325,11 @@ public class CollectionOperations {
             throw new IrodsException(failMessage + ": NOT_A_COLLECTION");
         } else if (statusCode == -814000 && statusMessage == null) {
             throw new IrodsException(failMessage + ": CAT_UNKNOWN_COLLECTION");
-        } else if (statusCode  == -170000) { // if statusCode does have a message
+        } else if (statusCode == -130000 && statusMessage == null) {
+            throw new IrodsException(failMessage + ": SYS_INVALID_INPUT_PARAM");
+        } else if (statusCode == -154000 && statusMessage == null) {
+            throw new IrodsException(failMessage + ": SYS_INTERNAL_ERR");
+        } else if (statusCode != 0) {
             throw new IrodsException(failMessage +  ": " + statusMessage);
         }
     }
@@ -347,6 +354,10 @@ public class CollectionOperations {
         } else { // failure
             throw new IrodsException(failMessage + ": " + message);
         }
+    }
+
+    private String getToken() throws IOException {
+        return new String(Files.readAllBytes(Paths.get("token.txt")));
     }
 }
 

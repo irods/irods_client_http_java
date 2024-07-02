@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Collections.CollectionOperations;
 import org.example.Mapper.Info;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -62,7 +63,10 @@ public class IrodsClient {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
-            user.setAuthToken(response.body());
+//            user.setAuthToken(response.body());
+            try (FileWriter fileWriter = new FileWriter("token.txt")) {
+                fileWriter.write(response.body());
+            }
         } else {
             throw new IrodsException("Failed to authenticate: " + response.statusCode());
         }
