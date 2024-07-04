@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/IrodsErrorCodes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/Response.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Example/Example.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/IrodsClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/IrodsClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/token.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/IrodsBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/IrodsBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/IrodsClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/IrodsClientTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/ManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/token.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +99,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="IrodsClientTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
@@ -105,13 +108,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.IrodsClientTest" />
+      <option name="MAIN_CLASS_NAME" value="org.example.ManagerTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="IrodsClientTest.testClientInvalidAddress" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ManagerTest.testClientInvalidAddress" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
@@ -120,14 +123,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.IrodsClientTest" />
+      <option name="MAIN_CLASS_NAME" value="org.example.ManagerTest" />
       <option name="METHOD_NAME" value="testClientInvalidAddress" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="IrodsClientTest.testClientInvalidPort" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ManagerTest.testClientInvalidPort" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
@@ -136,14 +139,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.IrodsClientTest" />
+      <option name="MAIN_CLASS_NAME" value="org.example.ManagerTest" />
       <option name="METHOD_NAME" value="testClientInvalidPort" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="IrodsClientTest.testClientInvalidVersion" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ManagerTest.testClientInvalidVersion" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
@@ -152,7 +155,7 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.IrodsClientTest" />
+      <option name="MAIN_CLASS_NAME" value="org.example.ManagerTest" />
       <option name="METHOD_NAME" value="testClientInvalidVersion" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
@@ -162,10 +165,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Example" />
-        <item itemvalue="JUnit.IrodsClientTest" />
-        <item itemvalue="JUnit.IrodsClientTest.testClientInvalidVersion" />
-        <item itemvalue="JUnit.IrodsClientTest.testClientInvalidPort" />
-        <item itemvalue="JUnit.IrodsClientTest.testClientInvalidAddress" />
+        <item itemvalue="JUnit.ManagerTest" />
+        <item itemvalue="JUnit.ManagerTest.testClientInvalidVersion" />
+        <item itemvalue="JUnit.ManagerTest.testClientInvalidPort" />
+        <item itemvalue="JUnit.ManagerTest.testClientInvalidAddress" />
       </list>
     </recent_temporary>
   </component>

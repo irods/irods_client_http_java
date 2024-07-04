@@ -1,7 +1,5 @@
 package org.example;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,8 +8,8 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-class IrodsClientTest {
-    private static IrodsClient client;
+class ManagerTest {
+    private static Manager client;
     private String address;
     private String port;
     private String version;
@@ -24,8 +22,8 @@ class IrodsClientTest {
     }
     @Test
     public void testAuthenticateValidUser() throws IOException, InterruptedException {
-        IrodsClient mockClient = mock(IrodsClient.class);
-        client = IrodsClient.newBuilder()
+        Manager mockClient = mock(Manager.class);
+        client = Manager.newBuilder()
                 .address(address)
                 .port(port)
                 .version(version)
@@ -40,7 +38,7 @@ class IrodsClientTest {
     }
     @Test
     public void testAuthenticateInvalidUser() throws IOException, InterruptedException {
-        client = IrodsClient.newBuilder()
+        client = Manager.newBuilder()
                 .address(address)
                 .port(port)
                 .version(version)
@@ -56,7 +54,7 @@ class IrodsClientTest {
     @Test
     public void testClientValidParams() {
         try {
-            IrodsClient client = IrodsClient.newBuilder()
+            Manager client = Manager.newBuilder()
                     .address(address)
                     .port(port)
                     .version(version)
@@ -71,7 +69,7 @@ class IrodsClientTest {
         address = "5291.145.195";
 
         java.lang.Exception exception = assertThrows(java.lang.Exception.class, () -> {
-            IrodsClient client = IrodsClient.newBuilder()
+            Manager client = Manager.newBuilder()
                     .address(address)
                     .port(port)
                     .version(version)

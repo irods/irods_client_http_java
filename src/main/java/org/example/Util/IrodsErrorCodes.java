@@ -27,4 +27,10 @@ public class IrodsErrorCodes {
             throw new IrodsException(failMessage + ": " + statusMessage);
         }
     }
+
+    public static Map<Integer, String> getMap() {
+        return STATUS_CODES;
+    }
+
+
 }

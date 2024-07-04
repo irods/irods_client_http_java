@@ -1,17 +1,14 @@
 package org.example.Example;
 
-import org.example.Collections.Permission;
-import org.example.IrodsClient;
+import org.example.Manager;
 import org.example.IrodsException;
-import org.example.Mapper.Collections.CollectionsStat;
-import org.example.Mapper.Collections.Serialize.ModifyMetadataOperations;
-import org.example.Mapper.Collections.Serialize.ModifyPermissionsOperations;
 import org.example.User;
+import org.example.Util.Response;
+import org.example.Util.IrodsErrorCodes;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Example {
 
@@ -21,25 +18,34 @@ public class Example {
         String port = "8888";
         String version = "0.3.0";
 
+        String baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
+        Map<Integer, String> errorCodes = IrodsErrorCodes.getMap();
+
         // create client
-        IrodsClient client = IrodsClient.newBuilder()
-                .address(address)
-                .port(port)
-                .version(version)
-                .build();
+        Manager rods = new Manager(baseUrl, "rods", "rods");
 
         // create users
-        User rods = new User("rods", "rods");
-        User alice = new User("alice", "alicepass");
+//        User rods = new User("rods", "rods");
+//        User alice = new User("alice", "alicepass");
 
         // authenticate users
 //        client.authenticate(rods);
 //        client.authenticate(alice);
 //        rods.setAuthToken("ad9f2345-129d-40ac-b23e-2f3a77303d7f");
+        rods.authenticate();
+        String token = rods.getAuthToken();
+//        System.out.println(token);
+
 
 //        System.out.println(rods.getAuthToken());
-//        List<String> entries = client.collections().list("/tempZone/home/rods", false, null);
-//        System.out.println(entries + "\n");
+        Response<List<String>> listResponse = rods.collections().list(token, "/tempZone//home/rods",
+                false, null);
+        if (listResponse.getStatusCode() == 0) {
+            System.out.println(listResponse.getData());
+        } else {
+            System.err.println(listResponse.getStatusCode() + ": " + errorCodes.get(listResponse.getStatusCode()));
+        }
+
 
 
 
