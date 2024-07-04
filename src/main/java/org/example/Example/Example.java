@@ -9,6 +9,7 @@ import org.example.Mapper.Collections.Serialize.ModifyPermissionsOperations;
 import org.example.User;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,8 +68,9 @@ public class Example {
 
 //        client.collections().rename("/tempZone/home/rods/test1", "/tempZone/home/rods/test" );
 
-        client.collections().touch("/tempZone/home/rods/test", 0, null);
-
+//        client.collections().touch("/tempZone/home/rods/test", 0, null);
+//        String expiration = LocalDateTime.now().plusHours(1).toString();
+//        System.out.println(expiration);
 
     }
 }

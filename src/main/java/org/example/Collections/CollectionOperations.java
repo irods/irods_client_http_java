@@ -1,5 +1,6 @@
 package org.example.Collections;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.example.IrodsClient;
 import org.example.IrodsException;
 import org.example.Mapper.Collections.*;
@@ -10,16 +11,19 @@ import org.example.Mapper.Mapped;
 import org.example.User;
 import org.example.Util.HttpRequestUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.Util.IrodsErrorCodes;
 
 /**
  * Class for all the Collections Operations
@@ -59,7 +63,7 @@ public class CollectionOperations {
 
         // checks status code number given by irods_response JSON
         String failMessage = "Failed to created collection: '" + lpath + "'";
-        statusCodeMessage(mapped.getIrods_response(), failMessage);
+        IrodsErrorCodes.statusCodeMessage(mapped.getIrods_response(), failMessage);
 
         if (mapped.isCreated()) {
             System.out.println("Collection '" + lpath + "' created successfully");
@@ -153,14 +157,25 @@ public class CollectionOperations {
             formData.put("ticket", ticket);
         }
 
-        CollectionsList mapped = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient(),
-                CollectionsList.class);
+//        CollectionsList mapped = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient(),
+//                CollectionsList.class);
+        String form = HttpRequestUtil.createRequestBody(formData);
+
+        // creating the request
+        HttpRequest request = HttpRequestUtil.buildRequestGET(baseUrl, token, form);
+
+        // sending request
+        HttpResponse<String> response = HttpRequestUtil.sendRequest(client.getClient(), request);
+
+        // parse the JSON
+        CollectionsList mapped = HttpRequestUtil.parseResponse(response, CollectionsList.class);
 
         String failMessage = "Failed to retrieve list for '" + lpath + "'";
         String successMessage = "List for '" + lpath + "' retrieved successfully";
-        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
+//        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
 
         return mapped.getEntries();
+//        return null;
     }
 
     // uses Permission enum for permission parameter
@@ -317,22 +332,22 @@ public class CollectionOperations {
      * @param failMessage The failure message that will be displayed
      * @throws IrodsException because status code is not 0
      */
-    private void statusCodeMessage(Mapped.IrodsResponse irodsResponse, String failMessage) throws IrodsException {
-        int statusCode = irodsResponse.getStatus_code();
-        String statusMessage = irodsResponse.getStatus_message();
-
-        if (statusCode == -170000 && statusMessage == null) {
-            throw new IrodsException(failMessage + ": NOT_A_COLLECTION");
-        } else if (statusCode == -814000 && statusMessage == null) {
-            throw new IrodsException(failMessage + ": CAT_UNKNOWN_COLLECTION");
-        } else if (statusCode == -130000 && statusMessage == null) {
-            throw new IrodsException(failMessage + ": SYS_INVALID_INPUT_PARAM");
-        } else if (statusCode == -154000 && statusMessage == null) {
-            throw new IrodsException(failMessage + ": SYS_INTERNAL_ERR");
-        } else if (statusCode != 0) {
-            throw new IrodsException(failMessage +  ": " + statusMessage);
-        }
-    }
+//    private void statusCodeMessage(Mapped.IrodsResponse irodsResponse, String failMessage) throws IrodsException {
+//        int statusCode = irodsResponse.getStatus_code();
+//        String statusMessage = irodsResponse.getStatus_message();
+//
+//        if (statusCode == -170000 && statusMessage == null) {
+//            throw new IrodsException(failMessage + ": NOT_A_COLLECTION");
+//        } else if (statusCode == -814000 && statusMessage == null) {
+//            throw new IrodsException(failMessage + ": CAT_UNKNOWN_COLLECTION");
+//        } else if (statusCode == -130000 && statusMessage == null) {
+//            throw new IrodsException(failMessage + ": SYS_INVALID_INPUT_PARAM");
+//        } else if (statusCode == -154000 && statusMessage == null) {
+//            throw new IrodsException(failMessage + ": SYS_INTERNAL_ERR");
+//        } else if (statusCode != 0) {
+//            throw new IrodsException(failMessage +  ": " + statusMessage);
+//        }
+//    }
 
     /**
      * Displays success message or throws an error when request failed
@@ -344,7 +359,7 @@ public class CollectionOperations {
     private void handleErrors(Mapped.IrodsResponse irodsResponse, String failMessage, String successMessage)
             throws IrodsException {
 
-        statusCodeMessage(irodsResponse, failMessage);
+        IrodsErrorCodes.statusCodeMessage(irodsResponse, failMessage);
 
         int statusCode = irodsResponse.getStatus_code();
         String message = irodsResponse.getStatus_message();
@@ -356,8 +371,21 @@ public class CollectionOperations {
         }
     }
 
-    private String getToken() throws IOException {
-        return new String(Files.readAllBytes(Paths.get("token.txt")));
+    private String getToken() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            // read the JSON file
+            JsonNode jsonNode = mapper.readTree(new File("token.json"));
+
+            // access the token value
+            JsonNode tokenNode = jsonNode.get("token");
+
+            return tokenNode.asText();
+        } catch (IOException e) {
+            System.err.println("Error reading JSON file: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

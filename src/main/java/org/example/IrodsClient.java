@@ -1,16 +1,21 @@
 package org.example;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Collections.CollectionOperations;
 import org.example.Mapper.Info;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 public class IrodsClient {
 
@@ -61,12 +66,10 @@ public class IrodsClient {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        String token = response.body();
 
         if (response.statusCode() == 200) {
-//            user.setAuthToken(response.body());
-            try (FileWriter fileWriter = new FileWriter("token.txt")) {
-                fileWriter.write(response.body());
-            }
+            saveToken(token);
         } else {
             throw new IrodsException("Failed to authenticate: " + response.statusCode());
         }
@@ -105,7 +108,17 @@ public class IrodsClient {
         return client;
     }
 
-    // response code of 401 means attempting to use an expired or invalid token
-    // may need to reauthenticate
+    private void saveToken(String token) throws IOException {
+        // the time one hour from now
+        String expiration = LocalDateTime.now().plusHours(1).toString();
+
+        Map<String, Object > tokenData = new HashMap<>();
+        tokenData.put("token", token);
+        tokenData.put("expiration", expiration);
+
+        // save token and expiration as a JSON
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("token.json"), tokenData);
+    }
 
 }
