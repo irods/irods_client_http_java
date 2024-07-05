@@ -1,8 +1,8 @@
 package org.example.Mapper.Collections;
 
 import org.example.Mapper.Mapped;
-public class CollectionsModifyMetadata extends Mapped {
-    public static class Operation extends IrodsResponse.FailedOperation {
+public class CollectionsModifyMetadata {
+    public static class Operation {
         private String operation;
         private String attribute;
         private String value;

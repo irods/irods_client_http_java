@@ -1,12 +1,16 @@
 package org.example.Example;
 
+import org.example.Collections.Permission;
 import org.example.Manager;
 import org.example.IrodsException;
+import org.example.Mapper.Collections.Serialize.ModifyMetadataOperations;
+import org.example.Mapper.Collections.Serialize.ModifyPermissionsOperations;
 import org.example.User;
 import org.example.Util.Response;
 import org.example.Util.IrodsErrorCodes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,58 +23,67 @@ public class Example {
         String version = "0.3.0";
 
         String baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
-        Map<Integer, String> errorCodes = IrodsErrorCodes.getMap();
 
         // create client
         Manager rods = new Manager(baseUrl, "rods", "rods");
+
 
         // create users
 //        User rods = new User("rods", "rods");
 //        User alice = new User("alice", "alicepass");
 
-        // authenticate users
-//        client.authenticate(rods);
-//        client.authenticate(alice);
-//        rods.setAuthToken("ad9f2345-129d-40ac-b23e-2f3a77303d7f");
+        // authenticate
         rods.authenticate();
         String token = rods.getAuthToken();
-//        System.out.println(token);
+
+        // list
+        responseData(
+                rods.collections().list(token, "/tempZone/home/rods", false, null)
+        );
+
+        // create
+//        responseData(
+//                rods.collections().create(token, "/tempZone/home/alice", false)
+//        );
+
+        // remove
+//        responseData(
+//                rods.collections().remove(token, "/tempZone/home/rods/test3", false, false)
+//        );
+
+        // stat
+//        responseData(
+//                rods.collections().stat(token, "/tempZone/home/rods/test1", null)
+//        );
+
+        // set_permissions
+//        responseData(
+//                rods.collections().set_permission(token, "/tempZone/home/rods/test","alice",
+//                        Permission.NULL, true)
+//        );
+
+        // set_inheritance
+//        responseData(
+//                rods.collections().set_inheritance(token, "/tempZone/home/rods/test", false, true)
+//        );
+
+        // modify_permissions
+        List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
+        jsonParam.add(new ModifyPermissionsOperations("alice", "read"));
+        System.out.println(jsonParam);
+        responseData(
+                rods.collections().modify_permissions(token,"/tempZone/home/rods", jsonParam, true)
+        );
 
 
-//        System.out.println(rods.getAuthToken());
-        Response<List<String>> listResponse = rods.collections().list(token, "/tempZone//home/rods",
-                false, null);
-        if (listResponse.getStatusCode() == 0) {
-            System.out.println(listResponse.getData());
-        } else {
-            System.err.println(listResponse.getStatusCode() + ": " + errorCodes.get(listResponse.getStatusCode()));
-        }
-
-
-
-
-//        List<String> entries = client.collections().list(alice, "/tempZone/home/alice", false, null);
-//        System.out.println(entries + "\n");
-
-//        client.collections().create(alice, "/tempZone/home/alice/test1", false);
-
-//        client.collections().remove("/tempZone/home/rods/test3", false, false);
-//        client.collections().create("/tempZone/home/rods/test3", false);
-//        System.out.println(test);
-
-//        client.collections().set_permission("/tempZone/home/rods/test","alice", Permission.NULL, true);
-
-//        client.collections().set_inheritance("/tempZone/home/rods/test", false, true);
-//        client.collections().stat("/tempZone/home/rods/test", null);
-
-
-//        List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
-//        jsonParam.add(new ModifyPermissionsOperations("test", Permission.READ));
-//        client.collections().modify_permissions("/tempZone/home/rods/test1", jsonParam, true);
 //
+//        // modify_metadata
 //        List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
 //        jsonParam2.add(new ModifyMetadataOperations("add", "test", "test1", "null"));
-//        client.collections().modify_metadata("/tempZone/home/rods/test", jsonParam2, true);
+//        System.out.println(jsonParam2);
+//        responseData(
+//                rods.collections().modify_metadata(token,"/tempZone/home/rods/test", jsonParam2, true)
+//        );
 
 //        client.collections().rename("/tempZone/home/rods/test1", "/tempZone/home/rods/test" );
 
@@ -78,5 +91,14 @@ public class Example {
 //        String expiration = LocalDateTime.now().plusHours(1).toString();
 //        System.out.println(expiration);
 
+    }
+
+    private static <T> void responseData(Response<T> response) {
+        Map<Integer, String> errorCodes = IrodsErrorCodes.getMap();
+        if (response.getStatusCode() == 0) {
+            System.out.println(response.getData());
+        } else {
+            System.err.println(response.getStatusCode() + ": " + errorCodes.get(response.getStatusCode()));
+        }
     }
 }

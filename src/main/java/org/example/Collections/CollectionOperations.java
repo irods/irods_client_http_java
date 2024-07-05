@@ -12,8 +12,12 @@ import org.example.Util.HttpRequestUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +25,12 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Util.IrodsErrorCodes;
 import org.example.Util.Response;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class for all the Collections Operations
@@ -45,7 +55,7 @@ public class CollectionOperations {
      * @throws IOException
      * @throws InterruptedException
      */
-    public CollectionsCreate create(String token, String lpath, boolean intermediates) throws IOException, InterruptedException, IrodsException {
+    public Response<Boolean> create(String token, String lpath, boolean intermediates) throws IOException, InterruptedException, IrodsException {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "create",
@@ -62,18 +72,21 @@ public class CollectionOperations {
         String failMessage = "Failed to created collection: '" + lpath + "'";
         IrodsErrorCodes.statusCodeMessage(mapped.getIrods_response(), failMessage);
 
-        if (mapped.isCreated()) {
-            System.out.println("Collection '" + lpath + "' created successfully");
-        } else {
-            // status code = 0, null message, and isCreated() = false means that it is a duplicate?
-            if (message == null) {
-                throw new IrodsException(failMessage + " already exists");
-            } else {
-                throw new IrodsException(failMessage + ": " + message);
-            }
-        }
+//        if (mapped.isCreated()) {
+//            System.out.println("Collection '" + lpath + "' created successfully");
+//        } else {
+//            // status code = 0, null message, and isCreated() = false means that it is a duplicate?
+//            if (message == null) {
+//                throw new IrodsException(failMessage + " already exists");
+//            } else {
+//                throw new IrodsException(failMessage + ": " + message);
+//            }
+//        }
+//
+//        return mapped;
 
-        return mapped;
+        return new Response<>(mapped.getIrods_response().getStatus_code(),
+                mapped.getIrods_response().getStatus_message(), mapped.isCreated());
     }
 
     /**
@@ -86,7 +99,7 @@ public class CollectionOperations {
      * @throws IOException
      * @throws InterruptedException
      */
-    public IrodsResponse remove(String token, String lpath, boolean recurse, boolean noTrash) throws IOException,
+    public Response<Void> remove(String token, String lpath, boolean recurse, boolean noTrash) throws IOException,
             InterruptedException, IrodsException {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -99,11 +112,12 @@ public class CollectionOperations {
         IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient(),
                 IrodsResponse.class);
 
-        String failMessage = "Failed to remove collection '" + lpath + "'";
-        String successMessage = "Collection '" + lpath + "' removed successfully";
-        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
+//        String failMessage = "Failed to remove collection '" + lpath + "'";
+//        String successMessage = "Collection '" + lpath + "' removed successfully";
+//        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
 
-        return mapped;
+        return new Response<>(mapped.getIrods_response().getStatus_code(),
+                mapped.getIrods_response().getStatus_message(), null);
     }
 
 
@@ -116,7 +130,7 @@ public class CollectionOperations {
      * @throws InterruptedException
      * @throws IrodsException
      */
-    public CollectionsStat stat(String token, String lpath, String ticket)
+    public Response<CollectionsStat> stat(String token, String lpath, String ticket)
             throws IOException, InterruptedException, IrodsException {
 
         // contains parameters for the HTTP request
@@ -130,11 +144,12 @@ public class CollectionOperations {
         CollectionsStat mapped = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient(),
                 CollectionsStat.class);
 
-        String failMessage = "Failed to retrieve information for '" + lpath + "'";
-        String successMessage = "Information for '" + lpath +"' retrieved successfully";
-        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
+//        String failMessage = "Failed to retrieve information for '" + lpath + "'";
+//        String successMessage = "Information for '" + lpath +"' retrieved successfully";
+//        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
 
-        return mapped;
+        return new Response<>(mapped.getIrods_response().getStatus_code(),
+                mapped.getIrods_response().getStatus_message(), mapped);
     }
 
     public Response<List<String>> list(String token, String lpath, boolean recurse, String ticket)
@@ -152,17 +167,16 @@ public class CollectionOperations {
         CollectionsList mapped = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient(),
                 CollectionsList.class);
 
-        String failMessage = "Failed to retrieve list for '" + lpath + "'";
-        String successMessage = "List for '" + lpath + "' retrieved successfully";
+//        String failMessage = "Failed to retrieve list for '" + lpath + "'";
+//        String successMessage = "List for '" + lpath + "' retrieved successfully";
 //        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
 
-        //return mapped.getEntries();
-        return new Response<List<String>>(mapped.getIrods_response().getStatus_code(),
+        return new Response<>(mapped.getIrods_response().getStatus_code(),
                 mapped.getIrods_response().getStatus_message(), mapped.getEntries());
     }
 
     // uses Permission enum for permission parameter
-    public IrodsResponse set_permission(String token, String lpath, String entityName, Permission permission,
+    public Response<Void> set_permission(String token, String lpath, String entityName, Permission permission,
                                   boolean admin) throws IOException, InterruptedException, IrodsException {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -176,14 +190,15 @@ public class CollectionOperations {
         IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), IrodsResponse.class);
 
-        String failMessage = "Failed to change permissions for '" + lpath + "'";
-        String successMessage = "Permission for '" + entityName + "' set";
-        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
+//        String failMessage = "Failed to change permissions for '" + lpath + "'";
+//        String successMessage = "Permission for '" + entityName + "' set";
+//        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
 
-        return mapped;
+        return new Response<>(mapped.getIrods_response().getStatus_code(),
+                mapped.getIrods_response().getStatus_message(), null);
     }
 
-    public IrodsResponse set_inheritance(String token, String lpath, boolean enable,
+    public Response<Void> set_inheritance(String token, String lpath, boolean enable,
                                 boolean admin) throws IOException, InterruptedException, IrodsException {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -196,19 +211,23 @@ public class CollectionOperations {
         IrodsResponse mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), IrodsResponse.class);
 
-        String failMessage = "Failed to change inheritance for '" + lpath + "'";
-        String successMessage = "Inheritance for '" + lpath + "' " + (enable ? "enabled" : "disabled");
-        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
+//        String failMessage = "Failed to change inheritance for '" + lpath + "'";
+//        String successMessage = "Inheritance for '" + lpath + "' " + (enable ? "enabled" : "disabled");
+//        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
 
-        return mapped;
+        return new Response<>(mapped.getIrods_response().getStatus_code(),
+                mapped.getIrods_response().getStatus_message(), null);
     }
 
-    public CollectionsModifyPermissions modify_permissions(String token, String lpath,
-                                                           List<ModifyPermissionsOperations> jsonParam, boolean admin)
+    public Response<CollectionsModifyPermissions> modify_permissions(String token, String lpath,
+                                                           List<ModifyPermissionsOperations> jsonParam,
+//                                                           String jsonParam,
+                                                           boolean admin)
             throws IOException, InterruptedException, IrodsException {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
         String operationsJson = mapper.writeValueAsString(jsonParam);
+        System.out.println(operationsJson);
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -218,17 +237,43 @@ public class CollectionOperations {
                 "admin", admin ? "1" : "0"
         );
 
-        CollectionsModifyPermissions mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
-                client.getClient(), CollectionsModifyPermissions.class);
+        System.out.println("formdata: " + formData);
 
-        String failMessage = "Failed to modify permission for '" + lpath + "'";
-        String successMessage = "Permissions successfully modified";
-        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
+        String form = formData.entrySet()
+                .stream()
+                .map(Map.Entry::toString) // method reference to Map.Entry.toString(): key=value
+                .collect(Collectors.joining("&"));
 
-        return mapped;
+        System.out.println("form: " + form);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl))
+                .header("Authorization", "Bearer " + token)
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(form))
+                .build();
+
+        HttpResponse<String> response = client.getClient().send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+
+        CollectionsModifyPermissions mapped = mapper.readValue(response.body(), CollectionsModifyPermissions.class);
+
+//
+//        CollectionsModifyPermissions mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+//                client.getClient(), CollectionsModifyPermissions.class);
+
+//
+
+//        String failMessage = "Failed to modify permission for '" + lpath + "'";
+//        String successMessage = "Permissions successfully modified";
+//        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
+
+        return new Response<>(mapped.getIrods_response().getStatus_code(),
+                mapped.getIrods_response().getStatus_message(), mapped);
+//        return null;
     }
 
-    public CollectionsModifyMetadata modify_metadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam,
+    public Response<CollectionsModifyMetadata> modify_metadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam,
                                                                boolean admin)
             throws IOException, InterruptedException, IrodsException {
         // Serialize the operations parameter to JSON
@@ -246,11 +291,13 @@ public class CollectionOperations {
         CollectionsModifyMetadata mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient(), CollectionsModifyMetadata.class);
 
-        String failMessage = "Failed to modify metadata for '" + lpath + "'";
-        String successMessage = "Metadata successfully modified";
-        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
+//        String failMessage = "Failed to modify metadata for '" + lpath + "'";
+//        String successMessage = "Metadata successfully modified";
+//        handleErrors(mapped.getIrods_response(), failMessage, successMessage);
 
-        return mapped;
+//        return new Response<>(mapped.getIrods_response().getStatus_code(),
+//                mapped.getIrods_response().getStatus_message(), mapped);
+        return null;
     }
 
     public IrodsResponse rename(String token, String oldPath, String newPath)

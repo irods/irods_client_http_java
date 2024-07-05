@@ -37,9 +37,9 @@ public abstract class Mapped {
         @JsonProperty("status_message")
         private String status_message;
 
-        @JsonInclude(JsonInclude.Include.NON_NULL)
-        @JsonProperty("failed_operation")
-        private FailedOperation failed_operation; // if not included in the JSON response, it's ignored
+//        @JsonInclude(JsonInclude.Include.NON_NULL)
+//        @JsonProperty("failed_operation")
+//        private FailedOperation failed_operation; // if not included in the JSON response, it's ignored
 
         public int getStatus_code() {
             return status_code;
@@ -49,25 +49,30 @@ public abstract class Mapped {
             return status_message;
         }
 
-        @JsonIgnoreProperties(ignoreUnknown = true)
-        public static class FailedOperation {
-            private Object operation;
-            private int operation_index;
-            private String status_message;
-            public Object getOperation() {
-                return operation;
-            }
-            public void setOperation(Object operation) {
-                this.operation = operation;
-            }
+//        public FailedOperation getFailed_operation() {
+//            return failed_operation;
+//        }
 
-            public int getOperation_index() {
-                return operation_index;
-            }
-            public String getStatus_message() {
-                return status_message;
-            }
-        }
+//        @JsonIgnoreProperties(ignoreUnknown = true)
+//        public static class FailedOperation {
+//            private Object operation;
+//            private int operation_index;
+//            private String status_message;
+//            public Object getOperation() {
+//                return operation;
+//            }
+//            public void setOperation(Object operation) {
+//                this.operation = operation;
+//            }
+//
+//            public int getOperation_index() {
+//                return operation_index;
+//            }
+//            public String getStatus_message() {
+//                return status_message;
+//            }
+//
+//        }
 
         @Override
         public String toString() {

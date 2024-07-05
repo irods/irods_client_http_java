@@ -96,6 +96,7 @@ public class HttpRequestUtil {
                                          HttpClient client, Class<T> responseType) throws IOException, InterruptedException {
         // creating the request body
         String form = HttpRequestUtil.createRequestBody(formData);
+        System.out.println(form);
 
         // creating the request
         HttpRequest request = HttpRequestUtil.buildRequestGET(baseUrl, token, form);
