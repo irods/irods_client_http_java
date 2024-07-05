@@ -2,6 +2,7 @@ package org.example.Util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.Mapper.Collections.CollectionsModifyPermissions;
 
 import java.io.IOException;
 import java.net.URI;
@@ -14,44 +15,6 @@ import java.util.stream.Collectors;
 public class HttpRequestUtil {
     private static final ObjectMapper mapper = new ObjectMapper();
     private static HttpResponse<String> response;
-
-    public static String createRequestBody(Map<Object, Object> formData) {
-        return formData.entrySet()
-                .stream()
-                .map(Map.Entry::toString) // method reference to Map.Entry.toString(): key=value
-                .collect(Collectors.joining("&"));
-    }
-
-    public static HttpRequest buildRequestPOST(String baseUrl, String token, String form) {
-        return HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl))
-                .header("Authorization", "Bearer " + token)
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(form))
-                .build();
-    }
-
-    public static HttpRequest buildRequestGET(String baseUrl, String token, String form) {
-        return HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "?" + form))
-                .header("Authorization", "Bearer " + token)
-                .GET()
-                .build();
-    }
-
-    public static HttpResponse<String> sendRequest(HttpClient client, HttpRequest request)
-            throws IOException, InterruptedException {
-        response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response;
-    }
-
-    public static HttpResponse<String> getResponse() {
-        return response;
-    }
-
-    public static <T> T parseResponse(HttpResponse<String> response, Class<T> responseType) throws JsonProcessingException {
-        return mapper.readValue(response.body(), responseType);
-    }
 
     /**
      * Sends a POST HTTP request and parses the JSON using the methods above
@@ -66,18 +29,25 @@ public class HttpRequestUtil {
      */
     public static <T> T sendAndParsePOST(Map<Object, Object> formData, String baseUrl, String token,
                                          HttpClient client, Class<T> responseType) throws IOException, InterruptedException {
-        // creating the request body
-        String form = HttpRequestUtil.createRequestBody(formData);
+        /// creating the request body
+        String form = formData.entrySet()
+                .stream()
+                .map(Map.Entry::toString) // method reference to Map.Entry.toString(): key=value
+                .collect(Collectors.joining("&"));
 
         // creating the request
-        HttpRequest request = HttpRequestUtil.buildRequestPOST(baseUrl, token, form);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl))
+                .header("Authorization", "Bearer " + token)
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(form))
+                .build();
 
         // sending request
-        HttpResponse<String> response = HttpRequestUtil.sendRequest(client, request);
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         // parse the JSON
-        T mapped = HttpRequestUtil.parseResponse(response, responseType);
-
+        T mapped = mapper.readValue(response.body(), responseType);
         return mapped;
     }
 
@@ -95,18 +65,23 @@ public class HttpRequestUtil {
     public static <T> T sendAndParseGET(Map<Object, Object> formData, String baseUrl, String token,
                                          HttpClient client, Class<T> responseType) throws IOException, InterruptedException {
         // creating the request body
-        String form = HttpRequestUtil.createRequestBody(formData);
-        System.out.println(form);
+        String form = formData.entrySet()
+                .stream()
+                .map(Map.Entry::toString) // method reference to Map.Entry.toString(): key=value
+                .collect(Collectors.joining("&"));
 
         // creating the request
-        HttpRequest request = HttpRequestUtil.buildRequestGET(baseUrl, token, form);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "?" + form))
+                .header("Authorization", "Bearer " + token)
+                .GET()
+                .build();
 
         // sending request
-        HttpResponse<String> response = HttpRequestUtil.sendRequest(client, request);
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         // parse the JSON
-        T mapped = HttpRequestUtil.parseResponse(response, responseType);
-
+        T mapped = mapper.readValue(response.body(), responseType);
         return mapped;
     }
 }

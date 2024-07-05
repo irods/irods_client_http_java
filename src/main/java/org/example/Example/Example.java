@@ -70,7 +70,6 @@ public class Example {
         // modify_permissions
         List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
         jsonParam.add(new ModifyPermissionsOperations("alice", "read"));
-        System.out.println(jsonParam);
         responseData(
                 rods.collections().modify_permissions(token,"/tempZone/home/rods", jsonParam, true)
         );

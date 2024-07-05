@@ -1,6 +1,5 @@
 package org.example.Collections;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.example.Manager;
 import org.example.IrodsException;
 import org.example.Mapper.Collections.*;
@@ -10,14 +9,10 @@ import org.example.Mapper.IrodsResponse;
 import org.example.Mapper.Mapped;
 import org.example.Util.HttpRequestUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +43,7 @@ public class CollectionOperations {
 
     /**
      * Creates a new collection.
-     * Protected, so it can only be accessed from this package. Enforces use of builder
-     * @param user The user making the request
+     * @param token The token used for the authenticated request
      * @param lpath The logical path for the collection
      * @param intermediates Whether to create intermediate directories. Optional parameter
      * @throws IOException
@@ -227,7 +221,6 @@ public class CollectionOperations {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
         String operationsJson = mapper.writeValueAsString(jsonParam);
-        System.out.println(operationsJson);
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -237,32 +230,9 @@ public class CollectionOperations {
                 "admin", admin ? "1" : "0"
         );
 
-        System.out.println("formdata: " + formData);
+        CollectionsModifyPermissions mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
+                client.getClient(), CollectionsModifyPermissions.class);
 
-        String form = formData.entrySet()
-                .stream()
-                .map(Map.Entry::toString) // method reference to Map.Entry.toString(): key=value
-                .collect(Collectors.joining("&"));
-
-        System.out.println("form: " + form);
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl))
-                .header("Authorization", "Bearer " + token)
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(form))
-                .build();
-
-        HttpResponse<String> response = client.getClient().send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-
-        CollectionsModifyPermissions mapped = mapper.readValue(response.body(), CollectionsModifyPermissions.class);
-
-//
-//        CollectionsModifyPermissions mapped = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
-//                client.getClient(), CollectionsModifyPermissions.class);
-
-//
 
 //        String failMessage = "Failed to modify permission for '" + lpath + "'";
 //        String successMessage = "Permissions successfully modified";
@@ -270,7 +240,6 @@ public class CollectionOperations {
 
         return new Response<>(mapped.getIrods_response().getStatus_code(),
                 mapped.getIrods_response().getStatus_message(), mapped);
-//        return null;
     }
 
     public Response<CollectionsModifyMetadata> modify_metadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam,
