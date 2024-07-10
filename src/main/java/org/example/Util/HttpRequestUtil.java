@@ -27,8 +27,8 @@ public class HttpRequestUtil {
      * @throws IOException
      * @throws InterruptedException
      */
-    public static <T> T sendAndParsePOST(Map<Object, Object> formData, String baseUrl, String token,
-                                         HttpClient client, Class<T> responseType) throws IOException, InterruptedException {
+    public static HttpResponse<String> sendAndParsePOST(Map<Object, Object> formData, String baseUrl, String token, HttpClient client)
+            throws IOException, InterruptedException {
         /// creating the request body
         String form = formData.entrySet()
                 .stream()
@@ -46,9 +46,8 @@ public class HttpRequestUtil {
         // sending request
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        // parse the JSON
-        T mapped = mapper.readValue(response.body(), responseType);
-        return mapped;
+
+        return response;
     }
 
     /**
@@ -62,8 +61,8 @@ public class HttpRequestUtil {
      * @throws IOException
      * @throws InterruptedException
      */
-    public static <T> T sendAndParseGET(Map<Object, Object> formData, String baseUrl, String token,
-                                         HttpClient client, Class<T> responseType) throws IOException, InterruptedException {
+    public static HttpResponse<String>  sendAndParseGET(Map<Object, Object> formData, String baseUrl, String token, HttpClient client)
+            throws IOException, InterruptedException {
         // creating the request body
         String form = formData.entrySet()
                 .stream()
@@ -80,8 +79,7 @@ public class HttpRequestUtil {
         // sending request
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        // parse the JSON
-        T mapped = mapper.readValue(response.body(), responseType);
-        return mapped;
+
+        return response;
     }
 }

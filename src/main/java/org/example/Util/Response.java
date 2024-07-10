@@ -1,34 +1,25 @@
 package org.example.Util;
 
-public class Response<T> {
-    private int statusCode;
-    private String statusMessage;
-    private T data;
+public class Response {
+    private int HttpStatusCode;
+    private String body;
 
-    public Response(int statusCode, String statusMessage, T data) {
-        this.statusCode = statusCode;
-        this.statusMessage = statusMessage;
-        this.data = data;
+    public Response(int HttpStatusCode, String body) {
+        this.HttpStatusCode = HttpStatusCode;
+        this.body = body;
     }
 
-    public int getStatusCode() {
-        return statusCode;
+    public int getHttpStatusCode() {
+        return HttpStatusCode;
     }
 
-    public String getStatusMessage() {
-        return statusMessage;
-    }
-
-    public T getData() {
-        return data;
+    public String getBody() {
+        return body;
     }
 
     @Override
     public String toString() {
-        return "Response{" +
-                "statusCode=" + statusCode +
-                ", statusMessage='" + statusMessage + '\'' +
-                ", data=" + data +
-                '}';
+        return "HttpStatusCode=" + HttpStatusCode +
+                ", body='" + body + '\'';
     }
 }
