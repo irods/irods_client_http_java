@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Mapper.Mapped;
 
+import java.util.Objects;
+
 //public class CollectionsModifyMetadata {
 //    private IrodsResponse irods_response;
 //
@@ -121,16 +123,53 @@ public class CollectionsModifyMetadata extends Mapped {
             return operation;
         }
 
+        public void setOperation(String operation) {
+            this.operation = operation;
+        }
+
         public String getAttribute() {
             return attribute;
+        }
+
+        public void setAttribute(String attribute) {
+            this.attribute = attribute;
         }
 
         public String getValue() {
             return value;
         }
 
+        public void setValue(String value) {
+            this.value = value;
+        }
+
         public String getUnits() {
             return units;
+        }
+
+        public void setUnits(String units) {
+            this.units = units;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+
+            //check if it is an instance because a runtime error occurs when casting if it's not
+            if (!this.getClass().equals(obj.getClass())) {
+                return false; //when obj is not an instance of Ride
+            }
+
+            //casting because obj is of type Object and does not have the following data fields
+            CollectionsModifyMetadata.Operation other = (CollectionsModifyMetadata.Operation) obj;
+            return Objects.equals(this.operation, other.operation) &&
+                    Objects.equals(this.attribute, other.attribute) &&
+                    Objects.equals(this.value, other.value) &&
+                    Objects.equals(this.units, other.units);
+
+
         }
     }
 }

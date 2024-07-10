@@ -6,6 +6,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Mapper.IrodsResponse;
 import org.example.Mapper.Mapped;
+
+import java.util.Objects;
+
 public class CollectionsModifyPermissions extends Mapped {
     public static class Operation {
         @JsonProperty("entity_name")
@@ -16,10 +19,37 @@ public class CollectionsModifyPermissions extends Mapped {
         public String getEntity_name() {
             return entity_name;
         }
+
+        public void setEntity_name(String entity_name) {
+            this.entity_name = entity_name;
+        }
+
         public String getAcl() {
             return acl;
         }
+
+        public void setAcl(String acl) {
+            this.acl = acl;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+
+            //check if it is an instance because a runtime error occurs when casting if it's not
+            if (!this.getClass().equals(obj.getClass())) {
+                return false; //when obj is not an instance of Ride
+            }
+
+            //casting because obj is of type Object and does not have the following data fields
+            CollectionsModifyPermissions.Operation other = (CollectionsModifyPermissions.Operation) obj;
+            return Objects.equals(this.entity_name, other.entity_name) &&
+                    Objects.equals(this.acl, other.acl);
+        }
     }
+
 }
 
 

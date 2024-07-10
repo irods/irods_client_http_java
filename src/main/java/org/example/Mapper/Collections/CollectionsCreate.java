@@ -10,6 +10,10 @@ public class CollectionsCreate extends Mapped {
         return created;
     }
 
+    public void setCreated(boolean created) {
+        this.created = created;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
