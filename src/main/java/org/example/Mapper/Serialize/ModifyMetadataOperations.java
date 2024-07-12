@@ -1,4 +1,4 @@
-package org.example.Mapper.Collections.Serialize;
+package org.example.Mapper.Serialize;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;

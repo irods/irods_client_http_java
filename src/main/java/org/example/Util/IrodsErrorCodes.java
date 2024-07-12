@@ -15,6 +15,8 @@ public class IrodsErrorCodes {
         STATUS_CODES.put(-814000, "CAT_UNKNOWN_COLLECTION");
         STATUS_CODES.put(-130000, "SYS_INVALID_INPUT_PARAM");
         STATUS_CODES.put(-154000, "SYS_INTERNAL_ERR");
+        STATUS_CODES.put(-171000, "NOT_A_DATA_OBJECT");
+        STATUS_CODES.put(-808000, "CAT_NO_ROWS_FOUND");
     }
 
     public static void statusCodeMessage(Mapped.IrodsResponse irodsResponse, String failMessage) throws IrodsException {

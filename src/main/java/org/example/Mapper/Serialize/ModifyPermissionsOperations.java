@@ -1,10 +1,9 @@
-package org.example.Mapper.Collections.Serialize;
+package org.example.Mapper.Serialize;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Collections.Permission;
 
 /**
  * For the modify_permissions() method.

@@ -1,19 +1,11 @@
 package org.example;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Collections.CollectionOperations;
-import org.example.Mapper.Info;
-
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Manager {
 
@@ -73,29 +65,40 @@ public class Manager {
         }
     }
 
-    /**
-     * Sends request to /info endpoint and parses the response
-     * @return Info objected parsed from the response JSON
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    public Info info() throws IOException, InterruptedException {
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/info"))
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-
-        //parse JSON into objects
-        ObjectMapper mapper = new ObjectMapper();
-        Info info = mapper.readValue(response.body(), Info.class);
-        return (info);
-    }
-
     public CollectionOperations collections() {
         return new CollectionOperations(this);
+    }
+
+    public DataObjectOperations dataObject() {
+        return new DataObjectOperations(this);
+    }
+
+    public InformationOperations information() {
+        return new InformationOperations(this);
+    }
+
+    public QueryOperations queryOperations() {
+        return new QueryOperations(this);
+    }
+
+    public ResourceOperations resourceOperations() {
+        return new ResourceOperations(this);
+    }
+
+    public RuleOperations ruleOperations() {
+        return new RuleOperations(this);
+    }
+
+    public TicketOperations ticketOperations() {
+        return new TicketOperations(this);
+    }
+
+    public UserGroupOperations userGroupOperations() {
+        return new UserGroupOperations(this);
+    }
+
+    public ZoneOperations zoneOperations() {
+        return new ZoneOperations(this);
     }
 
     public String getBaseUrl() {

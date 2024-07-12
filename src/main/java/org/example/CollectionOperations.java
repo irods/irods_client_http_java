@@ -1,10 +1,7 @@
-package org.example.Collections;
+package org.example;
 
-import org.example.Manager;
-import org.example.IrodsException;
-import org.example.Mapper.Collections.CollectionsModifyPermissions;
-import org.example.Mapper.Collections.Serialize.ModifyMetadataOperations;
-import org.example.Mapper.Collections.Serialize.ModifyPermissionsOperations;
+import org.example.Mapper.Serialize.ModifyMetadataOperations;
+import org.example.Mapper.Serialize.ModifyPermissionsOperations;
 import org.example.Mapper.Mapped;
 import org.example.Util.HttpRequestUtil;
 
@@ -17,7 +14,6 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Util.IrodsErrorCodes;
 import org.example.Util.Response;
-import org.example.Util.Response2;
 
 /**
  * Class for all the Collections Operations
@@ -186,7 +182,7 @@ public class CollectionOperations {
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
-                "op", "modify_permissions",
+                "op", "modify_metadata",
                 "lpath", lpath,
                 "operations", operationsJson,
                 "admin", admin ? "1" : "0"
@@ -212,14 +208,14 @@ public class CollectionOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response touch(String token, String lpath, int mtime, String reference)
+    public Response touch(String token, String lpath, int secondsSinceEpoch, String reference)
             throws IOException, InterruptedException, IrodsException {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "touch");
         formData.put("lpath", lpath);
-        if (mtime != 0) {
-            formData.put("seconds-since-epoch", mtime);
+        if (secondsSinceEpoch != -1) {
+            formData.put("seconds-since-epoch", String.valueOf(secondsSinceEpoch));
         }
         if (reference != null) {
             formData.put("reference", reference);

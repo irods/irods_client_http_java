@@ -5,8 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsCreate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsCreate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyMetadata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsModifyMetadata.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/DataObjectOperations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/InformationOperations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/QueryOperations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/ResourceOperations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/RuleOperations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/TicketOperations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/UserGroupOperations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/ZoneOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Example.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/CollectionOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Collections/Permission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Permission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/Serialize/ModifyMetadataOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Serialize/ModifyMetadataOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/Serialize/ModifyPermissionsOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Serialize/ModifyPermissionsOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Util/IrodsErrorCodes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/IrodsErrorCodes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,8 +63,14 @@
     "Application.Example (1).executor": "Run",
     "Application.Example.executor": "Run",
     "Application.Main.executor": "Run",
+    "JUnit.CollectionOperationsTest.addCollectionMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.createCollectionFunctionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.createCollectionMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.createFunctionality.executor": "Run",
     "JUnit.CollectionOperationsTest.executor": "Run",
     "JUnit.CollectionOperationsTest.listMethod.executor": "Run",
+    "JUnit.CollectionOperationsTest.listNoEntriesMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.removeMapped.executor": "Run",
     "JUnit.IrodsClientTest.executor": "Run",
     "JUnit.IrodsClientTest.testAuthenticate.executor": "Run",
     "JUnit.IrodsClientTest.testAuthenticateInvalid.executor": "Run",
@@ -83,28 +106,18 @@
       <recent name="$PROJECT_DIR$/src/Example" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.example" />
+    </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="org.example" />
       <recent name="org.example.Collections" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CollectionOperationsTest">
-    <configuration name="Example (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Application.Example">
+    <configuration name="Example" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Example" />
       <module name="http-api-test" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Example" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.example.Example.Example" />
-      <module name="http-api-test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.Example.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -124,7 +137,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CollectionOperationsTest.listMethod" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CollectionOperationsTest.createFunctionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
@@ -134,34 +147,51 @@
       </extension>
       <option name="PACKAGE_NAME" value="Collections" />
       <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
-      <option name="METHOD_NAME" value="listMethod" />
+      <option name="METHOD_NAME" value="createFunctionality" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CollectionOperationsTest.listNoEntriesMapped" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="Collections.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.ManagerTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="Collections" />
+      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
+      <option name="METHOD_NAME" value="listNoEntriesMapped" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CollectionOperationsTest.removeMapped" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="http-api-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Collections.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Collections" />
+      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
+      <option name="METHOD_NAME" value="removeMapped" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.CollectionOperationsTest" />
-        <item itemvalue="Application.Example (1)" />
-        <item itemvalue="JUnit.CollectionOperationsTest.listMethod" />
         <item itemvalue="Application.Example" />
-        <item itemvalue="JUnit.ManagerTest" />
+        <item itemvalue="JUnit.CollectionOperationsTest" />
+        <item itemvalue="JUnit.CollectionOperationsTest.removeMapped" />
+        <item itemvalue="JUnit.CollectionOperationsTest.listNoEntriesMapped" />
+        <item itemvalue="JUnit.CollectionOperationsTest.createFunctionality" />
       </list>
     </recent_temporary>
   </component>
