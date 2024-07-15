@@ -5,20 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Example.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/CollectionOperations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/DataObjectOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/DataObjectOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/IrodsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/IrodsException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Permission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/Permission.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ResourceOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ResourceOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/UserGroupOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/UserGroupOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Util/IrodsErrorCodes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/IrodsErrorCodes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Util/Response2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

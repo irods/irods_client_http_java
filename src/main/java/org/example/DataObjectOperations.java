@@ -9,10 +9,7 @@ import org.example.Util.Permission;
 import org.example.Util.Response;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URL;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
@@ -371,26 +368,6 @@ public class DataObjectOperations {
 
     }
 
-    // curl http://localhost:<port>/irods-http-api/<version>/data-objects \
-    //    -H 'Authorization: Bearer <token>' \
-    //    --data-urlencode 'op=modify_replica' \
-    //    --data-urlencode 'lpath=<string>' \ # Absolute logical path to a data object.
-    //    --data-urlencode 'resource-hierarchy=<string>' \
-    //    --data-urlencode 'replica-number=<integer>' \
-    //    --data-urlencode 'new-data-checksum=<string>' \
-    //    --data-urlencode 'new-data-comments=<string>' \
-    //    --data-urlencode 'new-data-create-time=<integer>' \
-    //    --data-urlencode 'new-data-expiry=<integer>' \
-    //    --data-urlencode 'new-data-mode=<string>' \
-    //    --data-urlencode 'new-data-modify-time=<string>' \
-    //    --data-urlencode 'new-data-path=<string>' \
-    //    --data-urlencode 'new-data-replica-number=<integer>' \
-    //    --data-urlencode 'new-data-replica-status=<integer>' \
-    //    --data-urlencode 'new-data-resource-id=<integer>' \
-    //    --data-urlencode 'new-data-size=<integer>' \
-    //    --data-urlencode 'new-data-status=<string>' \
-    //    --data-urlencode 'new-data-type-name=<string>' \
-    //    --data-urlencode 'new-data-version=<string>'
     public Response modify_replica(String token, String lpath,String resourceHierarchy, int replicaNum,
                                    String newDataChecksum, String newDataComments, int newDataCreateTime,
                                    int newDataExpiry, String newDataMode, String newDataModifyTime, String newDataPath,
