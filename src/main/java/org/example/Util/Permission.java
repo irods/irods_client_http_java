@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Util;
 
 /**
  * enum for set_permission() method to ensure user only inputs valid data

@@ -3,6 +3,7 @@ package org.example;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Mapper.Serialize.ModifyMetadataOperations;
 import org.example.Util.HttpRequestUtil;
+import org.example.Util.IrodsException;
 import org.example.Util.Response;
 
 import java.io.IOException;

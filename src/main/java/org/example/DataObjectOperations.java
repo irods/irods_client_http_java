@@ -1,31 +1,25 @@
 package org.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.entity.mime.ByteArrayBody;
-import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
-import org.apache.hc.client5.http.entity.mime.StringBody;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.http.ParseException;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.example.Mapper.Serialize.ModifyMetadataOperations;
 import org.example.Mapper.Serialize.ModifyPermissionsOperations;
 import org.example.Util.HttpRequestUtil;
+import org.example.Util.IrodsException;
+import org.example.Util.Permission;
 import org.example.Util.Response;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataObjectOperations {
     private final Manager client;
-    private String baseUrl;
+    private static String baseUrl;
 
 
     public DataObjectOperations(Manager client) {
@@ -226,215 +220,71 @@ public class DataObjectOperations {
     }
 
     public Response write(String token, String lpath, String resource, int offset, boolean truncate, boolean append,
-                          byte[] bytes, String parallelWriteHandle, int streamIndex) {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpPost uploadFile = new HttpPost(baseUrl);
-            uploadFile.setHeader("Authorization", "Bearer " + token);
+                          byte[] bytes, String parallelWriteHandle, int streamIndex)
+            throws IOException, InterruptedException {
 
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            builder.addPart("op", new StringBody("write", ContentType.TEXT_PLAIN.withCharset(StandardCharsets.UTF_8)));
-            builder.addPart("lpath", new StringBody(lpath, ContentType.TEXT_PLAIN.withCharset(StandardCharsets.UTF_8)));
-            if (resource != null) {
-                builder.addPart("resource", new StringBody(resource, ContentType.TEXT_PLAIN.withCharset(StandardCharsets.UTF_8)));
-            }
-            if (offset != -1) {
-                builder.addPart("offset", new StringBody(String.valueOf(offset), ContentType.TEXT_PLAIN.withCharset(StandardCharsets.UTF_8)));
-            }
+        String boundary = "----http_api_write_data_objects_operations----";
 
-            builder.addPart("truncate", new StringBody( truncate ? "1" : "0", ContentType.TEXT_PLAIN.withCharset(StandardCharsets.UTF_8)));
-            builder.addPart("append", new StringBody( append ? "1" : "0", ContentType.TEXT_PLAIN.withCharset(StandardCharsets.UTF_8)));
-
-            builder.addPart("bytes", new ByteArrayBody(bytes, ContentType.APPLICATION_OCTET_STREAM, "data.bin"));
-            if (parallelWriteHandle != null) {
-                builder.addPart("parallel-write-handle", new StringBody(parallelWriteHandle,  ContentType.TEXT_PLAIN.withCharset(StandardCharsets.UTF_8)));
-            }
-            if (streamIndex != -1) {
-                builder.addPart("stream-index", new StringBody(String.valueOf(streamIndex), ContentType.TEXT_PLAIN.withCharset(StandardCharsets.UTF_8)));
-            }
-
-            uploadFile.setEntity(builder.build());
-
-            try (CloseableHttpResponse response = httpClient.execute(uploadFile)) {
-                int statusCode = response.getCode();
-                if (statusCode == 200) {
-                    // Deserialize the response body as needed
-                    String responseBody = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-                } else {
-                    System.err.println("Error: " + response.getReasonPhrase());
-                    return null;
-                }
-
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        // add parameters
+        StringBuilder sb = new StringBuilder();
+        addFormData(sb, boundary, "op", "write");
+        addFormData(sb, boundary, "lpath", lpath);
+        if (resource != null) { // optional
+            addFormData(sb, boundary, "resource", resource);
         }
-        return null;
+        if (offset != -1) { // optional
+            addFormData(sb, boundary, "offset", String.valueOf(offset));
+        } else { // defaults to 0
+            addFormData(sb, boundary, "offset", "0");
+        }
+        addFormData(sb, boundary, "truncate", truncate ? "1" : "0");
+        addFormData(sb, boundary, "append", append ? "1" : "0");
+        if (parallelWriteHandle != null) { // optional
+            addFormData(sb, boundary, "parallel-write-handle", parallelWriteHandle);
+        }
+        if (streamIndex != -1) { // optional
+            addFormData(sb, boundary, "stream-index", String.valueOf(streamIndex));
+        }
+
+        // byte data
+        sb.append("--").append(boundary).append("\r\n");
+        sb.append("Content-Disposition: form-data; name=\"bytes\"\r\n");
+        sb.append("Content-Type: application/octet-stream\r\n\r\n");
+
+        byte[] header = sb.toString().getBytes();
+        byte[] footer = ("\r\n--" + boundary + "--\r\n").getBytes();
+
+        // represents entire body of the multipart/fom-data request
+        byte[] multipartBody = new byte[header.length + bytes.length + footer.length];
+        System.arraycopy(header, 0, multipartBody, 0, header.length);
+        System.arraycopy(bytes, 0, multipartBody, header.length, bytes.length);
+        System.arraycopy(footer, 0, multipartBody, header.length + bytes.length, footer.length);
+
+        // create request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl))
+                .header("Authorization", "Bearer " + token)
+                .header("Content-Type", "multipart/form-data; boundary=" + boundary)
+                .POST(HttpRequest.BodyPublishers.ofByteArray(multipartBody))
+                .build();
+
+        // send response
+        HttpResponse<String> response = client.getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+        return new Response(response.statusCode(), response.body());
     }
 
-//    public Response write(String token, String lpath, String resource, int offset, boolean truncate, boolean append,
-//                          byte[] bytes, String parallelWriteHandle, int streamIndex)
-//            throws IOException, ParseException, InterruptedException {
-//
-//        try (CloseableHttpClient client = HttpClients.createDefault()) {
-//            HttpPost post = new HttpPost(baseUrl);
-//            post.setHeader("Authorization", "Bearer " + token);
-//
-//            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-//            builder.addTextBody("op", "write", ContentType.TEXT_PLAIN);
-//            builder.addTextBody("lpath", lpath, ContentType.TEXT_PLAIN);
-//            if (resource != null) {
-//                builder.addTextBody("resource", resource, ContentType.TEXT_PLAIN);
-//            }
-//            if (offset != -1) {
-//                builder.addTextBody("offset", String.valueOf(offset), ContentType.TEXT_PLAIN);
-//            }
-//            builder.addTextBody("truncate", truncate ? "1" : "0", ContentType.TEXT_PLAIN);
-//            builder.addTextBody("append", append ? "1" : "0", ContentType.TEXT_PLAIN);
-//            builder.addBinaryBody("bytes", bytes, ContentType.APPLICATION_OCTET_STREAM, "data.bin");
-//            if (parallelWriteHandle != null) {
-//                builder.addTextBody("parallel-write-handle", parallelWriteHandle, ContentType.TEXT_PLAIN);
-//            }
-//            if (streamIndex != -1) {
-//                builder.addTextBody("stream-index", String.valueOf(streamIndex), ContentType.TEXT_PLAIN);
-//            }
-//
-//            post.setEntity(builder.build());
-//
-//            try (CloseableHttpResponse response = client.execute(post)) {
-//                int statusCode = response.getCode();
-//                String responseBody = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-//                return new Response(statusCode, responseBody);
-//            }
-//        }
-//
-//    }
 
-//    public Response write(String token, String lpath, String resource, int offset, boolean truncate, boolean append,
-//                          String bytesPathString, String parallelWriteHandle, int streamIndex)
-//            throws IOException, ParseException {
-
-//        File fileToUpload = new File(bytesPathString);
-//
-//        CloseableHttpClient httpClient = HttpClients.createDefault();
-//
-//        // HTTP POST request
-//        HttpPost httpPost = new HttpPost(baseUrl);
-//
-//        // Authorization header
-//        httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-//
-//        // Multipart entity builder
-//        MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
-//
-//        // Add form data parameters
-//        entityBuilder.addTextBody("op", "write", ContentType.TEXT_PLAIN);
-//        entityBuilder.addTextBody("lpath", lpath, ContentType.TEXT_PLAIN);
-//        if (resource != null) {
-//            entityBuilder.addTextBody("resource", resource, ContentType.TEXT_PLAIN);
-//        }
-//        entityBuilder.addTextBody("offset", String.valueOf(offset), ContentType.TEXT_PLAIN);
-//        entityBuilder.addTextBody("truncate", truncate ? "1" : "0", ContentType.TEXT_PLAIN);
-//        entityBuilder.addTextBody("append", append ? "1" : "0", ContentType.TEXT_PLAIN);
-//
-//        // Add binary data
-//        entityBuilder.addBinaryBody("bytes", fileToUpload, ContentType.APPLICATION_OCTET_STREAM, fileToUpload.getName());
-//        if (parallelWriteHandle != null) {
-//            entityBuilder.addTextBody("parallel-write-handle", parallelWriteHandle, ContentType.TEXT_PLAIN);
-//        }
-//        entityBuilder.addTextBody("stream-index", String.valueOf(streamIndex), ContentType.TEXT_PLAIN);
-//
-//        // Build the entity
-//        HttpEntity reqEntity = entityBuilder.build();
-//
-//        // Set the entity to the POST request
-//        httpPost.setEntity(reqEntity);
-//
-//        // Execute the request
-//        CloseableHttpResponse response = httpClient.execute(httpPost);
-//
-//        // Handle response
-//        int statusCode = response.getCode();
-//        String responseBody = EntityUtils.toString(response.getEntity());
-//
-//        System.out.println("Response status code: " + statusCode);
-//        System.out.println("Response body: " + responseBody);
-//    }
-
-//     public Response write(String token, String lpath, String resource, int offset, boolean truncate, boolean append,
-//                              String bytesPathString, String parallelWriteHandle, int streamIndex)
-//                throws IOException, ParseException {
-//
-//            Path bytesPath = Paths.get(bytesPathString);
-//
-//            CloseableHttpClient httpClient = HttpClients.createDefault();
-//            HttpPost uploadFile = new HttpPost(baseUrl);
-//            uploadFile.setHeader("Authorization", "Bearer " + token);
-//
-//            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-//            builder.addTextBody("op", "write", ContentType.TEXT_PLAIN);
-//            builder.addTextBody("lpath", lpath, ContentType.TEXT_PLAIN);
-//
-//            if (resource != null) {
-//                builder.addTextBody("resource", resource, ContentType.TEXT_PLAIN);
-//            }
-//
-//            builder.addTextBody("offset", String.valueOf(offset), ContentType.TEXT_PLAIN);
-//            builder.addTextBody("truncate", truncate ? "1" : "0", ContentType.TEXT_PLAIN);
-//            builder.addTextBody("append", append ? "1" : "0", ContentType.TEXT_PLAIN);
-//
-//            builder.addBinaryBody("bytes", Files.readAllBytes(bytesPath), ContentType.APPLICATION_OCTET_STREAM,
-//                    bytesPath.getFileName().toString());
-//
-//            if (parallelWriteHandle != null) {
-//                builder.addTextBody("parallel-write-handle", parallelWriteHandle, ContentType.TEXT_PLAIN);
-//            }
-//
-//            builder.addTextBody("stream-index", String.valueOf(streamIndex), ContentType.TEXT_PLAIN);
-//
-//            uploadFile.setEntity(builder.build());
-//
-//            CloseableHttpResponse response = httpClient.execute(uploadFile);
-//            System.out.println(response.getCode());
-//            System.out.println(EntityUtils.toString(response.getEntity()));
-//
-//            response.close();
-//            httpClient.close();
-//
-//            return new Response(response.getCode(), EntityUtils.toString(response.getEntity()));
-//        }
+    /**
+     * Helper method for write() to add form data
+     */
+    private static void addFormData(StringBuilder sb, String boundary, String name, String value) {
+        sb.append("--").append(boundary).append("\r\n");
+        sb.append("Content-Disposition: form-data; name=\"" + name + "\"\r\n\r\n");
+        sb.append(value + "\r\n");
+    }
 
 
-//    public Response write(String token, String lpath, String resource, int offset, boolean truncate, boolean append,
-//                          String bytesPathString, String parallelWriteHandle, int streamIndex)
-//            throws IOException, InterruptedException, ParseException {
-//        Map<Object, Object> formData = new HashMap<>();
-//        formData.put("op", "write");
-//        if (resource != null) {
-//            formData.put("resource", resource);
-//        }
-//        formData.put("lpath", lpath);
-//        if (offset != -1) {
-//            formData.put("offset", offset);
-//        } else {
-//            formData.put("offset", 0);
-//        }
-//        formData.put("truncate", truncate ? "1" : "0");
-//        formData.put("append", append ? "1" : "0");
-//        formData.put()
-//        if (resource != parallelWriteHandle) {
-//            formData.put("parallel-write-handle", parallelWriteHandle);
-//        }
-//        if (streamIndex != -1) {
-//            formData.put("stream-index", streamIndex);
-//        }
-//
-//
-//
-//        HttpResponse<String> response = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient());
-//        return new Response(response.statusCode(), response.body());
-//    }
 
     public Response parallel_write_init(String token, String lpath, int streamCount, boolean truncate, boolean append,
                                         String ticket) throws IOException, InterruptedException {

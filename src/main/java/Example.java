@@ -1,16 +1,18 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.hc.core5.http.ParseException;
 import org.example.Manager;
-import org.example.IrodsException;
+import org.example.Util.IrodsException;
 import org.example.Mapper.Collections.CollectionsList;
 import org.example.Util.JsonUtil;
 import org.example.Util.Response;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 
 public class Example {
 
-    public static void main(String[] args) throws IOException, InterruptedException, IrodsException, ParseException {
+    public static void main(String[] args) throws IOException, InterruptedException, IrodsException, ParseException, URISyntaxException {
         //http://52.91.145.195:8888/irods-http-api/0.3.0
         String address = "52.91.145.195";
         String port = "8888";
@@ -123,10 +125,13 @@ public class Example {
 //        response = rods.dataObject().stat(token, "/tempZone/home/rods/data", null);
 //        System.out.println(response.getBody());
 
-//        byte[] bytes = "test".getBytes(StandardCharsets.UTF_8);
-//        response = rods.dataObject().write(token, "/tempZone/home/rods/data", null, 0,
-//                true, false, bytes, null, -1);
-//
+        byte[] bytes = "test".getBytes(StandardCharsets.UTF_8);
+        response = rods.dataObject().write(token, "/tempZone/home/rods/data", null, 0,
+                true, false, bytes, null, -1);
+        System.out.println(response);
+
+
+////
 //        System.out.println(response);
 
 //        response = rods.information().info();
@@ -134,8 +139,9 @@ public class Example {
 //        System.out.println(infoMapped);
 
 //        response = rods.userGroupOperations().stat(token, "alice", "tempZone");
-        response = rods.zoneOperations().report(token);
-        System.out.println(response);
+//        response = rods.zoneOperations().report(token);
+//        System.out.println(response);
+
 
 
     }

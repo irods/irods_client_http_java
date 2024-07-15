@@ -3,17 +3,18 @@ package org.example;
 import org.example.Mapper.Serialize.ModifyMetadataOperations;
 import org.example.Mapper.Serialize.ModifyPermissionsOperations;
 import org.example.Mapper.Mapped;
-import org.example.Util.HttpRequestUtil;
+import org.example.Util.*;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Util.IrodsErrorCodes;
-import org.example.Util.Response;
 
 /**
  * Class for all the Collections Operations
@@ -204,7 +205,6 @@ public class CollectionOperations {
         );
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
-
         return new Response(response.statusCode(), response.body());
     }
 

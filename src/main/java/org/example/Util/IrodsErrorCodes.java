@@ -1,6 +1,5 @@
 package org.example.Util;
 
-import org.example.IrodsException;
 import org.example.Mapper.Mapped;
 
 import java.util.HashMap;

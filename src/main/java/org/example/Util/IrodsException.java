@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Util;
 
 public class IrodsException extends Exception {
     public IrodsException(String message) {
