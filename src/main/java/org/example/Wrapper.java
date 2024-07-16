@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.Operations.*;
 import org.example.Util.IrodsException;
+import org.example.Util.Response;
 
 import java.io.IOException;
 import java.net.URI;
@@ -10,7 +11,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Base64;
 
-public class Manager {
+public class Wrapper {
 
     private String baseUrl;
     private final HttpClient client = HttpClient.newHttpClient();
@@ -18,33 +19,22 @@ public class Manager {
     private String password;
     private String authToken;
     private String openIdToken;
-    public Manager(String baseUrl, String user, String password) {
+    public Wrapper(String baseUrl, String user, String password) {
         this.baseUrl = baseUrl;
         this.user = user;
         this.password = password;
     }
 
-    public Manager(String baseUrl, String openIdToken) {
+    public Wrapper(String baseUrl, String openIdToken) {
         this.baseUrl = baseUrl;
         this.openIdToken = openIdToken;
     }
 
     /**
-     * Allows clients to use the builder pattern to create instances of the IrodsClient
-     * @return new instance of the IrodsBuilder class.
-     */
-//    public static IrodsBuilder newBuilder() {
-//        return new IrodsBuilder();
-//    }
-
-
-    /**
      * Authenticates user by sending the following POST reqeust
      * curl -X POST -u rods:rods http://localhost:8888/irods-http-api/0.3.0/authenticate
      */
-    public void authenticate() throws IOException, InterruptedException, IrodsException {
-        //TODO: consider what happens with proxies and if you can concatenate like this
-
+    public Response authenticate() throws IOException, InterruptedException, IrodsException {
         // creating authentication header
         String auth = user + ":" + password;
         // encodes user and password into a suitable format for HTTP basic authentication
@@ -59,13 +49,11 @@ public class Manager {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        String token = response.body();
 
         if (response.statusCode() == 200) {
-            this.authToken = token;
-        } else {
-            throw new IrodsException("Failed to authenticate: " + response.statusCode());
+            this.authToken = response.body();
         }
+        return new Response(response.statusCode(), response.body());
     }
 
     public CollectionOperations collections() {

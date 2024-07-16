@@ -1,7 +1,7 @@
 package org.example.Operations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Manager;
+import org.example.Wrapper;
 import org.example.Mapper.Serialize.ModifyMetadataOperations;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.IrodsException;
@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 public class UserGroupOperations {
-    private final Manager client;
+    private final Wrapper client;
     private String baseUrl;
 
 
-    public UserGroupOperations(Manager client) {
+    public UserGroupOperations(Wrapper client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/users-groups";
     }

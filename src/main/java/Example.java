@@ -1,5 +1,5 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.example.Manager;
+import org.example.Wrapper;
 import org.example.Util.IrodsException;
 import org.example.Mapper.Collections.CollectionsList;
 import org.example.Util.JsonUtil;
@@ -19,7 +19,7 @@ public class Example {
         String baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
 
         // create client
-        Manager rods = new Manager(baseUrl, "rods", "rods");
+        Wrapper rods = new Wrapper(baseUrl, "rods", "rods");
 
         // for integer parameters that are optional, set to -1 if you do not want to include the parameter
 

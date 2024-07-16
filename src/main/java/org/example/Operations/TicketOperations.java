@@ -1,6 +1,6 @@
 package org.example.Operations;
 
-import org.example.Manager;
+import org.example.Wrapper;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 
@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TicketOperations {
-    private final Manager client;
+    private final Wrapper client;
     private String baseUrl;
 
 
-    public TicketOperations(Manager client) {
+    public TicketOperations(Wrapper client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/tickets";
     }

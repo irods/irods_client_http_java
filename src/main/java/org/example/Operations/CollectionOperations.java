@@ -1,6 +1,6 @@
 package org.example.Operations;
 
-import org.example.Manager;
+import org.example.Wrapper;
 import org.example.Mapper.Serialize.ModifyMetadataOperations;
 import org.example.Mapper.Serialize.ModifyPermissionsOperations;
 import org.example.Mapper.Mapped;
@@ -20,11 +20,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class CollectionOperations {
 
-    private final Manager client;
+    private final Wrapper client;
     private String baseUrl;
 
 
-    public CollectionOperations(Manager client) {
+    public CollectionOperations(Wrapper client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/collections";
     }

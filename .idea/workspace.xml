@@ -5,18 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/DataObjectOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/DataObjectOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/InformationOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/InformationOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/QueryOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/QueryOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ResourceOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/ResourceOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/RuleOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/RuleOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/TicketOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/TicketOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/UserGroupOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/UserGroupOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Util/HttpRequestUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/HttpRequestUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ZoneOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/ZoneOperations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/WrapperTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Example.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Wrapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/CollectionOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/DataObjectOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/DataObjectOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/InformationOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/InformationOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/QueryOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/QueryOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/ResourceOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/ResourceOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/RuleOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/RuleOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/TicketOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/TicketOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/UserGroupOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/UserGroupOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/ZoneOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/ZoneOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/ManagerTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,8 +28,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -51,43 +53,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Example (1).executor&quot;: &quot;Run&quot;,
-    &quot;Application.Example.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CollectionOperationsTest.addCollectionMapped.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CollectionOperationsTest.createCollectionFunctionality.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CollectionOperationsTest.createCollectionMapped.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CollectionOperationsTest.createFunctionality.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CollectionOperationsTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CollectionOperationsTest.listMethod.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CollectionOperationsTest.listNoEntriesMapped.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CollectionOperationsTest.removeMapped.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testAuthenticate.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testAuthenticateInvalid.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testAuthenticateInvalidUser.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testClientInvalidAddress.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testClientInvalidPort.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testClientInvalidVersion.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IrodsClientTest.testClientValidParams.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;workingBranch&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_directory_selection&quot;: &quot;/Users/samanthamau/IdeaProjects/http-api-test/src/test/java&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/samanthamau/IdeaProjects/http-api-test&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/samanthamau/IdeaProjects/http-api-test/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Example (1).executor": "Run",
+    "Application.Example.executor": "Run",
+    "Application.Main.executor": "Run",
+    "JUnit.CollectionOperationsTest.addCollectionMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.createCollectionFunctionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.createCollectionMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.createFunctionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.executor": "Run",
+    "JUnit.CollectionOperationsTest.listMethod.executor": "Run",
+    "JUnit.CollectionOperationsTest.listNoEntriesMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.removeMapped.executor": "Run",
+    "JUnit.IrodsClientTest.executor": "Run",
+    "JUnit.IrodsClientTest.testAuthenticate.executor": "Run",
+    "JUnit.IrodsClientTest.testAuthenticateInvalid.executor": "Run",
+    "JUnit.IrodsClientTest.testAuthenticateInvalidUser.executor": "Run",
+    "JUnit.IrodsClientTest.testClientInvalidAddress.executor": "Run",
+    "JUnit.IrodsClientTest.testClientInvalidPort.executor": "Run",
+    "JUnit.IrodsClientTest.testClientInvalidVersion.executor": "Run",
+    "JUnit.IrodsClientTest.testClientValidParams.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "authTests",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "/Users/samanthamau/IdeaProjects/http-api-test/src/test/java/org/example",
+    "last_opened_file_path": "/Users/samanthamau/IdeaProjects/http-api-test",
+    "onboarding.tips.debug.path": "/Users/samanthamau/IdeaProjects/http-api-test/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />

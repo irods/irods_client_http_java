@@ -1,7 +1,7 @@
 package Collections;
 
 import org.example.Util.IrodsException;
-import org.example.Manager;
+import org.example.Wrapper;
 import org.example.Mapper.Collections.CollectionsCreate;
 import org.example.Mapper.Collections.CollectionsList;
 import org.example.Mapper.IrodsResponse;
@@ -18,7 +18,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class CollectionOperationsTest {
-    private Manager rods;
+    private Wrapper rods;
     private String token;
     private List<String> entries;
     @Before
@@ -33,7 +33,7 @@ public class CollectionOperationsTest {
         String baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
 
         // create client
-        rods = new Manager(baseUrl, "rods", "rods");
+        rods = new Wrapper(baseUrl, "rods", "rods");
 
         try {
             // generate token

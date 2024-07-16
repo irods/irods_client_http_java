@@ -1,7 +1,7 @@
 package org.example.Operations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Manager;
+import org.example.Wrapper;
 import org.example.Mapper.Serialize.ModifyMetadataOperations;
 import org.example.Mapper.Serialize.ModifyPermissionsOperations;
 import org.example.Util.HttpRequestUtil;
@@ -16,11 +16,11 @@ import java.net.http.HttpResponse;
 import java.util.*;
 
 public class DataObjectOperations {
-    private final Manager client;
+    private final Wrapper client;
     private static String baseUrl;
 
 
-    public DataObjectOperations(Manager client) {
+    public DataObjectOperations(Wrapper client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/data-objects";
     }
