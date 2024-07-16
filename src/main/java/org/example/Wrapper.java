@@ -34,7 +34,7 @@ public class Wrapper {
      * Authenticates user by sending the following POST reqeust
      * curl -X POST -u rods:rods http://localhost:8888/irods-http-api/0.3.0/authenticate
      */
-    public Response authenticate() throws IOException, InterruptedException, IrodsException {
+    public Response authenticate() {
         // creating authentication header
         String auth = user + ":" + password;
         // encodes user and password into a suitable format for HTTP basic authentication
@@ -48,7 +48,12 @@ public class Wrapper {
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         if (response.statusCode() == 200) {
             this.authToken = response.body();

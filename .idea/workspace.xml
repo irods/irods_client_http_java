@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/WrapperTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Example.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Wrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/CollectionOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/DataObjectOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/DataObjectOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/InformationOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/InformationOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/QueryOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/QueryOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/ResourceOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/ResourceOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/RuleOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/RuleOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/TicketOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/TicketOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/UserGroupOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/UserGroupOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/ZoneOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/ZoneOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/ManagerTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +63,7 @@
     "JUnit.IrodsClientTest.testClientInvalidPort.executor": "Run",
     "JUnit.IrodsClientTest.testClientInvalidVersion.executor": "Run",
     "JUnit.IrodsClientTest.testClientValidParams.executor": "Run",
+    "JUnit.WrapperTest.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -109,7 +99,7 @@
       <recent name="org.example.Collections" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Example">
+  <component name="RunManager" selected="JUnit.WrapperTest">
     <configuration name="Example" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Example" />
       <module name="http-api-test" />
@@ -128,22 +118,6 @@
       <option name="PACKAGE_NAME" value="Collections" />
       <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CollectionOperationsTest.createFunctionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="http-api-test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Collections.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Collections" />
-      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
-      <option name="METHOD_NAME" value="createFunctionality" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -180,13 +154,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="WrapperTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="http-api-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example" />
+      <option name="MAIN_CLASS_NAME" value="org.example.WrapperTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.WrapperTest" />
         <item itemvalue="Application.Example" />
         <item itemvalue="JUnit.CollectionOperationsTest" />
         <item itemvalue="JUnit.CollectionOperationsTest.removeMapped" />
         <item itemvalue="JUnit.CollectionOperationsTest.listNoEntriesMapped" />
-        <item itemvalue="JUnit.CollectionOperationsTest.createFunctionality" />
       </list>
     </recent_temporary>
   </component>

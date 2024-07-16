@@ -21,16 +21,19 @@ public class InformationOperations {
     /**
      * Sends request to /info endpoint and parses the response
      * @return Info objected parsed from the response JSON
-     * @throws IOException
-     * @throws InterruptedException
      */
-    public Response info() throws IOException, InterruptedException {
+    public Response info() {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl))
                 .build();
 
-        HttpResponse<String> response = client.getClient().send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response;
+        try {
+            response = client.getClient().send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         return new Response(response.statusCode(), response.body());
     }
