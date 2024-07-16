@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.Mapper.Operations.*;
+import org.example.Operations.*;
 import org.example.Util.IrodsException;
 
 import java.io.IOException;

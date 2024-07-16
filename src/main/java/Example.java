@@ -1,5 +1,4 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.hc.core5.http.ParseException;
 import org.example.Manager;
 import org.example.Util.IrodsException;
 import org.example.Mapper.Collections.CollectionsList;
@@ -7,12 +6,11 @@ import org.example.Util.JsonUtil;
 import org.example.Util.Response;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
 public class Example {
 
-    public static void main(String[] args) throws IOException, InterruptedException, IrodsException, ParseException, URISyntaxException {
+    public static void main(String[] args) throws IOException, InterruptedException, IrodsException {
         //http://52.91.145.195:8888/irods-http-api/0.3.0
         String address = "52.91.145.195";
         String port = "8888";

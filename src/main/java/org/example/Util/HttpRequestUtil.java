@@ -1,9 +1,6 @@
 package org.example.Util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Mapper.Collections.CollectionsModifyPermissions;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -21,13 +18,12 @@ public class HttpRequestUtil {
      * @param formData Contains the parameters of the HTTP request
      * @param baseUrl
      * @param token
-     * @param responseType Class type of the response object
      * @return Instance of the response type containing the parsed data
-     * @param <T> Type of response object
      * @throws IOException
      * @throws InterruptedException
      */
-    public static HttpResponse<String> sendAndParsePOST(Map<Object, Object> formData, String baseUrl, String token, HttpClient client)
+    public static HttpResponse<String> sendAndParsePOST(Map<Object, Object> formData, String baseUrl, String token,
+                                                        HttpClient client)
             throws IOException, InterruptedException {
         /// creating the request body
         String form = formData.entrySet()
@@ -55,13 +51,12 @@ public class HttpRequestUtil {
      * @param formData
      * @param baseUrl
      * @param token
-     * @param responseType Class type of the response object
      * @return Instance of the response type containing the parsed data
-     * @param <T> Type of response object
      * @throws IOException
      * @throws InterruptedException
      */
-    public static HttpResponse<String>  sendAndParseGET(Map<Object, Object> formData, String baseUrl, String token, HttpClient client)
+    public static HttpResponse<String>  sendAndParseGET(Map<Object, Object> formData, String baseUrl, String token,
+                                                        HttpClient client)
             throws IOException, InterruptedException {
         // creating the request body
         String form = formData.entrySet()

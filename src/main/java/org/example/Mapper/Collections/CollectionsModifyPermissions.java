@@ -1,10 +1,6 @@
 package org.example.Mapper.Collections;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Mapper.IrodsResponse;
 import org.example.Mapper.Mapped;
 
 import java.util.Objects;

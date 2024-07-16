@@ -3,10 +3,7 @@ package org.example.Mapper;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Mapper.Collections.CollectionsModifyPermissions;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**

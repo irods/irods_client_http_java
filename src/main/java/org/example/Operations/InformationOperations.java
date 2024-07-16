@@ -1,6 +1,7 @@
-package org.example;
+package org.example.Operations;
 
 
+import org.example.Manager;
 import org.example.Util.Response;
 
 import java.io.IOException;

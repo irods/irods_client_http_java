@@ -1,5 +1,6 @@
-package org.example;
+package org.example.Operations;
 
+import org.example.Manager;
 import org.example.Mapper.Serialize.ModifyMetadataOperations;
 import org.example.Mapper.Serialize.ModifyPermissionsOperations;
 import org.example.Mapper.Mapped;

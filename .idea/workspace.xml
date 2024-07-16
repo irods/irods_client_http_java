@@ -5,8 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/CollectionOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/DataObjectOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/DataObjectOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/DataObjectOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/DataObjectOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/InformationOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/InformationOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/QueryOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/QueryOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ResourceOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/ResourceOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/RuleOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/RuleOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/TicketOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/TicketOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/UserGroupOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/UserGroupOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Util/HttpRequestUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/HttpRequestUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ZoneOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/ZoneOperations.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,7 +234,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="collectionsBranch" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>
