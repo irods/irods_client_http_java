@@ -1,5 +1,8 @@
 package org.example.Mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Info {
     //@JsonProperty("api_version")
     private String api_version;
@@ -45,15 +48,11 @@ public class Info {
 
     @Override
     public String toString() {
-        return  "{\n" +
-                "api_version='" + api_version + '\'' + ",\n" +
-                "build='" + build + '\'' + ",\n" +
-                "genquery2_enabled=" + genquery2_enabled + ",\n" +
-                "irods_zone='" + irods_zone + '\'' + ",\n" +
-                "max_number_of_parallel_write_streams=" + max_number_of_parallel_write_streams + ",\n" +
-                "max_number_of_rows_per_catalog_query=" + max_number_of_rows_per_catalog_query + ",\n" +
-                "max_size_of_request_body_in_bytes=" + max_size_of_request_body_in_bytes + ",\n" +
-                "openid_connect_enabled=" + openid_connect_enabled + ",\n" +
-                '}';
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return "{ \"error\": \"Unable to serialize to JSON\" }";
+        }
     }
 }
