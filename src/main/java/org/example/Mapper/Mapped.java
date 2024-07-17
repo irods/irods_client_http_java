@@ -125,6 +125,15 @@ public abstract class Mapped {
                         Objects.equals(this.status_message, other.status_message) &&
                         Objects.equals(this.error_message, other.error_message);
             }
+            @Override
+            public String toString() {
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+                } catch (JsonProcessingException e) {
+                    return "{ \"error\": \"Unable to serialize to JSON\" }";
+                }
+            }
         }
 
         @Override

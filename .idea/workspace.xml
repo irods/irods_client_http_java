@@ -5,7 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/WrapperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/WrapperTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsRemove.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsRename.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsSetInheritance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsSetPermission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Example.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/IrodsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/IrodsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Mapped.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Mapped.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/CollectionOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/DataObjectOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/DataObjectOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/UserGroupOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/UserGroupOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Util/HttpRequestUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/HttpRequestUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Util/JsonUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/JsonUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +28,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -45,14 +58,29 @@
     "Application.Example (1).executor": "Run",
     "Application.Example.executor": "Run",
     "Application.Main.executor": "Run",
+    "JUnit.CollectionOperationsFunctionalityTest.executor": "Run",
     "JUnit.CollectionOperationsTest.addCollectionMapped.executor": "Run",
     "JUnit.CollectionOperationsTest.createCollectionFunctionality.executor": "Run",
     "JUnit.CollectionOperationsTest.createCollectionMapped.executor": "Run",
     "JUnit.CollectionOperationsTest.createFunctionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.create_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.create_mapped.executor": "Run",
     "JUnit.CollectionOperationsTest.executor": "Run",
     "JUnit.CollectionOperationsTest.listMethod.executor": "Run",
     "JUnit.CollectionOperationsTest.listNoEntriesMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.list_NoEntries_Mapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.list_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.list_no_entries_mapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.modify_metadata_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.modify_permissions_functionality.executor": "Run",
     "JUnit.CollectionOperationsTest.removeMapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.remove_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.remove_mapped.executor": "Run",
+    "JUnit.CollectionOperationsTest.rename_functinoality.executor": "Run",
+    "JUnit.CollectionOperationsTest.set_inheritance_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.set_permission_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.stat_functionality.executor": "Run",
+    "JUnit.CollectionOperationsTest.stat_mapped.executor": "Run",
     "JUnit.IrodsClientTest.executor": "Run",
     "JUnit.IrodsClientTest.testAuthenticate.executor": "Run",
     "JUnit.IrodsClientTest.testAuthenticateInvalid.executor": "Run",
@@ -98,15 +126,8 @@
       <recent name="org.example.Collections" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.WrapperTest.authenticate_nonexistent_user">
-    <configuration name="Example" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Example" />
-      <module name="http-api-test" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CollectionOperationsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.CollectionOperationsTest.rename_functinoality">
+    <configuration name="CollectionOperationsTest.modify_metadata_functionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
@@ -116,53 +137,71 @@
       </extension>
       <option name="PACKAGE_NAME" value="Collections" />
       <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CollectionOperationsTest.removeMapped" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="http-api-test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Collections.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Collections" />
-      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
-      <option name="METHOD_NAME" value="removeMapped" />
+      <option name="METHOD_NAME" value="modify_metadata_functionality" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WrapperTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CollectionOperationsTest.modify_permissions_functionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="Collections.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.WrapperTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="Collections" />
+      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
+      <option name="METHOD_NAME" value="modify_permissions_functionality" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WrapperTest.authenticate_nonexistent_user" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CollectionOperationsTest.rename_functinoality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="Collections.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.WrapperTest" />
-      <option name="METHOD_NAME" value="authenticate_nonexistent_user" />
+      <option name="PACKAGE_NAME" value="Collections" />
+      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
+      <option name="METHOD_NAME" value="rename_functinoality" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CollectionOperationsTest.set_inheritance_functionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="http-api-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Collections.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Collections" />
+      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
+      <option name="METHOD_NAME" value="set_inheritance_functionality" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CollectionOperationsTest.set_permission_functionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="http-api-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Collections.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Collections" />
+      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
+      <option name="METHOD_NAME" value="set_permission_functionality" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -170,11 +209,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.WrapperTest.authenticate_nonexistent_user" />
-        <item itemvalue="JUnit.WrapperTest" />
-        <item itemvalue="Application.Example" />
-        <item itemvalue="JUnit.CollectionOperationsTest" />
-        <item itemvalue="JUnit.CollectionOperationsTest.removeMapped" />
+        <item itemvalue="JUnit.CollectionOperationsTest.rename_functinoality" />
+        <item itemvalue="JUnit.CollectionOperationsTest.modify_metadata_functionality" />
+        <item itemvalue="JUnit.CollectionOperationsTest.modify_permissions_functionality" />
+        <item itemvalue="JUnit.CollectionOperationsTest.set_inheritance_functionality" />
+        <item itemvalue="JUnit.CollectionOperationsTest.set_permission_functionality" />
       </list>
     </recent_temporary>
   </component>
@@ -239,20 +278,5 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="got correct api url" />
     <option name="LAST_COMMIT_MESSAGE" value="got correct api url" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/test/java/org/example/WrapperTest.java</url>
-          <line>37</line>
-          <properties class="org.example.WrapperTest" method="authenticate_nonexistent_user">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

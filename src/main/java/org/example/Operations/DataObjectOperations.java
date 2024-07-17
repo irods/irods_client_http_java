@@ -48,8 +48,7 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response remove(String token, String lpath, boolean catalogOnly, boolean noTrash, boolean admin)
-            throws IOException, InterruptedException {
+    public Response remove(String token, String lpath, boolean catalogOnly, boolean noTrash, boolean admin) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove");
         formData.put("lpath", lpath);

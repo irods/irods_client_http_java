@@ -1,5 +1,6 @@
 package org.example.Operations;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.example.Wrapper;
 import org.example.Mapper.Serialize.ModifyMetadataOperations;
 import org.example.Mapper.Serialize.ModifyPermissionsOperations;
@@ -36,10 +37,8 @@ public class CollectionOperations {
      * @param intermediates Whether to create intermediate directories. Optional parameter
      * @return A Response object containing the status code and response body (the JSON String). Both of which can be
      * retrieved with a .getStatusCode() and .getBody(), respectively.
-     * @throws IOException
-     * @throws InterruptedException
      */
-    public Response create(String token, String lpath, boolean intermediates) throws IOException, InterruptedException {
+    public Response create(String token, String lpath, boolean intermediates) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "create",
@@ -55,15 +54,13 @@ public class CollectionOperations {
     /**
      * Removes a collection
      * Protected, so it can only be accessed from this package. Enforces use of builder
-     * @param user The user making the request
      * @param lpath The logical path for the collection
      * @param recurse If true, contents of the collection will be removed. Optional parameter
      * @param noTrash If true, collection is permanently removed. Optional parameter
      * @throws IOException
      * @throws InterruptedException
      */
-    public Response remove(String token, String lpath, boolean recurse, boolean noTrash) throws IOException,
-            InterruptedException, IrodsException {
+    public Response remove(String token, String lpath, boolean recurse, boolean noTrash) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "remove",
@@ -80,15 +77,13 @@ public class CollectionOperations {
 
     /**
      * Returns information about a collection
-     * @param user The user making the request
      * @param lpath The logical path for the collection
      * @param ticket An optional parameter
      * @throws IOException
      * @throws InterruptedException
      * @throws IrodsException
      */
-    public Response stat(String token, String lpath, String ticket)
-            throws IOException, InterruptedException, IrodsException {
+    public Response stat(String token, String lpath, String ticket) {
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
@@ -102,8 +97,7 @@ public class CollectionOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response list(String token, String lpath, boolean recurse, String ticket)
-            throws IOException, InterruptedException, IrodsException {
+    public Response list(String token, String lpath, boolean recurse, String ticket) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "list",
@@ -120,8 +114,8 @@ public class CollectionOperations {
     }
 
     // uses Permission enum for permission parameter
-    public Response set_permission(String token, String lpath, String entityName, Permission permission,
-                                                                  boolean admin) throws IOException, InterruptedException, IrodsException {
+    public Response set_permission(String token, String lpath, String entityName,
+                                   Permission permission, boolean admin) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "set_permission",
@@ -137,8 +131,7 @@ public class CollectionOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response set_inheritance(String token, String lpath, boolean enable,
-                                boolean admin) throws IOException, InterruptedException, IrodsException {
+    public Response set_inheritance(String token, String lpath, boolean enable, boolean admin) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "set_inheritance",
@@ -153,11 +146,15 @@ public class CollectionOperations {
     }
 
     public Response modify_permissions(String token, String lpath,
-                                                           List<ModifyPermissionsOperations> jsonParam, boolean admin)
-            throws IOException, InterruptedException, IrodsException {
+                                       List<ModifyPermissionsOperations> jsonParam, boolean admin) {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
-        String operationsJson = mapper.writeValueAsString(jsonParam);
+        String operationsJson = null;
+        try {
+            operationsJson = mapper.writeValueAsString(jsonParam);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -174,11 +171,15 @@ public class CollectionOperations {
     }
 
     public Response modify_metadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam,
-                                                               boolean admin)
-            throws IOException, InterruptedException, IrodsException {
+                                                               boolean admin) {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
-        String operationsJson = mapper.writeValueAsString(jsonParam);
+        String operationsJson = null;
+        try {
+            operationsJson = mapper.writeValueAsString(jsonParam);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -194,8 +195,7 @@ public class CollectionOperations {
 
     }
 
-    public Response rename(String token, String oldPath, String newPath)
-            throws IOException, InterruptedException, IrodsException {
+    public Response rename(String token, String oldPath, String newPath)  {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "rename",
@@ -207,8 +207,7 @@ public class CollectionOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response touch(String token, String lpath, int secondsSinceEpoch, String reference)
-            throws IOException, InterruptedException, IrodsException {
+    public Response touch(String token, String lpath, int secondsSinceEpoch, String reference)  {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "touch");

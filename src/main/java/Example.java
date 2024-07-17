@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.example.Mapper.Collections.CollectionsStat;
 import org.example.Wrapper;
 import org.example.Util.IrodsException;
 import org.example.Mapper.Collections.CollectionsList;
@@ -64,9 +65,11 @@ public class Example {
 
 
         // stat
-//        responseData(
-//                rods.collections().stat(token, "/tempZone/home/rods/test1", null)
-//        );
+        rods.collections().create(token, "/tempZone/home/rods/test1", false);
+        response = rods.collections().stat(token, "/tempZone/home/rods/test1", null);
+        System.out.println(response.getBody());
+        CollectionsStat mapped = JsonUtil.fromJson(response.getBody(), CollectionsStat.class);
+        System.out.println(mapped);
 
         // set_permissions
 //        responseData(
@@ -123,10 +126,10 @@ public class Example {
 //        response = rods.dataObject().stat(token, "/tempZone/home/rods/data", null);
 //        System.out.println(response.getBody());
 
-        byte[] bytes = "test".getBytes(StandardCharsets.UTF_8);
-        response = rods.dataObject().write(token, "/tempZone/home/rods/data", null, 0,
-                true, false, bytes, null, -1);
-        System.out.println(response);
+//        byte[] bytes = "test".getBytes(StandardCharsets.UTF_8);
+//        response = rods.dataObject().write(token, "/tempZone/home/rods/data", null, 0,
+//                true, false, bytes, null, -1);
+//        System.out.println(response);
 
 
 ////

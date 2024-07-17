@@ -23,8 +23,7 @@ public class UserGroupOperations {
         this.baseUrl = client.getBaseUrl() + "/users-groups";
     }
 
-    public Response create_user(String token, String name, String zone, String userType)
-            throws IOException, InterruptedException {
+    public Response create_user(String token, String name, String zone, String userType) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "create_user");
         formData.put("name", name);

@@ -23,8 +23,7 @@ public class HttpRequestUtil {
      * @throws InterruptedException
      */
     public static HttpResponse<String> sendAndParsePOST(Map<Object, Object> formData, String baseUrl, String token,
-                                                        HttpClient client)
-            throws IOException, InterruptedException {
+                                                        HttpClient client) {
         /// creating the request body
         String form = formData.entrySet()
                 .stream()
@@ -40,7 +39,12 @@ public class HttpRequestUtil {
                 .build();
 
         // sending request
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
 
         return response;
@@ -56,8 +60,7 @@ public class HttpRequestUtil {
      * @throws InterruptedException
      */
     public static HttpResponse<String>  sendAndParseGET(Map<Object, Object> formData, String baseUrl, String token,
-                                                        HttpClient client)
-            throws IOException, InterruptedException {
+                                                        HttpClient client)  {
         // creating the request body
         String form = formData.entrySet()
                 .stream()
@@ -72,7 +75,12 @@ public class HttpRequestUtil {
                 .build();
 
         // sending request
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
 
         return response;
