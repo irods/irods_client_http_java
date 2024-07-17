@@ -27,11 +27,17 @@ public class WrapperTest {
     }
 
     @Test
-    public void authenticate() {
+    public void authenticate_valid() {
         response = rods.authenticate();
         assertEquals(200, response.getHttpStatusCode());
         assertEquals(response.getBody(), rods.getAuthToken());
 
     }
 
+    @Test
+    public void authenticate_invalid_user() {
+        Wrapper test = new Wrapper(baseUrl, "test", "test");
+        response = test.authenticate();
+        assertEquals(401, response.getHttpStatusCode());
+    }
 }

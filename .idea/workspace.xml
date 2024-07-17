@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/InformationOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/InformationOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/WrapperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/WrapperTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +61,7 @@
     "JUnit.IrodsClientTest.testClientInvalidPort.executor": "Run",
     "JUnit.IrodsClientTest.testClientInvalidVersion.executor": "Run",
     "JUnit.IrodsClientTest.testClientValidParams.executor": "Run",
+    "JUnit.WrapperTest.authenticate_nonexistent_user.executor": "Run",
     "JUnit.WrapperTest.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -99,7 +98,7 @@
       <recent name="org.example.Collections" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.WrapperTest">
+  <component name="RunManager" selected="JUnit.WrapperTest.authenticate_nonexistent_user">
     <configuration name="Example" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Example" />
       <module name="http-api-test" />
@@ -118,22 +117,6 @@
       <option name="PACKAGE_NAME" value="Collections" />
       <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CollectionOperationsTest.listNoEntriesMapped" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="http-api-test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Collections.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Collections" />
-      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
-      <option name="METHOD_NAME" value="listNoEntriesMapped" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -169,13 +152,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="WrapperTest.authenticate_nonexistent_user" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="http-api-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example" />
+      <option name="MAIN_CLASS_NAME" value="org.example.WrapperTest" />
+      <option name="METHOD_NAME" value="authenticate_nonexistent_user" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.WrapperTest.authenticate_nonexistent_user" />
         <item itemvalue="JUnit.WrapperTest" />
         <item itemvalue="Application.Example" />
         <item itemvalue="JUnit.CollectionOperationsTest" />
         <item itemvalue="JUnit.CollectionOperationsTest.removeMapped" />
-        <item itemvalue="JUnit.CollectionOperationsTest.listNoEntriesMapped" />
       </list>
     </recent_temporary>
   </component>
@@ -240,5 +239,20 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="got correct api url" />
     <option name="LAST_COMMIT_MESSAGE" value="got correct api url" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/test/java/org/example/WrapperTest.java</url>
+          <line>37</line>
+          <properties class="org.example.WrapperTest" method="authenticate_nonexistent_user">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
