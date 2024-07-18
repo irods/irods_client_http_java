@@ -1,4 +1,4 @@
-package Collections;
+package org.example.Operations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,9 +25,6 @@ public class CollectionOperationsTest {
     private List<String> entries;
     private Response response;
     @Before
-    /**
-     * tests assume that .list() is working correctly :(
-     */
     public void setup() {
         String address = "52.91.145.195";
         String port = "8888";

@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.example.Mapper.Collections.CollectionsStat;
+import org.example.Properties.ModifyReplicaProperties;
 import org.example.Wrapper;
 import org.example.Util.IrodsException;
 import org.example.Mapper.Collections.CollectionsList;
@@ -8,9 +9,12 @@ import org.example.Util.Response;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 public class Example {
-
     public static void main(String[] args) throws IOException, InterruptedException, IrodsException {
         //http://52.91.145.195:8888/irods-http-api/0.3.0
         String address = "52.91.145.195";
@@ -34,17 +38,18 @@ public class Example {
         String token = rods.getAuthToken();
 
         Response response;
+        List<String> entries = new ArrayList<>();
 
-        // list
-        // demonstrates how all methods return a Response object which contains an HTTP status code and response body
-        Response listResponse = rods.collections().list(token, "/tempZone/home/rods", false, null);
-        System.out.println("Response object: \n" + listResponse);
-
-        // demonstrate how someone can opt to map the JSON response
-        CollectionsList listMapped = JsonUtil.fromJson(listResponse.getBody(), CollectionsList.class);
-        System.out.println("\nMapped JSON: \n" + listMapped);
-
-        System.out.println("\n######################################################################\n");
+//        // list
+//        // demonstrates how all methods return a Response object which contains an HTTP status code and response body
+//        Response listResponse = rods.collections().list(token, "/tempZone/home/rods", false, null);
+//        System.out.println("Response object: \n" + listResponse);
+//
+//        // demonstrate how someone can opt to map the JSON response
+//        CollectionsList listMapped = JsonUtil.fromJson(listResponse.getBody(), CollectionsList.class);
+//        System.out.println("\nMapped JSON: \n" + listMapped);
+//
+//        System.out.println("\n######################################################################\n");
 
         // create
 //        compare(
@@ -65,11 +70,11 @@ public class Example {
 
 
         // stat
-        rods.collections().create(token, "/tempZone/home/rods/test1", false);
-        response = rods.collections().stat(token, "/tempZone/home/rods/test1", null);
-        System.out.println(response.getBody());
-        CollectionsStat mapped = JsonUtil.fromJson(response.getBody(), CollectionsStat.class);
-        System.out.println(mapped);
+//        rods.collections().create(token, "/tempZone/home/rods/test1", false);
+//        response = rods.collections().stat(token, "/tempZone/home/rods/test1", null);
+//        System.out.println(response.getBody());
+//        CollectionsStat mapped = JsonUtil.fromJson(response.getBody(), CollectionsStat.class);
+//        System.out.println(mapped);
 
         // set_permissions
 //        responseData(
@@ -112,8 +117,7 @@ public class Example {
 //        System.out.println(expiration);
 
         // data objects
-//        response = rods.dataObject().touch(token, "/tempZone/home/rods/data", false,
-//                0, null, 0, null);
+
 //        System.out.println(response.getBody());
 
 //        response = rods.dataObject().remove(token, "/tempZone/home/rods", false, false, false );
@@ -143,6 +147,28 @@ public class Example {
 //        response = rods.zoneOperations().report(token);
 //        System.out.println(response);
 
+//
+
+        ModifyReplicaProperties prop = new ModifyReplicaProperties();
+        prop.setReplicaNum(OptionalInt.of(1));
+        prop.setNewDataComments(Optional.of("test comment"));
+
+        response = rods.dataObject().modify_replica(token, "/tempZone/home/rods/data", prop);
+        System.out.println("Response: " + response);
+
+
+
+        /*
+        rods.dataObject().modify_replica(token, lpath).newDataComments(comment).newDataPath(param).execute();
+         */
+
+//        response = rods.dataObject().touch(token, "/tempZone/home/rods/data", false,
+//                0, null, 0, null);
+//        System.out.println(response);
+
+        updateAndPrintList(rods, token);
+//        response = rods.dataObject().stat(token, "/tempZone/home/rods/data", null);
+//        System.out.println(response.getBody());
 
 
     }
@@ -164,5 +190,12 @@ public class Example {
     private static <T> void compare(Response response, Class<T> responseType) throws JsonProcessingException {
         System.out.println(response.getBody());
         printMapped(response, responseType);
+    }
+
+    private static void updateAndPrintList(Wrapper wrapper, String token) {
+        Response response = wrapper.collections().list(token, "/tempZone/home/rods", false, null);
+        CollectionsList mapped = JsonUtil.fromJson(response.getBody(), CollectionsList.class);
+
+        System.out.println(mapped.getEntries());
     }
 }

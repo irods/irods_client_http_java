@@ -1,6 +1,8 @@
 package org.example.Operations;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.Properties.ModifyReplicaProperties;
 import org.example.Wrapper;
 import org.example.Mapper.Serialize.ModifyMetadataOperations;
 import org.example.Mapper.Serialize.ModifyPermissionsOperations;
@@ -26,7 +28,7 @@ public class DataObjectOperations {
     }
 
     public Response touch(String token, String lpath, boolean noCreate, int replicaNum, String leafResource,
-                          int secondsSinceEpoch, String reference) throws IOException, InterruptedException {
+                          int secondsSinceEpoch, String reference)  {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "touch");
         formData.put("lpath", lpath);
@@ -61,7 +63,7 @@ public class DataObjectOperations {
     }
 
     public Response calculate_checksum(String token, String lpath, String resource, int replicaNum, boolean force,
-                                       boolean all, boolean admin) throws IOException, InterruptedException {
+                                       boolean all, boolean admin) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "calculate_checksum");
         formData.put("lpath", lpath);
@@ -81,8 +83,7 @@ public class DataObjectOperations {
     }
 
     public Response vertify_checksum(String token, String lpath, String resource, int replicaNum,
-                                     boolean computeChecksums, boolean admin)
-            throws IOException, InterruptedException {
+                                     boolean computeChecksums, boolean admin) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "vertify_checksum");
         formData.put("lpath", lpath);
@@ -99,7 +100,7 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response stat(String token, String lpath, String ticket) throws IOException, InterruptedException {
+    public Response stat(String token, String lpath, String ticket) {
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
@@ -113,7 +114,7 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response rename(String token, String oldPath, String newPath) throws IOException, InterruptedException {
+    public Response rename(String token, String oldPath, String newPath) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "rename",
@@ -127,7 +128,7 @@ public class DataObjectOperations {
     }
 
     public Response copy(String token, String srcLpath, String dstLpath, String srcResource, String dstResource,
-                         boolean overwrite) throws IOException, InterruptedException {
+                         boolean overwrite) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "copy");
         formData.put("src-lpath", srcLpath);
@@ -144,8 +145,7 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response replicate(String token, String lpath, String srcResource, String dstResource,
-                         boolean admin) throws IOException, InterruptedException {
+    public Response replicate(String token, String lpath, String srcResource, String dstResource, boolean admin) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "replicate");
         formData.put("lpath", lpath);
@@ -161,8 +161,7 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response trim(String token, String lpath, int replicaNum, boolean catalogOnly,
-                              boolean admin) throws IOException, InterruptedException {
+    public Response trim(String token, String lpath, int replicaNum, boolean catalogOnly, boolean admin) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "trim");
         formData.put("lpath", lpath);
@@ -177,7 +176,7 @@ public class DataObjectOperations {
     }
 
     public Response register(String token, String lpath, String ppath, String resource, boolean asAdditionalReplica,
-                             int dataSize, String checksum) throws IOException, InterruptedException {
+                             int dataSize, String checksum) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "register");
         formData.put("lpath", lpath);
@@ -195,7 +194,7 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response read(String token, String lpath, int offset, int count, String ticket) throws IOException, InterruptedException {
+    public Response read(String token, String lpath, int offset, int count, String ticket) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "read");
         formData.put("lpath", lpath);
@@ -217,8 +216,7 @@ public class DataObjectOperations {
     }
 
     public Response write(String token, String lpath, String resource, int offset, boolean truncate, boolean append,
-                          byte[] bytes, String parallelWriteHandle, int streamIndex)
-            throws IOException, InterruptedException {
+                          byte[] bytes, String parallelWriteHandle, int streamIndex) {
 
         String boundary = "----http_api_write_data_objects_operations----";
 
@@ -266,7 +264,12 @@ public class DataObjectOperations {
                 .build();
 
         // send response
-        HttpResponse<String> response = client.getClient().send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = null;
+        try {
+            response = client.getClient().send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         return new Response(response.statusCode(), response.body());
     }
@@ -281,10 +284,8 @@ public class DataObjectOperations {
         sb.append(value + "\r\n");
     }
 
-
-
     public Response parallel_write_init(String token, String lpath, int streamCount, boolean truncate, boolean append,
-                                        String ticket) throws IOException, InterruptedException {
+                                        String ticket) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "parallel_write_init");
         formData.put("lpath", lpath);
@@ -300,7 +301,7 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response parallel_write_shutdown(String token, String parallelWriteHandle) throws IOException, InterruptedException {
+    public Response parallel_write_shutdown(String token, String parallelWriteHandle) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "parallel_write_shutdown");
         formData.put("parallel-write-handle", parallelWriteHandle);
@@ -311,11 +312,15 @@ public class DataObjectOperations {
     }
 
     public Response modify_metadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam,
-                                    boolean admin)
-            throws IOException, InterruptedException, IrodsException {
+                                    boolean admin) {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
-        String operationsJson = mapper.writeValueAsString(jsonParam);
+        String operationsJson = null;
+        try {
+            operationsJson = mapper.writeValueAsString(jsonParam);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -331,7 +336,7 @@ public class DataObjectOperations {
     }
 
     public Response set_permission(String token, String lpath, String entityName, Permission permission,
-                                   boolean admin) throws IOException, InterruptedException, IrodsException {
+                                   boolean admin) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
                 "op", "set_permission",
@@ -347,12 +352,16 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response modify_permissions(String token, String lpath,
-                                       List<ModifyPermissionsOperations> jsonParam, boolean admin)
-            throws IOException, InterruptedException, IrodsException {
+    public Response modify_permissions(String token, String lpath, List<ModifyPermissionsOperations> jsonParam,
+                                       boolean admin) {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
-        String operationsJson = mapper.writeValueAsString(jsonParam);
+        String operationsJson = null;
+        try {
+            operationsJson = mapper.writeValueAsString(jsonParam);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = Map.of(
@@ -368,71 +377,34 @@ public class DataObjectOperations {
 
     }
 
-    public Response modify_replica(String token, String lpath,String resourceHierarchy, int replicaNum,
-                                   String newDataChecksum, String newDataComments, int newDataCreateTime,
-                                   int newDataExpiry, String newDataMode, String newDataModifyTime, String newDataPath,
-                                   int newDataReplicaNum, int newDataRepliaStatus, int newDataResourceId, int newDataSize,
-                                   String newDataStatus, String newDataTypeName, String newDataVersion)
-            throws IOException, InterruptedException, IrodsException {
-
-
-        // contains parameters for the HTTP request
+    public Response modify_replica(String token, String lpath, ModifyReplicaProperties properties) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "modify_replica");
         formData.put("lpath", lpath);
-        if (resourceHierarchy != null) {
-            formData.put("resource-hierarchy", resourceHierarchy);
-        }
-        if (replicaNum != -1) {
-            formData.put("replica-number", String.valueOf(replicaNum));
-        }
-        if (newDataChecksum != null) {
-            formData.put("newDataComments", newDataChecksum);
-        }
-        if (newDataComments != null) {
-            formData.put("new-data-comments", newDataComments);
-        }
-        if (newDataCreateTime != -1) {
-            formData.put("new-data-create-time", String.valueOf(newDataCreateTime));
-        }
-        if (newDataExpiry != -1) {
-            formData.put("new-data-expiry", String.valueOf(newDataExpiry));
-        }
-        if (newDataMode != null) {
-            formData.put("new-data-mode", newDataMode);
-        }
-        if (newDataModifyTime != null) {
-            formData.put("new-data-modify-time", newDataModifyTime);
-        }
-        if (newDataPath != null) {
-            formData.put("new-data-path", newDataPath);
-        }
-        if (newDataReplicaNum != -1) {
-            formData.put("new-data-replica-number", String.valueOf(newDataReplicaNum));
-        }
-        if (newDataRepliaStatus != -1) {
-            formData.put("new-data-replica-status", String.valueOf(newDataRepliaStatus));
-        }
-        if (newDataResourceId != -1) {
-            formData.put("new-data-resource-id", String.valueOf(newDataResourceId));
-        }
-        if (newDataSize != -1) {
-            formData.put("new-data-size", String.valueOf(newDataSize));
-        }
-        if (newDataStatus != null) {
-            formData.put("new-data-status", newDataSize);
-        }
-        if (newDataTypeName != null) {
-            formData.put("new-data-type-name", newDataTypeName);
-        }
-        if (newDataVersion != null) {
-            formData.put("new-data-version", newDataVersion);
-        }
+        properties.getResourceHierarchy().ifPresent(val -> formData.put("resource-hierarchy", val));
+        properties.getReplicaNum().ifPresent(val -> formData.put("replica-number", val));
+        properties.getNewDataChecsum().ifPresent(val -> formData.put("new-data-checksum", val));
+        properties.getNewDataComments().ifPresent(val -> formData.put("new-data-comments", val));
 
+        properties.getNewDataCreateTime().ifPresent(val -> formData.put("new-data-create-time", val));
+        properties.getNewDataExpiry().ifPresent(val -> formData.put("new-data-expiry", val));
+        properties.getNewDataMode().ifPresent(val -> formData.put("new-data-mode", val));
+        properties.getNewDataModifyTime().ifPresent(val -> formData.put("new-data-modify-time", val));
+
+        properties.getNewDataPath().ifPresent(val -> formData.put("new-data-path", val));
+        properties.getNewDataReplicaNum().ifPresent(val -> formData.put("new-data-replica-number", val));
+        properties.getNewDataRepliaStatus().ifPresent(val -> formData.put("new-data-replica-status", val));
+        properties.getNewDataResourceId().ifPresent(val -> formData.put("new-data-resource-id", val));
+
+        properties.getNewDataSize().ifPresent(val -> formData.put("new-data-size", val));
+        properties.getNewDataStatus().ifPresent(val -> formData.put("new-data-status", val));
+        properties.getNewDataTypeName().ifPresent(val -> formData.put("new-data-type-name", val));
+        properties.getNewDataVersion().ifPresent(val -> formData.put("new-data-version", val));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
 
         return new Response(response.statusCode(), response.body());
+
     }
 
 }

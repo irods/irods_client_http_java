@@ -5,20 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4334f964-7012-472c-98be-d7ba458fde69" name="Changes" comment="got correct api url">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsRemove.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsRename.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsSetInheritance.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Collections/CollectionsSetPermission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Properties/ModifyReplicaProperties.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/Operations/DataObjectOperationsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hs_err_pid80106.log" beforeDir="false" afterPath="$PROJECT_DIR$/hs_err_pid80106.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Example.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/IrodsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/IrodsResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Mapped.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mapper/Mapped.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/CollectionOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/CollectionOperations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/DataObjectOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/DataObjectOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Operations/UserGroupOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Operations/UserGroupOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Util/HttpRequestUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/HttpRequestUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Util/JsonUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Util/JsonUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Collections/CollectionOperationsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/Operations/CollectionOperationsTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +22,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit5 Test Class" />
+        <option value="JUnit3 Test Class" />
         <option value="Class" />
       </list>
     </option>
@@ -81,6 +75,7 @@
     "JUnit.CollectionOperationsTest.set_permission_functionality.executor": "Run",
     "JUnit.CollectionOperationsTest.stat_functionality.executor": "Run",
     "JUnit.CollectionOperationsTest.stat_mapped.executor": "Run",
+    "JUnit.DataObjectOperationsTest.executor": "Run",
     "JUnit.IrodsClientTest.executor": "Run",
     "JUnit.IrodsClientTest.testAuthenticate.executor": "Run",
     "JUnit.IrodsClientTest.testAuthenticateInvalid.executor": "Run",
@@ -94,7 +89,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit3",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3": "junit.framework.TestCase",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "authTests",
     "kotlin-language-version-configured": "true",
@@ -109,6 +105,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
+      <recent name="junit.framework.TestCase" />
       <recent name="" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -119,101 +116,92 @@
       <recent name="$PROJECT_DIR$/src" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.example.Operations" />
       <recent name="org.example" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.example.Operations" />
       <recent name="org.example" />
       <recent name="org.example.Collections" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CollectionOperationsTest.rename_functinoality">
+  <component name="RunManager" selected="Application.Example">
+    <configuration name="Example" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Example" />
+      <module name="http-api-test" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CollectionOperationsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="http-api-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.Operations.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.Operations" />
+      <option name="MAIN_CLASS_NAME" value="org.example.Operations.CollectionOperationsTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CollectionOperationsTest.modify_metadata_functionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Collections.*" />
+          <option name="PATTERN" value="org.example.Operations.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="Collections" />
-      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
+      <option name="PACKAGE_NAME" value="org.example.Operations" />
+      <option name="MAIN_CLASS_NAME" value="org.example.Operations.CollectionOperationsTest" />
       <option name="METHOD_NAME" value="modify_metadata_functionality" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CollectionOperationsTest.modify_permissions_functionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CollectionOperationsTest.rename_functionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Collections.*" />
+          <option name="PATTERN" value="org.example.Operations.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="Collections" />
-      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
-      <option name="METHOD_NAME" value="modify_permissions_functionality" />
+      <option name="PACKAGE_NAME" value="org.example.Operations" />
+      <option name="MAIN_CLASS_NAME" value="org.example.Operations.CollectionOperationsTest" />
+      <option name="METHOD_NAME" value="rename_functionality" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CollectionOperationsTest.rename_functinoality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="DataObjectOperationsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="http-api-test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Collections.*" />
+          <option name="PATTERN" value="org.example.Operations.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="Collections" />
-      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
-      <option name="METHOD_NAME" value="rename_functinoality" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CollectionOperationsTest.set_inheritance_functionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="http-api-test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Collections.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Collections" />
-      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
-      <option name="METHOD_NAME" value="set_inheritance_functionality" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CollectionOperationsTest.set_permission_functionality" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="http-api-test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Collections.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Collections" />
-      <option name="MAIN_CLASS_NAME" value="Collections.CollectionOperationsTest" />
-      <option name="METHOD_NAME" value="set_permission_functionality" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="org.example.Operations" />
+      <option name="MAIN_CLASS_NAME" value="org.example.Operations.DataObjectOperationsTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.CollectionOperationsTest.rename_functinoality" />
+        <item itemvalue="Application.Example" />
+        <item itemvalue="JUnit.DataObjectOperationsTest" />
+        <item itemvalue="JUnit.CollectionOperationsTest" />
+        <item itemvalue="JUnit.CollectionOperationsTest.rename_functionality" />
         <item itemvalue="JUnit.CollectionOperationsTest.modify_metadata_functionality" />
-        <item itemvalue="JUnit.CollectionOperationsTest.modify_permissions_functionality" />
-        <item itemvalue="JUnit.CollectionOperationsTest.set_inheritance_functionality" />
-        <item itemvalue="JUnit.CollectionOperationsTest.set_permission_functionality" />
       </list>
     </recent_temporary>
   </component>
