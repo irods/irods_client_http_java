@@ -82,10 +82,10 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response vertify_checksum(String token, String lpath, String resource, int replicaNum,
+    public Response verify_checksum(String token, String lpath, String resource, int replicaNum,
                                      boolean computeChecksums, boolean admin) {
         Map<Object, Object> formData = new HashMap<>();
-        formData.put("op", "vertify_checksum");
+        formData.put("op", "verify_checksum");
         formData.put("lpath", lpath);
         if (resource != null) {
             formData.put("resource", resource);
