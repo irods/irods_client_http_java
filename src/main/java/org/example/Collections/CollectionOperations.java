@@ -2,12 +2,8 @@ package org.example.Collections;
 
 import org.example.IrodsClient;
 import org.example.IrodsException;
-import org.example.Mapper.Collections.*;
 import org.example.Mapper.Collections.Serialize.ModifyMetadataOperations;
 import org.example.Mapper.Collections.Serialize.ModifyPermissionsOperations;
-import org.example.Mapper.IrodsResponse;
-import org.example.Mapper.Mapped;
-import org.example.User;
 import org.example.Util.HttpRequestUtil;
 
 import java.io.IOException;
