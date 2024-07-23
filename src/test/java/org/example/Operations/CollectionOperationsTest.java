@@ -60,7 +60,7 @@ public class CollectionOperationsTest {
         expectedList.add("/tempZone/home/rods/test3");
 
         assertEquals(expectedList, entries);
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class CollectionOperationsTest {
         expectedList.remove("/tempZone/home/rods/test2");
 
         assertEquals(expectedList, entries);
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
     }
 
     @Test
@@ -92,7 +92,7 @@ public class CollectionOperationsTest {
         response = rods.collections().stat(token,"/tempZone/home/rods/test");
         CollectionsStat mapped = JsonUtil.fromJson(response.getBody(), CollectionsStat.class);
 
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class CollectionOperationsTest {
         List<String> expectedList = new ArrayList<>();
         expectedList.add("/tempZone/home/rods/test");
 
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
         assertEquals(expectedList, mapped.getEntries());
     }
 
@@ -126,7 +126,7 @@ public class CollectionOperationsTest {
 
         assertTrue("Permission should contain: \n" + expectedPermission,
                 mappedStat.getPermissions().contains(expectedPermission));
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
 
         // now try and change the permission type to see if it still works
         response = rods.collections().set_permission(token, "/tempZone/home/rods/test", "alice",
@@ -148,7 +148,7 @@ public class CollectionOperationsTest {
         CollectionsStat mappedStat = JsonUtil.fromJson(responseStat.getBody(), CollectionsStat.class);
 
         assertEquals(true, mappedStat.isInheritance_enabled());
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
     }
 
     @Test
@@ -161,7 +161,7 @@ public class CollectionOperationsTest {
         response =  rods.collections().modify_permissions(token,"/tempZone/home/rods", jsonParam);
         CollectionsModifyPermissions mapped = JsonUtil.fromJson(response.getBody(), CollectionsModifyPermissions.class);
 
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
 
         // expected failed_operation
         Mapped.IrodsResponse.FailedOperation expectedFailed = new Mapped.IrodsResponse.FailedOperation();
@@ -169,7 +169,7 @@ public class CollectionOperationsTest {
         expectedFailed.setOperation_index(0);
         expectedFailed.setError_message(null);
         expectedFailed.setStatus_message(null);
-        assertEquals(expectedFailed, mapped.getIrods_response().getFailed_operation());
+        assertEquals(expectedFailed, mapped.getIrodsResponse().getFailed_operation());
     }
 
     @Test
@@ -179,7 +179,7 @@ public class CollectionOperationsTest {
         response = rods.collections().modify_metadata(token,"/tempZone/home/rods/test", jsonParam2);
         CollectionsModifyMetadata mapped = JsonUtil.fromJson(response.getBody(), CollectionsModifyMetadata.class);
 
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
 
         // expected failed_operation
         Mapped.IrodsResponse.FailedOperation expectedFailed = new Mapped.IrodsResponse.FailedOperation();
@@ -187,7 +187,7 @@ public class CollectionOperationsTest {
         expectedFailed.setOperation_index(0);
         expectedFailed.setError_message(null);
         expectedFailed.setStatus_message(null);
-        assertEquals(expectedFailed, mapped.getIrods_response().getFailed_operation());
+        assertEquals(expectedFailed, mapped.getIrodsResponse().getFailed_operation());
     }
 
     @Test
@@ -200,7 +200,7 @@ public class CollectionOperationsTest {
         expectedList.add("/tempZone/home/rods/test1");
         updateList();
 
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
         assertEquals(expectedList, entries);
     }
 
@@ -209,7 +209,7 @@ public class CollectionOperationsTest {
         response = rods.collections().touch(token, "/tempZone/home/rods/test");
         CollectionsTouch mapped = JsonUtil.fromJson(response.getBody(), CollectionsTouch.class);
 
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
     }
 
 
@@ -231,7 +231,7 @@ public class CollectionOperationsTest {
         // creating expected object
         CollectionsList expectedMapped = new CollectionsList();
         expectedMapped.setEntries(null);
-        expectedMapped.setIrods_response(expectedIrodsResponse);
+        expectedMapped.setIrodsResponse(expectedIrodsResponse);
 
         assertEquals(expectedMapped, actualMapped);
     }
@@ -252,7 +252,7 @@ public class CollectionOperationsTest {
 
         CollectionsCreate expectedMapped = new CollectionsCreate();
         expectedMapped.setCreated(true);
-        expectedMapped.setIrods_response(expectedIrodsResponse);
+        expectedMapped.setIrodsResponse(expectedIrodsResponse);
 
         assertEquals(expectedMapped, actualMapped);
     }
@@ -277,7 +277,7 @@ public class CollectionOperationsTest {
         expectedIrodsResponse.setFailed_operation(null);
 
         CollectionsRemove expectedMapped = new CollectionsRemove();
-        expectedMapped.setIrods_response(expectedIrodsResponse);
+        expectedMapped.setIrodsResponse(expectedIrodsResponse);
 
         assertEquals(expectedMapped, actualMapped);
     }
@@ -297,7 +297,7 @@ public class CollectionOperationsTest {
         expectedMapped.setInheritance_enabled(false);
         expectedMapped.setRegistered(true);
         expectedMapped.setType("collection");
-        expectedMapped.setIrods_response(expectedIrodsResponse);
+        expectedMapped.setIrodsResponse(expectedIrodsResponse);
 
         // set permissions
         CollectionsStat.Permissions permissions = new CollectionsStat.Permissions();

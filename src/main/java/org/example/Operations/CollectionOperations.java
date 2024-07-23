@@ -58,10 +58,8 @@ public class CollectionOperations {
      * Removes a collection
      * Protected, so it can only be accessed from this package. Enforces use of builder
      * @param lpath The logical path for the collection
-     * @param recurse If true, contents of the collection will be removed. Optional parameter
-     * @param noTrash If true, collection is permanently removed. Optional parameter
-     * @throws IOException
-     * @throws InterruptedException
+     * @return A Response object containing the status code and response body (the JSON String). Both of which can be
+     * retrieved with a .getStatusCode() and .getBody(), respectively.
      */
     public Response remove(String token, String lpath, RemoveProperties prop) {
         // contains parameters for the HTTP request
@@ -249,69 +247,6 @@ public class CollectionOperations {
         TouchProperties prop = new TouchProperties();
         return this.touch(token, lpath, prop);
     }
-
-
-    /**
-     * Helper method to give status code message if JSON displays it as null
-     * @param irodsResponse The JSON that contains the status code and the message
-     * @param failMessage The failure message that will be displayed
-     * @throws IrodsException because status code is not 0
-     */
-//    private void statusCodeMessage(Mapped.IrodsResponse irodsResponse, String failMessage) throws IrodsException {
-//        int statusCode = irodsResponse.getStatus_code();
-//        String statusMessage = irodsResponse.getStatus_message();
-//
-//        if (statusCode == -170000 && statusMessage == null) {
-//            throw new IrodsException(failMessage + ": NOT_A_COLLECTION");
-//        } else if (statusCode == -814000 && statusMessage == null) {
-//            throw new IrodsException(failMessage + ": CAT_UNKNOWN_COLLECTION");
-//        } else if (statusCode == -130000 && statusMessage == null) {
-//            throw new IrodsException(failMessage + ": SYS_INVALID_INPUT_PARAM");
-//        } else if (statusCode == -154000 && statusMessage == null) {
-//            throw new IrodsException(failMessage + ": SYS_INTERNAL_ERR");
-//        } else if (statusCode != 0) {
-//            throw new IrodsException(failMessage +  ": " + statusMessage);
-//        }
-//    }
-
-    /**
-     * Displays success message or throws an error when request failed
-     * @param irodsResponse The JSON that contains the status code and the message
-     * @param failMessage The failure message that will be displayed
-     * @param successMessage The success message that will be displayed
-     * @throws IrodsException when status code is not 0
-     */
-    private void handleErrors(Mapped.IrodsResponse irodsResponse, String failMessage, String successMessage)
-            throws IrodsException {
-
-        IrodsErrorCodes.statusCodeMessage(irodsResponse, failMessage);
-
-        int statusCode = irodsResponse.getStatus_code();
-        String message = irodsResponse.getStatus_message();
-
-        if (statusCode == 0) { // success
-            System.out.println(successMessage);
-        } else { // failure
-            throw new IrodsException(failMessage + ": " + message);
-        }
-    }
-
-//    private String getToken() {
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            // read the JSON file
-//            JsonNode jsonNode = mapper.readTree(new File("token.json"));
-//
-//            // access the token value
-//            JsonNode tokenNode = jsonNode.get("token");
-//
-//            return tokenNode.asText();
-//        } catch (IOException e) {
-//            System.err.println("Error reading JSON file: " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 }
 
 

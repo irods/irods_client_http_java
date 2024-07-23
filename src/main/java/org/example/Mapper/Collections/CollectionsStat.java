@@ -1,6 +1,5 @@
 package org.example.Mapper.Collections;
 
-//import org.example.Mapper.IrodsResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Mapper.Mapped;
@@ -129,12 +128,10 @@ public class CollectionsStat extends Mapped {
             return false;
         }
 
-        //check if it is an instance because a runtime error occurs when casting if it's not
         if (!this.getClass().equals(obj.getClass())) {
             return false; //when obj is not an instance of Ride
         }
 
-        //casting because obj is of type Object and does not have the following data fields
         CollectionsStat other = (CollectionsStat) obj;
         return Objects.equals(this.type, other.type) &&
                 this.inheritance_enabled == other.inheritance_enabled &&

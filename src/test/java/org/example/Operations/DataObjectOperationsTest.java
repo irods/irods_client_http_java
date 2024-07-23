@@ -4,7 +4,6 @@ import org.example.Mapper.Collections.CollectionsList;
 import org.example.Mapper.DataObjects.DataObjectCalculateSum;
 import org.example.Mapper.DataObjects.DataObjectRemove;
 import org.example.Mapper.DataObjects.DataObjectTouch;
-import org.example.Mapper.DataObjects.DataObjectVertifyChecksum;
 import org.example.Util.JsonUtil;
 import org.example.Util.Response;
 import org.example.Wrapper;
@@ -50,7 +49,7 @@ public class DataObjectOperationsTest {
         updateList();
 
         assertTrue(entries.contains("/tempZone/home/rods/dataTest2"));
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
     }
 
     @Test
@@ -61,7 +60,7 @@ public class DataObjectOperationsTest {
         updateList();
 
         assertNull(entries);
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
     }
 
     @Test
@@ -71,7 +70,7 @@ public class DataObjectOperationsTest {
         DataObjectCalculateSum mapped = JsonUtil.fromJson(response.getBody(), DataObjectCalculateSum.class);
         System.out.println(mapped);
 
-        assertEquals(0, mapped.getIrods_response().getStatus_code());
+        assertEquals(0, mapped.getIrodsResponse().getStatus_code());
     }
 
     @Test

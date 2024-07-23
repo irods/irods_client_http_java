@@ -12,13 +12,13 @@ import java.util.Objects;
  * Includes toString method to serialize the object to a pretty-printed JSON string.
  */
 public abstract class Mapped {
-    private IrodsResponse irods_response;
-    public IrodsResponse getIrods_response() {
-        return irods_response;
+    private IrodsResponse irodsResponse;
+    public IrodsResponse getIrodsResponse() {
+        return irodsResponse;
     }
 
-    public void setIrods_response(IrodsResponse irods_response) {
-        this.irods_response = irods_response;
+    public void setIrodsResponse(IrodsResponse irodsResponse) {
+        this.irodsResponse = irodsResponse;
     }
 
     @Override
@@ -34,7 +34,7 @@ public abstract class Mapped {
 
         //casting because obj is of type Object and does not have the following data fields
         Mapped other = (Mapped) obj;
-        return Objects.equals(this.irods_response, other.irods_response);
+        return Objects.equals(this.irodsResponse, other.irodsResponse);
     }
 
 

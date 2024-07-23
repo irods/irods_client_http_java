@@ -46,7 +46,6 @@ public class HttpRequestUtil {
             throw new RuntimeException(e);
         }
 
-
         return response;
     }
 
