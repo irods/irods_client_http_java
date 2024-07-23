@@ -1,6 +1,8 @@
 package org.example.Operations;
 
+import org.example.Properties.DataObject.DataObjectTouchParams;
 import org.example.Properties.Query.QueryExecuteGenqueryParams;
+import org.example.Properties.Query.QueryExecuteSpecifcQueryParams;
 import org.example.Wrapper;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
@@ -51,30 +53,42 @@ public class QueryOperations {
         return this.execute_genquery(token, query, params);
     }
 
-    public Response execute_specific_query(String token, String name, String args, String argsDelimiter,
-                                           int offset, int count) throws IOException, InterruptedException {
+    public Response execute_specific_query(String token, String name, QueryExecuteSpecifcQueryParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "execute_specific_query");
         formData.put("name", name);
-        if (args != null) {
-            formData.put("args", args);
-        }
-        if (argsDelimiter != null) {
-            formData.put("args-delimiter", argsDelimiter);
-        } else {
-            formData.put("args-delimiter", ","); // default
-        }
-        if (offset != -1) {
-            formData.put("offset", String.valueOf(offset));
-        } else {
-            formData.put("offset", "0"); // default
-        }
-        if (count != -1) {
-            formData.put("count", String.valueOf(count));
-        }
+        params.getArgs().ifPresent(val -> formData.put("args", val));
+        params.getArgsDelimiter().ifPresent(val -> formData.put("args-delimiter", val));
+        params.getOffset().ifPresent(val -> formData.put("offset", String.valueOf(val)));
+        params.getCount().ifPresent(val -> formData.put("count", String.valueOf(val)));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
     }
+
+    public Response execute_specific_query(String token, String name) {
+        QueryExecuteSpecifcQueryParams param = new QueryExecuteSpecifcQueryParams();
+        return this.execute_specific_query(token, name, param);
+    }
+
+    public Response add_specific_query(String token, String name, String sql) {
+        Map<Object, Object> formData = new HashMap<>();
+        formData.put("op", "add_specific_query");
+        formData.put("name", name);
+        formData.put("sql", sql);
+
+        HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
+        return new Response(response.statusCode(), response.body());
+    }
+
+    public Response remove_specific_query(String token, String name) {
+        Map<Object, Object> formData = new HashMap<>();
+        formData.put("op", "remove_specific_query");
+        formData.put("name", name);
+
+        HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
+        return new Response(response.statusCode(), response.body());
+    }
+
 
 }
