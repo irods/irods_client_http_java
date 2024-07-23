@@ -50,19 +50,27 @@ public class QueryOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    public Response execute_genquery(String token, String query) {
+        QueryExecuteGenqueryParams params = new QueryExecuteGenqueryParams();
+        return this.execute_genquery(token, query, params);
+    }
+
     public Response execute_specific_query(String token, String name, QueryExecuteSpecifcQueryParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "execute_specific_query");
         formData.put("name", name);
-        if (params != null) {
-            params.getArgs().ifPresent(val -> formData.put("args", val));
-            params.getArgsDelimiter().ifPresent(val -> formData.put("args-delimiter", val));
-            params.getOffset().ifPresent(val -> formData.put("offset", String.valueOf(val)));
-            params.getCount().ifPresent(val -> formData.put("count", String.valueOf(val)));
-        }
+        params.getArgs().ifPresent(val -> formData.put("args", val));
+        params.getArgsDelimiter().ifPresent(val -> formData.put("args-delimiter", val));
+        params.getOffset().ifPresent(val -> formData.put("offset", String.valueOf(val)));
+        params.getCount().ifPresent(val -> formData.put("count", String.valueOf(val)));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
+    }
+
+    public Response execute_specific_query(String token, String name) {
+        QueryExecuteSpecifcQueryParams param = new QueryExecuteSpecifcQueryParams();
+        return this.execute_specific_query(token, name, param);
     }
 
     public Response add_specific_query(String token, String name, String sql) {
@@ -83,4 +91,6 @@ public class QueryOperations {
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
     }
+
+
 }
