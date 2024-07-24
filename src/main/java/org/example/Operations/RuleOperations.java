@@ -1,5 +1,6 @@
 package org.example.Operations;
 
+import org.example.Properties.Rule.RuleExecuteParams;
 import org.example.Wrapper;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
@@ -19,7 +20,7 @@ public class RuleOperations {
         this.baseUrl = client.getBaseUrl() + "/rules";
     }
 
-    public Response list_rule_engines(String token) throws IOException, InterruptedException {
+    public Response list_rule_engines(String token) {
 
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "list_rule_engines");
@@ -28,15 +29,12 @@ public class RuleOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response execute(String token, String ruleText, String repInstance) throws IOException, InterruptedException {
+    public Response execute(String token, String ruleText, RuleExecuteParams params) {
 
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "execute");
         formData.put("rule-text", ruleText);
-        if (repInstance != null) {
-            formData.put("rep-instance", repInstance);
-        }
-
+        params.getRepInstance().ifPresent(val -> formData.put("rep-instance", val));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());

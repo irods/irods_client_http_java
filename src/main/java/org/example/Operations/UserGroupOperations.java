@@ -1,6 +1,8 @@
 package org.example.Operations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.Properties.UserGroup.UserGroupCreateUserParams;
+import org.example.Properties.UserGroup.UserGroupStatParams;
 import org.example.Wrapper;
 import org.example.Serialize.ModifyMetadataOperations;
 import org.example.Util.HttpRequestUtil;
@@ -22,16 +24,12 @@ public class UserGroupOperations {
         this.baseUrl = client.getBaseUrl() + "/users-groups";
     }
 
-    public Response create_user(String token, String name, String zone, String userType) {
+    public Response create_user(String token, String name, String zone, UserGroupCreateUserParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "create_user");
         formData.put("name", name);
         formData.put("zone", zone);
-        if (userType != null) {
-            formData.put("user-type", userType);
-        } else {
-            formData.put("user-type", "rodsuser"); // default
-        }
+        params.getUserType().ifPresent(val -> formData.put("user-type", val));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -139,13 +137,11 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response stat(String token, String name, String zone) {
+    public Response stat(String token, String name, UserGroupStatParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "stat");
         formData.put("name", name);
-        if (zone != null) {
-            formData.put("zone", zone);
-        }
+        params.getZone().ifPresent(val -> formData.put("zone", val));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
