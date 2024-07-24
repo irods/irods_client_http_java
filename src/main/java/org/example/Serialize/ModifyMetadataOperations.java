@@ -1,6 +1,8 @@
-package org.example.Mapper.Collections.Serialize;
+package org.example.Serialize;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * For the modify_metadata() method.
@@ -21,5 +23,15 @@ public class ModifyMetadataOperations {
         this.attribute = attribute;
         this.value = value;
         this.units = units;
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return "{ \"error\": \"Unable to serialize to JSON\" }";
+        }
     }
 }

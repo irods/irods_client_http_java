@@ -3,15 +3,11 @@ package org.example;
 import org.junit.Before;
 import org.junit.Test;
 import org.example.Util.Response;
-
 import static org.junit.Assert.*;
-
-
 public class WrapperTest {
     private static String baseUrl;
     private static Wrapper rods;
     private Response response;
-
     @Before
     public void setup() {
         String address = "52.91.145.195";
@@ -25,7 +21,6 @@ public class WrapperTest {
         response = rods.information().info();
         assertEquals(200, response.getHttpStatusCode());
     }
-
     @Test
     public void authenticate_valid() {
         response = rods.authenticate();
@@ -33,7 +28,6 @@ public class WrapperTest {
         assertEquals(response.getBody(), rods.getAuthToken());
 
     }
-
     @Test
     public void authenticate_invalid_user() {
         Wrapper test = new Wrapper(baseUrl, "test", "test");

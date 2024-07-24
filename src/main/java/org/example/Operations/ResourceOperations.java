@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Properties.Resource.ResourceAddChildParams;
 import org.example.Properties.Resource.ResourceCreateParams;
 import org.example.Wrapper;
-import org.example.Mapper.Serialize.ModifyMetadataOperations;
+import org.example.Serialize.ModifyMetadataOperations;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 

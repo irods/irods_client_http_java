@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Properties.DataObject.*;
 import org.example.Properties.DataObject.DataObjectModifyReplicaParams;
 import org.example.Wrapper;
-import org.example.Mapper.Serialize.ModifyMetadataOperations;
-import org.example.Mapper.Serialize.ModifyPermissionsOperations;
+import org.example.Serialize.ModifyMetadataOperations;
+import org.example.Serialize.ModifyPermissionsOperations;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 

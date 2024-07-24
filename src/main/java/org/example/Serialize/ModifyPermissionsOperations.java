@@ -1,4 +1,4 @@
-package org.example.Mapper.Serialize;
+package org.example.Serialize;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

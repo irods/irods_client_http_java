@@ -3,8 +3,8 @@ package org.example.Operations;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.example.Properties.Collection.*;
 import org.example.Wrapper;
-import org.example.Mapper.Serialize.ModifyMetadataOperations;
-import org.example.Mapper.Serialize.ModifyPermissionsOperations;
+import org.example.Serialize.ModifyMetadataOperations;
+import org.example.Serialize.ModifyPermissionsOperations;
 import org.example.Util.*;
 
 import java.io.IOException;
@@ -23,7 +23,6 @@ public class CollectionOperations {
 
     private final Wrapper client;
     private String baseUrl;
-
 
     public CollectionOperations(Wrapper client) {
         this.client = client;
@@ -77,7 +76,6 @@ public class CollectionOperations {
         CollectionsRemoveParams prop = new CollectionsRemoveParams();
         return this.remove(token, lpath, prop);
     }
-
 
     /**
      * Returns information about a collection
@@ -208,9 +206,7 @@ public class CollectionOperations {
         prop.getAdmin().ifPresent(val -> formData.put("admin", String.valueOf(val)));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
-
         return new Response(response.statusCode(), response.body());
-
     }
 
     public Response modify_metadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam) {
@@ -220,11 +216,10 @@ public class CollectionOperations {
 
     public Response rename(String token, String oldPath, String newPath)  {
         // contains parameters for the HTTP request
-        Map<Object, Object> formData = Map.of(
-                "op", "rename",
-                "old-lpath", oldPath,
-                "new-lpath", newPath
-        );
+        Map<Object, Object> formData = new HashMap<>();
+        formData.put("op", "rename");
+        formData.put("old-lpath", oldPath);
+        formData.put("new-lpath", newPath);
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -242,13 +237,8 @@ public class CollectionOperations {
 
         return new Response(response.statusCode(), response.body());
     }
-
     public Response touch(String token, String lpath) {
         CollectionsTouchParams prop = new CollectionsTouchParams();
         return this.touch(token, lpath, prop);
     }
 }
-
-
-
-
