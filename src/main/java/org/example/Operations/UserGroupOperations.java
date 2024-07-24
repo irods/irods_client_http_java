@@ -2,7 +2,7 @@ package org.example.Operations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Wrapper;
-import org.example.Mapper.Serialize.ModifyMetadataOperations;
+import org.example.Serialize.ModifyMetadataOperations;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.IrodsException;
 import org.example.Util.Response;
@@ -16,7 +16,6 @@ import java.util.Map;
 public class UserGroupOperations {
     private final Wrapper client;
     private String baseUrl;
-
 
     public UserGroupOperations(Wrapper client) {
         this.client = client;
@@ -168,6 +167,5 @@ public class UserGroupOperations {
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
 
         return new Response(response.statusCode(), response.body());
-
     }
 }
