@@ -53,7 +53,22 @@ public class CollectionOperations {
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
     }
-    public Response stat(String token, String lpath, Optional<String> ticket) {
+
+
+    public Response remove(String token, String lpath) {
+        CollectionsRemoveParams prop = new CollectionsRemoveParams();
+        return this.remove(token, lpath, prop);
+    }
+
+    /**
+     * Returns information about a collection
+     * @param lpath The logical path for the collection
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws IrodsException
+     */
+    public Response stat(String token, String lpath, CollectionsStatParams prop) {
+
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "stat");
@@ -156,6 +171,12 @@ public class CollectionOperations {
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
+
+    }
+
+    public Response modify_metadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam) {
+        CollectionsModifyMetadataParams prop = new CollectionsModifyMetadataParams();
+        return this.modify_metadata(token, lpath, jsonParam, prop);
     }
 
     public Response rename(String token, String oldPath, String newPath)  {
@@ -182,5 +203,10 @@ public class CollectionOperations {
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
 
         return new Response(response.statusCode(), response.body());
+    }
+
+    public Response touch(String token, String lpath) {
+        CollectionsTouchParams prop = new CollectionsTouchParams();
+        return this.touch(token, lpath, prop);
     }
 }
