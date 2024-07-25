@@ -2,7 +2,6 @@ package org.example.Operations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Properties.Resource.ResourceAddChildParams;
 import org.example.Properties.Resource.ResourceCreateParams;
 import org.example.Wrapper;
 import org.example.Serialize.ModifyMetadataOperations;
@@ -10,9 +9,7 @@ import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 
 import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ResourceOperations {
     private final Wrapper client;
@@ -23,27 +20,24 @@ public class ResourceOperations {
         this.baseUrl = client.getBaseUrl() + "/resources";
     }
 
-    public Response create(String token, String name, String type, ResourceCreateParams prop) {
+    public Response create(String token, String name, String type, ResourceCreateParams params) {
 
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "create");
         formData.put("name", name);
         formData.put("type", type);
-        prop.getHost().ifPresent(val -> formData.put("host", val));
-        prop.getVaultPath().ifPresent(val -> formData.put("vault-path", val));
-        prop.getContext().ifPresent(val -> formData.put("context", val));
+        if (params != null) {
+            params.getHost().ifPresent(val -> formData.put("host", val));
+            params.getVaultPath().ifPresent(val -> formData.put("vault-path", val));
+            params.getContext().ifPresent(val -> formData.put("context", val));
+
+        }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response create(String token, String name, String type) {
-        ResourceCreateParams prop = new ResourceCreateParams();
-        return this.create(token, name, type, prop);
-    }
-
     public Response remove(String token, String name)  {
-
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove");
         formData.put("name", name);
@@ -63,24 +57,20 @@ public class ResourceOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response add_child(String token, String parentName, String childName, ResourceAddChildParams prop) {
+    public Response add_child(String token, String parentName, String childName, Optional<String> context) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "add_child");
         formData.put("parent-name", parentName);
         formData.put("child-name", childName);
-        prop.getContext().ifPresent(val -> formData.put("context", val));
+        if (context.isPresent()) {
+            formData.put("context", context);
+        }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response add_child(String token, String parentName, String childName) {
-        ResourceAddChildParams prop = new ResourceAddChildParams();
-        return this.add_child(token, parentName, childName, prop);
-    }
-
     public Response remove_child(String token, String parentName, String childName) {
-
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove_child");
         formData.put("parent-name", parentName);
@@ -91,7 +81,6 @@ public class ResourceOperations {
     }
 
     public Response rebalance(String token, String name) {
-
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "rebalance");
         formData.put("name", name);
@@ -101,7 +90,6 @@ public class ResourceOperations {
     }
 
     public Response stat(String token, String name)  {
-
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "stat");
         formData.put("name", name);
@@ -130,7 +118,4 @@ public class ResourceOperations {
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
     }
-
-
-
 }
