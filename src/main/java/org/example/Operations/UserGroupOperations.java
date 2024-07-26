@@ -28,9 +28,7 @@ public class UserGroupOperations {
         formData.put("op", "create_user");
         formData.put("name", name);
         formData.put("zone", zone);
-        if (userType.isPresent()) {
-            formData.put("user-type", userType);
-        }
+        userType.ifPresent(val -> formData.put("user-type", val));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -142,9 +140,7 @@ public class UserGroupOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "stat");
         formData.put("name", name);
-        if (zone.isPresent()) {
-            formData.put("zone", zone);
-        }
+        zone.ifPresent(val -> formData.put("zone", val));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());

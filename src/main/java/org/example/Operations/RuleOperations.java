@@ -30,9 +30,7 @@ public class RuleOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "execute");
         formData.put("rule-text", ruleText);
-        if (repInstance.isPresent()) {
-            formData.put("rep-instance", repInstance);
-        }
+        repInstance.ifPresent(val -> formData.put("rep-instance", val));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());

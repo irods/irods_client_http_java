@@ -62,9 +62,7 @@ public class ResourceOperations {
         formData.put("op", "add_child");
         formData.put("parent-name", parentName);
         formData.put("child-name", childName);
-        if (context.isPresent()) {
-            formData.put("context", context);
-        }
+        context.ifPresent(val -> formData.put("context", val));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());

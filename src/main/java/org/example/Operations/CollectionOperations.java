@@ -33,7 +33,7 @@ public class CollectionOperations {
          formData.put("op", "create");
          formData.put("lpath", lpath);
          if (createIntermediates.isPresent()) {
-             formData.put("create-intermediates", String.valueOf(createIntermediates));
+             formData.put("create-intermediates", String.valueOf(createIntermediates.getAsInt()));
          }
 
          HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
@@ -67,15 +67,13 @@ public class CollectionOperations {
      * @throws InterruptedException
      * @throws IrodsException
      */
-    public Response stat(String token, String lpath, CollectionsStatParams prop) {
+    public Response stat(String token, String lpath, Optional<String> ticket) {
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "stat");
         formData.put("lpath", lpath);
-        if (ticket.isPresent()) {
-            formData.put("ticket", ticket);
-        }
+        ticket.ifPresent(val -> formData.put("ticket", val));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -106,7 +104,7 @@ public class CollectionOperations {
         formData.put("entity-name", entityName);
         formData.put("permission", permission.getValue());
         if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin));
+            formData.put("admin", String.valueOf(admin.getAsInt()));
         }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
@@ -122,7 +120,7 @@ public class CollectionOperations {
         formData.put("lpath", lpath);
         formData.put("enable", String.valueOf(enable));
         if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin));
+            formData.put("admin", String.valueOf(admin.getAsInt()));
         }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
@@ -142,7 +140,7 @@ public class CollectionOperations {
         formData.put("lpath", lpath);
         formData.put("operations", operationsJson);
         if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin));
+            formData.put("admin", String.valueOf(admin.getAsInt()));
         }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
@@ -166,17 +164,11 @@ public class CollectionOperations {
         formData.put("lpath", lpath);
         formData.put("operations", operationsJson);
         if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin));
+            formData.put("admin", String.valueOf(admin.getAsInt()));
         }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
-
-    }
-
-    public Response modify_metadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam) {
-        CollectionsModifyMetadataParams prop = new CollectionsModifyMetadataParams();
-        return this.modify_metadata(token, lpath, jsonParam, prop);
     }
 
     public Response rename(String token, String oldPath, String newPath)  {
