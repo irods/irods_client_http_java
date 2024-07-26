@@ -1,8 +1,6 @@
 package org.example.Operations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Properties.UserGroup.UserGroupCreateUserParams;
-import org.example.Properties.UserGroup.UserGroupStatParams;
 import org.example.Wrapper;
 import org.example.Serialize.ModifyMetadataOperations;
 import org.example.Util.HttpRequestUtil;
@@ -14,6 +12,7 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class UserGroupOperations {
     private final Wrapper client;
@@ -24,12 +23,14 @@ public class UserGroupOperations {
         this.baseUrl = client.getBaseUrl() + "/users-groups";
     }
 
-    public Response create_user(String token, String name, String zone, UserGroupCreateUserParams params) {
+    public Response create_user(String token, String name, String zone, Optional<String> userType) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "create_user");
         formData.put("name", name);
         formData.put("zone", zone);
-        params.getUserType().ifPresent(val -> formData.put("user-type", val));
+        if (userType.isPresent()) {
+            formData.put("user-type", userType);
+        }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -67,7 +68,7 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response create_group(String token, String name) throws IOException, InterruptedException {
+    public Response create_group(String token, String name) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "create_group");
         formData.put("name", name);
@@ -137,11 +138,13 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response stat(String token, String name, UserGroupStatParams params) {
+    public Response stat(String token, String name, Optional<String> zone) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "stat");
         formData.put("name", name);
-        params.getZone().ifPresent(val -> formData.put("zone", val));
+        if (zone.isPresent()) {
+            formData.put("zone", zone);
+        }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -161,7 +164,6 @@ public class UserGroupOperations {
         );
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
-
         return new Response(response.statusCode(), response.body());
     }
 }
