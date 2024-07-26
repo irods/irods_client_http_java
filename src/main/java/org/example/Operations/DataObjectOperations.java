@@ -94,9 +94,7 @@ public class DataObjectOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "stat");
         formData.put("lpath", lpath);
-        if (ticket.isPresent()) {
-            formData.put("ticket", ticket);
-        }
+        ticket.ifPresent(val -> formData.put("ticket", val));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -136,7 +134,7 @@ public class DataObjectOperations {
         formData.put("src-resource", srcResource);
         formData.put("dst-resource", dstResource);
         if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin));
+            formData.put("admin", String.valueOf(admin.getAsInt()));
         }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
@@ -288,7 +286,8 @@ public class DataObjectOperations {
         formData.put("lpath", lpath);
         formData.put("operations", operationsJson);
         if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin));
+            formData.put("admin", String.valueOf(admin.getAsInt())
+            );
         }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
@@ -304,7 +303,7 @@ public class DataObjectOperations {
         formData.put("entity-name", entityName);
         formData.put("permission", permission);
         if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin));
+            formData.put("admin", String.valueOf(admin.getAsInt()));
         }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
@@ -329,7 +328,7 @@ public class DataObjectOperations {
         formData.put("lpath", lpath);
         formData.put("operations", operationsJson);
         if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin));
+            formData.put("admin", String.valueOf(admin.getAsInt()));
         }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
