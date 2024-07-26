@@ -1,12 +1,10 @@
 package org.example.Operations;
 
-import org.example.Properties.DataObject.DataObjectReplicateParams;
 import org.example.Properties.Zone.ZoneAddParams;
 import org.example.Wrapper;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 
-import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +23,10 @@ public class ZoneOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "add");
         formData.put("name", name);
-        params.getConnectionInfo().ifPresent(val -> formData.put("connection-info", val));
-        params.getComment().ifPresent(val -> formData.put("comment", val));
+        if (params != null) {
+            params.getConnectionInfo().ifPresent(val -> formData.put("connection-info", val));
+            params.getComment().ifPresent(val -> formData.put("comment", val));
+        }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
