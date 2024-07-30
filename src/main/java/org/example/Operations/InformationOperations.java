@@ -23,7 +23,6 @@ public class InformationOperations {
      * @return Info objected parsed from the response JSON
      */
     public Response info() {
-
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl))
                 .build();

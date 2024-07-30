@@ -57,7 +57,7 @@ public class ResourceOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response add_child(String token, String parentName, String childName, Optional<String> context) {
+    public Response addChild(String token, String parentName, String childName, Optional<String> context) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "add_child");
         formData.put("parent-name", parentName);
@@ -68,7 +68,7 @@ public class ResourceOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response remove_child(String token, String parentName, String childName) {
+    public Response removeChild(String token, String parentName, String childName) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove_child");
         formData.put("parent-name", parentName);
@@ -96,7 +96,7 @@ public class ResourceOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response modify_metadata(String token, String name, List<ModifyMetadataOperations> jsonParam) {
+    public Response modifyMetadata(String token, String name, List<ModifyMetadataOperations> jsonParam) {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
         String operationsJson = null;

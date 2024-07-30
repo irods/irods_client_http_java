@@ -1,13 +1,11 @@
 package org.example.Operations;
 
-import org.example.Properties.DataObject.DataObjectTouchParams;
 import org.example.Properties.Query.QueryExecuteGenqueryParams;
 import org.example.Properties.Query.QueryExecuteSpecifcQueryParams;
 import org.example.Wrapper;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.net.http.HttpResponse;
@@ -24,7 +22,7 @@ public class QueryOperations {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/query";
     }
-    public Response execute_genquery(String token, String query, QueryExecuteGenqueryParams params)  {
+    public Response executeGenQuery(String token, String query, QueryExecuteGenqueryParams params)  {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "execute_genquery");
 
@@ -50,12 +48,7 @@ public class QueryOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response execute_genquery(String token, String query) {
-        QueryExecuteGenqueryParams params = new QueryExecuteGenqueryParams();
-        return this.execute_genquery(token, query, params);
-    }
-
-    public Response execute_specific_query(String token, String name, QueryExecuteSpecifcQueryParams params) {
+    public Response executeSpecificQuery(String token, String name, QueryExecuteSpecifcQueryParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "execute_specific_query");
         formData.put("name", name);
@@ -68,12 +61,7 @@ public class QueryOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response execute_specific_query(String token, String name) {
-        QueryExecuteSpecifcQueryParams param = new QueryExecuteSpecifcQueryParams();
-        return this.execute_specific_query(token, name, param);
-    }
-
-    public Response add_specific_query(String token, String name, String sql) {
+    public Response addSpecificQuery(String token, String name, String sql) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "add_specific_query");
         formData.put("name", name);
@@ -83,7 +71,7 @@ public class QueryOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response remove_specific_query(String token, String name) {
+    public Response removeSpecificQuery(String token, String name) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove_specific_query");
         formData.put("name", name);

@@ -18,7 +18,7 @@ public class RuleOperations {
         this.baseUrl = client.getBaseUrl() + "/rules";
     }
 
-    public Response list_rule_engines(String token) {
+    public Response listRuleEngines(String token) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "list_rule_engines");
 
@@ -36,7 +36,7 @@ public class RuleOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response remove_delay_rule(String token, int ruleId) {
+    public Response removeDelayRule(String token, int ruleId) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove_delay_rule");
         formData.put("rule-id", String.valueOf(ruleId));

@@ -53,12 +53,6 @@ public class CollectionOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-
-    public Response remove(String token, String lpath) {
-        CollectionsRemoveParams prop = new CollectionsRemoveParams();
-        return this.remove(token, lpath, prop);
-    }
-
     /**
      * Returns information about a collection
      * @param lpath The logical path for the collection
@@ -67,7 +61,6 @@ public class CollectionOperations {
      * @throws IrodsException
      */
     public Response stat(String token, String lpath, Optional<String> ticket) {
-
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "stat");
@@ -94,8 +87,8 @@ public class CollectionOperations {
     }
 
     // uses Permission enum for permission parameter
-    public Response set_permission(String token, String lpath, String entityName, Permission permission,
-                                   OptionalInt admin) {
+    public Response setPermission(String token, String lpath, String entityName, Permission permission,
+                                  OptionalInt admin) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "set_permission");
@@ -110,7 +103,7 @@ public class CollectionOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response set_inheritance(String token, String lpath, int enable, OptionalInt admin) {
+    public Response setInheritance(String token, String lpath, int enable, OptionalInt admin) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "set_inheritance");
@@ -123,8 +116,8 @@ public class CollectionOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response modify_permissions(String token, String lpath, List<ModifyPermissionsOperations> jsonParam,
-                                       OptionalInt admin) throws JsonProcessingException {
+    public Response modifyPermissions(String token, String lpath, List<ModifyPermissionsOperations> jsonParam,
+                                      OptionalInt admin) throws JsonProcessingException {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
         String operationsJson = mapper.writeValueAsString(jsonParam);
@@ -140,8 +133,8 @@ public class CollectionOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response modify_metadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam,
-                                    OptionalInt admin) {
+    public Response modifyMetadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam,
+                                   OptionalInt admin) {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
         String operationsJson = null;
@@ -186,10 +179,5 @@ public class CollectionOperations {
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
 
         return new Response(response.statusCode(), response.body());
-    }
-
-    public Response touch(String token, String lpath) {
-        CollectionsTouchParams prop = new CollectionsTouchParams();
-        return this.touch(token, lpath, prop);
     }
 }
