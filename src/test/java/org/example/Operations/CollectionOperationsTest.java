@@ -1,6 +1,5 @@
 package org.example.Operations;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Properties.Collection.CollectionsListParams;
@@ -13,18 +12,21 @@ import org.example.Util.Response;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class CollectionOperationsTest {
+
     private Wrapper rods;
-    private String token;
+    private String rodsToken;
+
     private Wrapper alice;
     private String aliceToken;
-    private Response res;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     @Before
     public void setup() {
         String address = "52.91.145.195";
@@ -36,80 +38,78 @@ public class CollectionOperationsTest {
         // Create client
         rods = new Wrapper(baseUrl, "rods", "rods");
         rods.authenticate();
-        token = rods.getAuthToken();
+        rodsToken = rods.getAuthToken();
 
         // Create alice user
-        rods.userGroupOperations().create_user(token, "alice", "tempZone", "rodsuser");
-        rods.userGroupOperations().set_password(token, "alice", "tempZone", "alicepass");
+        rods.userGroupOperations().create_user(rodsToken, "alice", "tempZone", "rodsuser");
+        rods.userGroupOperations().set_password(rodsToken, "alice", "tempZone", "alicepass");
         alice = new Wrapper(baseUrl, "alice", "alicepass");
         alice.authenticate();
         aliceToken = alice.getAuthToken();
 
-        resetPath(rods, token, "/tempZone/home/rods");
+        resetPath(rods, rodsToken, "/tempZone/home/rods");
     }
 
     @Test
     public void testCommonOperations() {
+        Response res;
         String collectionPath = "/tempZone/home/rods/common_ops";
 
         // Create a new Collection.
-        res = rods.collections().create(token, collectionPath, OptionalInt.empty());
+        res = rods.collections().create(rodsToken, collectionPath, OptionalInt.empty());
         assertEquals("Creating collection request failed", 200, res.getHttpStatusCode());
         assertEquals("Creating collection failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Stat the collection to show that it exists.
-        res = rods.collections().stat(token, collectionPath, Optional.empty());
+        res = rods.collections().stat(rodsToken, collectionPath, Optional.empty());
         assertEquals("Stat request failed", 200, res.getHttpStatusCode());
         assertEquals("Stat failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Rename the collection.
         String newCollectionPath = collectionPath + ".renamed";
-        res = rods.collections().rename(token, collectionPath, newCollectionPath);
+        res = rods.collections().rename(rodsToken, collectionPath, newCollectionPath);
         assertEquals("Renaming collections request failed", 200, res.getHttpStatusCode());
         assertEquals("Renaming collections failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Stat the original collection to show that it does not exist.
-        res = rods.collections().stat(token, collectionPath, Optional.empty());
+        res = rods.collections().stat(rodsToken, collectionPath, Optional.empty());
         assertEquals("Stat request failed", 200, res.getHttpStatusCode());
         assertEquals("Stat did not fail as expected", -170000,
                 getIrodsResponseStatusCode(res.getBody()));
         // -170000: NOT_A_COLLECTION
 
         // Stat the new collection to show that it does exist.
-        res = rods.collections().stat(token, newCollectionPath, Optional.empty());
+        res = rods.collections().stat(rodsToken, newCollectionPath, Optional.empty());
         assertEquals("Stat request failed", 200, res.getHttpStatusCode());
         assertEquals("Stat failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Give another user (alice) permission to read the object.
-        res = rods.collections().set_permission(token, newCollectionPath, "alice", Permission.READ,
+        res = rods.collections().set_permission(rodsToken, newCollectionPath, "alice", Permission.READ,
                 OptionalInt.empty());
         assertEquals("Setting permission request failed", 200, res.getHttpStatusCode());
         assertEquals("Setting permission failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Show that the alice user now has read permission on the collection.
-        res = rods.collections().stat(token, newCollectionPath, Optional.empty());
-        assertEquals("Stat request failed", 200, res.getHttpStatusCode());
+        Response statRes = rods.collections().stat(rodsToken, newCollectionPath, Optional.empty());
+        assertEquals("Stat request failed", 200, statRes.getHttpStatusCode());
         assertEquals("Stat failed", 0,
-                getIrodsResponseStatusCode(res.getBody()));
+                getIrodsResponseStatusCode(statRes.getBody()));
 
-        JsonNode rootNode;
-        try {
-            rootNode = mapper.readTree(res.getBody());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(statRes.getBody()),
+                "JsonProcessingException was thrown");
+
         JsonNode permissionsNode = rootNode.path("permissions");
         boolean permissionExists = false;
         for (JsonNode permission : permissionsNode) {
-            if (permission.path("name").asText().equals("alice") &&
-                    permission.path("perm").asText().equals("read_object") &&
-                    permission.path("type").asText().equals("rodsuser") &&
-                    permission.path("zone").asText().equals("tempZone")) {
+            if ("alice".equals(permission.path("name").asText()) &&
+                    "read_object".equals(permission.path("perm").asText()) &&
+                    "rodsuser".equals(permission.path("type").asText()) &&
+                    "tempZone".equals(permission.path("zone").asText())) {
                 permissionExists = true;
                 break;
             }
@@ -117,13 +117,13 @@ public class CollectionOperationsTest {
         assertTrue("Permission with specified attributes does not exist.", permissionExists);
 
         // Remove the collection.
-        res = rods.collections().remove(token, newCollectionPath, null);
+        res = rods.collections().remove(rodsToken, newCollectionPath, null);
         assertEquals("Removing collection request failed", 200, res.getHttpStatusCode());
         assertEquals("Removing collection failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Stat the original collection to show that it does not exist.
-        res = rods.collections().stat(token, newCollectionPath, Optional.empty());
+        res = rods.collections().stat(rodsToken, newCollectionPath, Optional.empty());
         assertEquals("Stat request failed", 200, res.getHttpStatusCode());
         assertEquals("Stat did not fail as expected", -170000,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -132,6 +132,7 @@ public class CollectionOperationsTest {
 
     @Test
     public void testListOperation() {
+        Response res;
         String homeCollection = "/tempZone/home/alice";
 
         // Created nested collections
@@ -155,34 +156,28 @@ public class CollectionOperationsTest {
         }
 
         // List only the contents of the home collection.
-        res = alice.collections().list(aliceToken, homeCollection, null);
-        assertEquals("Listing collections request failed", 200, res.getHttpStatusCode());
-        String entry = null;
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            entry = rootNode.path("entries").get(0).asText();
+        Response listRes = alice.collections().list(aliceToken, homeCollection, null);
+        assertEquals("Listing collections request failed", 200, listRes.getHttpStatusCode());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(listRes.getBody()),
+                "JsonProcessingException was thrown");
+        String entry = rootNode.path("entries").get(0).asText();
         assertEquals("/tempZone/home/alice/c0", entry);
 
         // List the home collection recursively.
         CollectionsListParams listParams = new CollectionsListParams();
         listParams.setRecurse(1);
-        res = alice.collections().list(aliceToken, homeCollection, listParams);
+        Response listRes2 = alice.collections().list(aliceToken, homeCollection, listParams);
         List<String> actualEntries = new ArrayList<>();
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            JsonNode entriesNode = rootNode.path("entries");
 
-            for (JsonNode node : entriesNode) {
-                actualEntries.add(node.asText());
-            }
-            Collections.sort(actualEntries);
-        } catch (Exception e) {
-            e.printStackTrace();
+        rootNode = assertDoesNotThrow(() -> mapper.readTree(listRes2.getBody()),
+                "JsonProcessingException was thrown");
+        JsonNode entriesNode = rootNode.path("entries");
+
+        for (JsonNode node : entriesNode) {
+            actualEntries.add(node.asText());
         }
+        Collections.sort(actualEntries);
 
         List<String> expectedEntries = new ArrayList<>();
         expectedEntries.add("/tempZone/home/alice/c0");
@@ -193,7 +188,6 @@ public class CollectionOperationsTest {
         expectedEntries.add("/tempZone/home/alice/c0/d0");
         Collections.sort(expectedEntries);
         assertEquals(expectedEntries, actualEntries);
-
 
         // Remove collections
         CollectionsRemoveParams removeParams = new CollectionsRemoveParams();
@@ -207,6 +201,7 @@ public class CollectionOperationsTest {
 
     @Test
     public void testModifyingMetadataAtomically() {
+        Response res;
         String collection = "/tempZone/home/alice";
 
         // Add metadata to the collection.
@@ -220,19 +215,15 @@ public class CollectionOperationsTest {
         // Show the metadata exists on the collection.
         String query = "select COLL_NAME where META_COLL_ATTR_NAME = 'a1' and META_COLL_ATTR_VALUE = 'v1' and " +
                 "META_COLL_ATTR_UNITS = 'u1'";
-        res = alice.queryOperations().execute_genquery(aliceToken, query, null);
-        assertEquals("Executing genquery request failed", 200, res.getHttpStatusCode());
+        Response queryRes = alice.queryOperations().execute_genquery(aliceToken, query, null);
+        assertEquals("Executing genquery request failed", 200, queryRes.getHttpStatusCode());
         assertEquals("Executing genquery failed", 0,
-                getIrodsResponseStatusCode(res.getBody()));
+                getIrodsResponseStatusCode(queryRes.getBody()));
 
-        String firstRowFirstCol = null;
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            JsonNode rowsNode = rootNode.path("rows");
-            firstRowFirstCol = rowsNode.get(0).get(0).asText();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(queryRes.getBody()),
+                "JsonProcessingException was thrown");
+        JsonNode rowsNode = rootNode.path("rows");
+        String firstRowFirstCol = rowsNode.get(0).get(0).asText();
         assertEquals(collection, firstRowFirstCol);
 
         // Remove the metadata from the collection.
@@ -245,57 +236,55 @@ public class CollectionOperationsTest {
 
         // Show the metadata no longer exists on the collection.
         // Same query as before
-        res = alice.queryOperations().execute_genquery(aliceToken, query, null);
-        assertEquals("Executing genquery request failed", 200, res.getHttpStatusCode());
+        Response queryRes2 = alice.queryOperations().execute_genquery(aliceToken, query, null);
+        assertEquals("Executing genquery request failed", 200, queryRes2.getHttpStatusCode());
         assertEquals("Executing genquery failed", 0,
-                getIrodsResponseStatusCode(res.getBody()));
-        int rowsLength = -1;
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            rowsLength = rootNode.path("rows").size();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                getIrodsResponseStatusCode(queryRes2.getBody()));
+        rootNode = assertDoesNotThrow(() -> mapper.readTree(queryRes2.getBody()),
+                "JsonProcessingException was thrown");
+        int rowsLength = rootNode.path("rows").size();
         assertEquals(0, rowsLength);
     }
 
     @Test
-    public void testModifyingPermissionsAtomically() throws JsonProcessingException {
+    public void testModifyingPermissionsAtomically() {
+        Response res;
         String collection = "/tempZone/home/alice";
 
         // Give the rodsadmin read permission on the rodsuser's home collection.
         List<ModifyPermissionsOperations> operation = new ArrayList<>();
         operation.add(new ModifyPermissionsOperations("rods", "read"));
-        res = alice.collections().modify_permissions(aliceToken, collection, operation, OptionalInt.empty());
+        res = assertDoesNotThrow(() ->
+                alice.collections().modify_permissions(aliceToken, collection, operation, OptionalInt.empty()),
+                "JsonProcessingException was thrown"
+        );
+
         assertEquals("Modifying permissions on collection request failed", 200, res.getHttpStatusCode());
         assertEquals("Modifying permissions on collection failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Show the rodsadmin now has permission to read the collection
-        res = alice.collections().stat(aliceToken, collection, Optional.empty());
-        assertEquals("Stat on collection request failed", 200, res.getHttpStatusCode());
+        Response statRes = alice.collections().stat(aliceToken, collection, Optional.empty());
+        assertEquals("Stat on collection request failed", 200, statRes.getHttpStatusCode());
         assertEquals("Stat on collection failed", 0,
-                getIrodsResponseStatusCode(res.getBody()));
+                getIrodsResponseStatusCode(statRes.getBody()));
+
         String name = null;
         String zone = null;
         String type = null;
         String perm = null;
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            JsonNode permissionsNode = rootNode.path("permissions");
-
-            Iterator<JsonNode> elements = permissionsNode.elements();
-            while (elements.hasNext()) {
-                JsonNode element = elements.next();
-                name = element.path("name").asText();
-                if (name.equals("rods")) {
-                    zone = element.path("zone").asText();
-                    type = element.path("type").asText();
-                    perm = element.path("perm").asText();
-                }
+        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(statRes.getBody()),
+                "JsonProcessingException was thrown");
+        JsonNode permissionsNode = rootNode.path("permissions");
+        Iterator<JsonNode> elements = permissionsNode.elements();
+        while (elements.hasNext()) {
+            JsonNode element = elements.next();
+            name = element.path("name").asText();
+            if (name.equals("rods")) {
+                zone = element.path("zone").asText();
+                type = element.path("type").asText();
+                perm = element.path("perm").asText();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         assertEquals("rods", name);
         assertEquals("tempZone", zone);
@@ -305,58 +294,49 @@ public class CollectionOperationsTest {
         // Remove rodsadmin's permission on the collection.
         List<ModifyPermissionsOperations> operation2 = new ArrayList<>();
         operation2.add(new ModifyPermissionsOperations("rods", "null"));
-        res = alice.collections().modify_permissions(aliceToken, collection, operation2, OptionalInt.empty());
+        res = assertDoesNotThrow(() ->
+                        alice.collections().modify_permissions(aliceToken, collection, operation2, OptionalInt.empty()),
+                "JsonProcessingException was thrown"
+        );
+
         assertEquals("Modifying permissions on collection request failed", 200, res.getHttpStatusCode());
         assertEquals("Modifying permissions on collection failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Show the permissions have been removed.
-        res = alice.collections().stat(aliceToken, collection, Optional.empty());
-        assertEquals("Stat on collection request failed", 200, res.getHttpStatusCode());
+        Response statRes2 = alice.collections().stat(aliceToken, collection, Optional.empty());
+        assertEquals("Stat on collection request failed", 200, statRes2.getHttpStatusCode());
         assertEquals("Stat on collection failed", 0,
-                getIrodsResponseStatusCode(res.getBody()));
-        int permissionArraySize = -1;
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            permissionArraySize = rootNode.path("permissions").size();
+                getIrodsResponseStatusCode(statRes2.getBody()));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        rootNode = assertDoesNotThrow(() -> mapper.readTree(statRes2.getBody()),
+                "JsonProcessingException was thrown");
+        int permissionArraySize = rootNode.path("permissions").size();
         assertEquals(1, permissionArraySize);
     }
 
     @Test
     public void testTouchOperationUpdatesMtime() {
+        Response res;
         String collection = "/tempZone/home/alice";
 
         // Get the mtime of the home collection.
         String query = "select COLL_MODIFY_TIME where COLL_NAME = '" + collection + "'";
-        res = alice.queryOperations().execute_genquery(aliceToken, query, null);
-        assertEquals("Execute genquery request failed", 200, res.getHttpStatusCode());
+        Response queryRes = alice.queryOperations().execute_genquery(aliceToken, query, null);
+        assertEquals("Execute genquery request failed", 200, queryRes.getHttpStatusCode());
         assertEquals("Execute genquery failed", 0,
-                getIrodsResponseStatusCode(res.getBody()));
+                getIrodsResponseStatusCode(queryRes.getBody()));
 
-        int rowsArraySize = -1;
-        int originamMtime = -1;
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            rowsArraySize = rootNode.path("rows").size();
-            originamMtime = rootNode.path("rows").get(0).get(0).asInt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(queryRes.getBody()),
+                "JsonProcessingException was thrown");
+        int rowsArraySize = rootNode.path("rows").size();
+        int originamMtime = rootNode.path("rows").get(0).get(0).asInt();
+
         assertEquals(1, rowsArraySize);
         assert(originamMtime > 0);
 
         // Sleep for a short period of time to guarantee a difference in the mtime.
-        try {
-            // Pause for 2 seconds (2000 milliseconds)
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            System.err.println("An interruption occurred while sleeping.");
-            e.printStackTrace();
-        }
+        assertDoesNotThrow(() -> Thread.sleep(2000), "An interruption occurred while sleeping.");
 
         // Update the mtime by calling touch.
         res =  alice.collections().touch(aliceToken, collection, null);
@@ -366,41 +346,34 @@ public class CollectionOperationsTest {
 
         // Show the mtime has been updated.
         // Same query as before.
-        res = alice.queryOperations().execute_genquery(aliceToken, query, null);
-        assertEquals("Execute genquery request failed", 200, res.getHttpStatusCode());
+        Response queryRes2 = alice.queryOperations().execute_genquery(aliceToken, query, null);
+        assertEquals("Execute genquery request failed", 200, queryRes2.getHttpStatusCode());
         assertEquals("Execute genquery failed", 0,
-                getIrodsResponseStatusCode(res.getBody()));
+                getIrodsResponseStatusCode(queryRes2.getBody()));
 
-        int newMtime = -1;
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            rowsArraySize = rootNode.path("rows").size();
-            newMtime = rootNode.path("rows").get(0).get(0).asInt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        rootNode = assertDoesNotThrow(() -> mapper.readTree(queryRes2.getBody()),
+                "JsonProcessingException was thrown");
+        rowsArraySize = rootNode.path("rows").size();
+        int newMtime = rootNode.path("rows").get(0).get(0).asInt();
         assertEquals(1, rowsArraySize);
         assert(newMtime > originamMtime);
     }
 
     @Test
     public void testEnablingAndDisablingInheritance() {
+        Response res;
         String collection = "/tempZone/home/alice";
 
         // Show inheritance is not enabled.
-        res = alice.collections().stat(aliceToken, collection, Optional.empty());
-        assertEquals("Stat on collection request failed", 200, res.getHttpStatusCode());
+        Response statRes = alice.collections().stat(aliceToken, collection, Optional.empty());
+        assertEquals("Stat on collection request failed", 200, statRes.getHttpStatusCode());
         assertEquals("Stat on collection failed", 0,
-                getIrodsResponseStatusCode(res.getBody()));
+                getIrodsResponseStatusCode(statRes.getBody()));
 
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            boolean inheritanceEnabled = rootNode.path("inheritance_enabled").asBoolean();
-            assertFalse(inheritanceEnabled);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Was unable to check if inheritance is disabled");
-        }
+        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(statRes.getBody()),
+                "JsonProcessingException was thrown");
+        boolean inheritanceEnabled = rootNode.path("inheritance_enabled").asBoolean();
+        assertFalse(inheritanceEnabled);
 
         // Enable inheritance.
         res = alice.collections().set_inheritance(aliceToken, collection, 1, OptionalInt.empty());
@@ -409,18 +382,14 @@ public class CollectionOperationsTest {
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Show inheritance is enabled.
-        res = alice.collections().stat(aliceToken, collection, Optional.empty());
-        assertEquals("Stat on collection request failed", 200, res.getHttpStatusCode());
+        Response statRes2 = alice.collections().stat(aliceToken, collection, Optional.empty());
+        assertEquals("Stat on collection request failed", 200, statRes2.getHttpStatusCode());
         assertEquals("Stat on collection failed", 0,
-                getIrodsResponseStatusCode(res.getBody()));
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            boolean inheritanceEnabled = rootNode.path("inheritance_enabled").asBoolean();
-            assertTrue(inheritanceEnabled);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Was unable to check if inheritance is enabled");
-        }
+                getIrodsResponseStatusCode(statRes2.getBody()));
+        rootNode = assertDoesNotThrow(() -> mapper.readTree(statRes2.getBody()),
+                "JsonProcessingException was thrown");
+        inheritanceEnabled = rootNode.path("inheritance_enabled").asBoolean();
+        assertTrue(inheritanceEnabled);
 
         // Disable inheritance.
         res = alice.collections().set_inheritance(aliceToken, collection, 0, OptionalInt.empty());
@@ -429,47 +398,35 @@ public class CollectionOperationsTest {
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Show inheritance is not enabled.
-                res = alice.collections().stat(aliceToken, collection, Optional.empty());
-        assertEquals("Stat on collection request failed", 200, res.getHttpStatusCode());
+        Response statRes3 = alice.collections().stat(aliceToken, collection, Optional.empty());
+        assertEquals("Stat on collection request failed", 200, statRes3.getHttpStatusCode());
         assertEquals("Stat on collection failed", 0,
-                getIrodsResponseStatusCode(res.getBody()));
+                getIrodsResponseStatusCode(statRes3.getBody()));
 
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            boolean inheritanceEnabled = rootNode.path("inheritance_enabled").asBoolean();
-            assertFalse(inheritanceEnabled);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Was unable to check if inheritance is disabled");
-        }
+        rootNode = assertDoesNotThrow(() -> mapper.readTree(statRes3.getBody()),
+                "JsonProcessingException was thrown");
+        inheritanceEnabled = rootNode.path("inheritance_enabled").asBoolean();
+        assertFalse(inheritanceEnabled);
     }
 
     private int getIrodsResponseStatusCode(String jsonString) {
-        try {
-            JsonNode rootNode = mapper.readTree(jsonString);
-
-            JsonNode statusCodeNode = rootNode.path("irods_response").path("status_code");
-            return statusCodeNode.asInt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
+        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(jsonString),
+                "JsonProcessingException was thrown");
+        JsonNode statusCodeNode = rootNode.path("irods_response").path("status_code");
+        return statusCodeNode.asInt();
     }
 
     private void resetPath(Wrapper wrapper, String token, String lpath) {
+        Response res;
         res = wrapper.collections().list(token, lpath, null);
 
         List<String> entries = new ArrayList<>();
-        try {
-            JsonNode rootNode = mapper.readTree(res.getBody());
-            JsonNode entriesNode = rootNode.path("entries");
+        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(res.getBody()),
+                "JsonProcessingException was thrown");
+        JsonNode entriesNode = rootNode.path("entries");
 
-            for (JsonNode node : entriesNode) {
-                entries.add(node.asText());
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (JsonNode node : entriesNode) {
+            entries.add(node.asText());
         }
 
         if (entries != null && !entries.isEmpty()) {
