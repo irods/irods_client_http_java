@@ -4,12 +4,12 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class DataObjectCalculateChecksumParams {
-    Optional<String> resource = Optional.empty();
-    OptionalInt replicaNum = OptionalInt.empty();
-    OptionalInt catalogOnly = OptionalInt.empty();
-    OptionalInt force = OptionalInt.empty();
-    OptionalInt all = OptionalInt.empty();
-    OptionalInt admin = OptionalInt.empty();
+    private Optional<String> resource = Optional.empty();
+    private OptionalInt replicaNum = OptionalInt.empty();
+    private OptionalInt catalogOnly = OptionalInt.empty();
+    private OptionalInt force = OptionalInt.empty();
+    private OptionalInt all = OptionalInt.empty();
+    private OptionalInt admin = OptionalInt.empty();
 
     public Optional<String> getResource() {
         return resource;

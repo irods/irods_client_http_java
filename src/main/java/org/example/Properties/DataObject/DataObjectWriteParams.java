@@ -4,12 +4,12 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class DataObjectWriteParams {
-    Optional<String> resource = Optional.empty();
-    OptionalInt offset = OptionalInt.empty();
-    OptionalInt truncate = OptionalInt.empty();
-    OptionalInt append = OptionalInt.empty();
-    Optional<String> parallelWriteHandle = Optional.empty();
-    OptionalInt streamIndex = OptionalInt.empty();
+    private Optional<String> resource = Optional.empty();
+    private OptionalInt offset = OptionalInt.empty();
+    private OptionalInt truncate = OptionalInt.empty();
+    private OptionalInt append = OptionalInt.empty();
+    private Optional<String> parallelWriteHandle = Optional.empty();
+    private OptionalInt streamIndex = OptionalInt.empty();
 
     public Optional<String> getResource() {
         return resource;

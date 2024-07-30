@@ -4,10 +4,10 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class DataObjectVerifyChecksumParams {
-    Optional<String> resource = Optional.empty();
-    OptionalInt replicaNum = OptionalInt.empty();
-    OptionalInt computeChecksums = OptionalInt.empty();
-    OptionalInt admin = OptionalInt.empty();
+    private Optional<String> resource = Optional.empty();
+    private OptionalInt replicaNum = OptionalInt.empty();
+    private OptionalInt computeChecksums = OptionalInt.empty();
+    private OptionalInt admin = OptionalInt.empty();
 
     public Optional<String> getResource() {
         return resource;

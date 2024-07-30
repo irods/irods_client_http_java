@@ -133,9 +133,7 @@ public class DataObjectOperations {
         formData.put("lpath", lpath);
         formData.put("src-resource", srcResource);
         formData.put("dst-resource", dstResource);
-        if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin.getAsInt()));
-        }
+        admin.ifPresent(val -> formData.put("admin", String.valueOf(val)));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -285,10 +283,7 @@ public class DataObjectOperations {
         formData.put("op", "modify_metadata");
         formData.put("lpath", lpath);
         formData.put("operations", operationsJson);
-        if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin.getAsInt())
-            );
-        }
+        admin.ifPresent(val -> formData.put("admin", String.valueOf(val)));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -302,9 +297,7 @@ public class DataObjectOperations {
         formData.put("lpath", lpath);
         formData.put("entity-name", entityName);
         formData.put("permission", permission);
-        if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin.getAsInt()));
-        }
+        admin.ifPresent(val -> formData.put("admin", String.valueOf(val)));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient());
@@ -327,9 +320,7 @@ public class DataObjectOperations {
         formData.put("op", "modify_permissions");
         formData.put("lpath", lpath);
         formData.put("operations", operationsJson);
-        if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin.getAsInt()));
-        }
+        admin.ifPresent(val -> formData.put("admin", String.valueOf(val)));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());

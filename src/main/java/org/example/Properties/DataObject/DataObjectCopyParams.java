@@ -4,9 +4,9 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class DataObjectCopyParams {
-    Optional<String> srcResource = Optional.empty();
-    Optional<String> dstResource = Optional.empty();
-    OptionalInt overwrite = OptionalInt.empty();
+    private Optional<String> srcResource = Optional.empty();
+    private Optional<String> dstResource = Optional.empty();
+    private OptionalInt overwrite = OptionalInt.empty();
 
     public Optional<String> getSrcResource() {
         return srcResource;

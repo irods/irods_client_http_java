@@ -4,22 +4,22 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class DataObjectModifyReplicaParams {
-    Optional<String> resourceHierarchy = Optional.empty();
-    OptionalInt replicaNum = OptionalInt.empty();
-    Optional<String> newDataChecksum =  Optional.empty();
-    Optional<String> newDataComments =  Optional.empty();
-    OptionalInt newDataCreateTime = OptionalInt.empty();
-    OptionalInt newDataExpiry = OptionalInt.empty();
-    Optional<String> newDataMode =  Optional.empty();
-    Optional<String> newDataModifyTime =  Optional.empty();
-    Optional<String> newDataPath =  Optional.empty();
-    OptionalInt newDataReplicaNum = OptionalInt.empty();
-    OptionalInt newDataRepliaStatus = OptionalInt.empty();
-    OptionalInt newDataResourceId = OptionalInt.empty();
-    OptionalInt newDataSize = OptionalInt.empty();
-    Optional<String> newDataStatus =  Optional.empty();
-    Optional<String> newDataTypeName =  Optional.empty();
-    Optional<String> newDataVersion =  Optional.empty();
+    private Optional<String> resourceHierarchy = Optional.empty();
+    private OptionalInt replicaNum = OptionalInt.empty();
+    private Optional<String> newDataChecksum =  Optional.empty();
+    private Optional<String> newDataComments =  Optional.empty();
+    private OptionalInt newDataCreateTime = OptionalInt.empty();
+    private OptionalInt newDataExpiry = OptionalInt.empty();
+    private Optional<String> newDataMode =  Optional.empty();
+    private Optional<String> newDataModifyTime =  Optional.empty();
+    private OptionalInt newDataReplicaNum = OptionalInt.empty();
+    private OptionalInt newDataRepliaStatus = OptionalInt.empty();
+    private OptionalInt newDataResourceId = OptionalInt.empty();
+    private OptionalInt newDataSize = OptionalInt.empty();
+    private Optional<String> newDataStatus =  Optional.empty();
+    private Optional<String> newDataTypeName =  Optional.empty();
+    private Optional<String> newDataVersion =  Optional.empty();
+    private Optional<String> newDataPath =  Optional.empty();
 
     public Optional<String> getResourceHierarchy() {
         return resourceHierarchy;
