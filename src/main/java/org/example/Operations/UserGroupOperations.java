@@ -23,7 +23,7 @@ public class UserGroupOperations {
         this.baseUrl = client.getBaseUrl() + "/users-groups";
     }
 
-    public Response create_user(String token, String name, String zone, Optional<String> userType) {
+    public Response createUser(String token, String name, String zone, Optional<String> userType) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "create_user");
         formData.put("name", name);
@@ -34,7 +34,7 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response remove_user(String token, String name, String zone)  {
+    public Response removeUser(String token, String name, String zone)  {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove_user");
         formData.put("name", name);
@@ -44,7 +44,7 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response set_password(String token, String name, String zone, String newPassword) {
+    public Response setPassword(String token, String name, String zone, String newPassword) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "set_password");
         formData.put("name", name);
@@ -55,7 +55,7 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response set_user_type(String token, String name, String zone, String newUserType) {
+    public Response setUserType(String token, String name, String zone, String newUserType) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "set_user_type");
         formData.put("name", name);
@@ -66,7 +66,7 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response create_group(String token, String name) {
+    public Response createGroup(String token, String name) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "create_group");
         formData.put("name", name);
@@ -75,7 +75,7 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response remove_group(String token, String name) throws IOException, InterruptedException {
+    public Response removeGroup(String token, String name) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove_group");
         formData.put("name", name);
@@ -84,8 +84,7 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response add_to_group(String token, String user, String zone, String group)
-            throws IOException, InterruptedException {
+    public Response addToGroup(String token, String user, String zone, String group) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "add_to_group");
         formData.put("user", user);
@@ -96,8 +95,7 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response remove_from_group(String token, String user, String zone, String group)
-            throws IOException, InterruptedException {
+    public Response removeFromGroup(String token, String user, String zone, String group) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove_from_group");
         formData.put("user", user);
@@ -116,7 +114,7 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response groups(String token) throws IOException, InterruptedException {
+    public Response groups(String token) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "groups");
 
@@ -124,8 +122,7 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response is_member_of_group(String token, String group, String user, String zone)
-            throws IOException, InterruptedException {
+    public Response isMemberOfGroup(String token, String group, String user, String zone)  {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "is_member_of_group");
         formData.put("group", group);
@@ -146,8 +143,8 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response modify_metadata(String token, String name, List<ModifyMetadataOperations> jsonParam)
-            throws IOException, InterruptedException, IrodsException {
+    public Response modifyMetadata(String token, String name, List<ModifyMetadataOperations> jsonParam)
+            throws IOException {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
         String operationsJson = mapper.writeValueAsString(jsonParam);

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Properties.DataObject.*;
 import org.example.Properties.DataObject.DataObjectModifyReplicaParams;
-import org.example.Util.Permission;
 import org.example.Wrapper;
 import org.example.Serialize.ModifyMetadataOperations;
 import org.example.Serialize.ModifyPermissionsOperations;
@@ -58,7 +57,7 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response calculate_checksum(String token, String lpath, DataObjectCalculateChecksumParams params) {
+    public Response calculateChecksum(String token, String lpath, DataObjectCalculateChecksumParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "calculate_checksum");
         formData.put("lpath", lpath);
@@ -74,7 +73,7 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response verify_checksum(String token, String lpath, DataObjectVerifyChecksumParams params) {
+    public Response verifyChecksum(String token, String lpath, DataObjectVerifyChecksumParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "verify_checksum");
         formData.put("lpath", lpath);
@@ -242,8 +241,8 @@ public class DataObjectOperations {
         sb.append(value + "\r\n");
     }
 
-    public Response parallel_write_init(String token, String lpath, int streamCount,
-                                        DataObjectParallelWriteInitParams params) {
+    public Response parallelWriteInit(String token, String lpath, int streamCount,
+                                      DataObjectParallelWriteInitParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "parallel_write_init");
         formData.put("lpath", lpath);
@@ -258,7 +257,7 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response parallel_write_shutdown(String token, String parallelWriteHandle) {
+    public Response parallelWriteShutdown(String token, String parallelWriteHandle) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "parallel_write_shutdown");
         formData.put("parallel-write-handle", parallelWriteHandle);
@@ -267,8 +266,8 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response modify_metadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam,
-                                    OptionalInt admin) {
+    public Response modifyMetadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam,
+                                   OptionalInt admin) {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
         String operationsJson = null;
@@ -289,8 +288,8 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response set_permission(String token, String lpath, String entityName, String permission,
-                                   OptionalInt admin) {
+    public Response setPermission(String token, String lpath, String entityName, String permission,
+                                  OptionalInt admin) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "set_permission");
@@ -304,8 +303,8 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response modify_permissions(String token, String lpath, List<ModifyPermissionsOperations> jsonParam,
-                                       OptionalInt admin) {
+    public Response modifyPermissions(String token, String lpath, List<ModifyPermissionsOperations> jsonParam,
+                                      OptionalInt admin) {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
         String operationsJson = null;
@@ -326,7 +325,7 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response modify_replica(String token, String lpath, DataObjectModifyReplicaParams params) {
+    public Response modifyReplica(String token, String lpath, DataObjectModifyReplicaParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "modify_replica");
         formData.put("lpath", lpath);

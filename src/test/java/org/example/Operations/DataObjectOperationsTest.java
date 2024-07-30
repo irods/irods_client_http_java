@@ -13,7 +13,6 @@ import org.example.Wrapper;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.swing.text.html.Option;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -111,7 +110,7 @@ public class DataObjectOperationsTest {
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Modify permissions on the data object
-        res = rods.dataObject().set_permission(token, lpath + ".copied", "alice",
+        res = rods.dataObject().setPermission(token, lpath + ".copied", "alice",
                 "read", OptionalInt.empty());
         assertEquals("Modifying permissions on the data object request failed", 200, res.getHttpStatusCode());
         assertEquals("Modifying permissions on the data object failed", 0,
@@ -186,7 +185,7 @@ public class DataObjectOperationsTest {
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Calculate checksums for each data object to show they are different.
-        res = alice.dataObject().calculate_checksum(aliceToken, data_object_a, null);
+        res = alice.dataObject().calculateChecksum(aliceToken, data_object_a, null);
         assertEquals("Calculating checksum for data object request failed", 200, res.getHttpStatusCode());
         assertEquals("Calculating checksum for data object failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -202,7 +201,7 @@ public class DataObjectOperationsTest {
         }
         assertEquals("Checksum did not match", expectedChecksum, actualChecksum);
 
-        res = alice.dataObject().calculate_checksum(aliceToken, data_object_b, null);
+        res = alice.dataObject().calculateChecksum(aliceToken, data_object_b, null);
         assertEquals("Calculating checksum for data object request failed", 200, res.getHttpStatusCode());
         assertEquals("Calculating checksum for data object failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -238,7 +237,7 @@ public class DataObjectOperationsTest {
         DataObjectCalculateChecksumParams prop2 = new DataObjectCalculateChecksumParams();
         prop2.setForce(1);
 
-        res = alice.dataObject().calculate_checksum(aliceToken, data_object_a, prop2);
+        res = alice.dataObject().calculateChecksum(aliceToken, data_object_a, prop2);
         assertEquals("Calculating checksum for data object request failed", 200, res.getHttpStatusCode());
         assertEquals("Calculating checksum for data object failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -253,7 +252,7 @@ public class DataObjectOperationsTest {
         }
         assertEquals("Checksum did not match", expectedChecksum, actualChecksum);
 
-        res = alice.dataObject().calculate_checksum(aliceToken, data_object_b, prop2);
+        res = alice.dataObject().calculateChecksum(aliceToken, data_object_b, prop2);
         assertEquals("Calculating checksum for data object request failed", 200, res.getHttpStatusCode());
         assertEquals("Calculating checksum for data object failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -307,7 +306,7 @@ public class DataObjectOperationsTest {
         // Calculate checksum
         DataObjectCalculateChecksumParams prop2 = new DataObjectCalculateChecksumParams();
         prop2.setReplicaNum(0);
-        res = rods.dataObject().calculate_checksum(token, data_object, prop2);
+        res = rods.dataObject().calculateChecksum(token, data_object, prop2);
         assertEquals("Calculating checksum for data object request failed", 200, res.getHttpStatusCode());
         assertEquals("Calculating checksum for data object failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -324,7 +323,7 @@ public class DataObjectOperationsTest {
         assertEquals("Checksum did not match", expectedChecksum, actualChecksum);
 
         // Verify checksum information
-        res = rods.dataObject().verify_checksum(token, data_object, null);
+        res = rods.dataObject().verifyChecksum(token, data_object, null);
         assertEquals("Verifying checksum for data object request failed", 200, res.getHttpStatusCode());
         assertEquals("Verifying checksum for data object failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -383,7 +382,7 @@ public class DataObjectOperationsTest {
         // Show a new data object exists with the expected replica information.
         String query = "select COLL_NAME, DATA_NAME, DATA_PATH, RESC_NAME where COLL_NAME = " +
                 "'" + dir_name + "' and DATA_NAME = '" + filename + "'";
-        res = rods.queryOperations().execute_genquery(token, query, null);
+        res = rods.queryOperations().executeGenQuery(token, query, null);
         assertEquals("execute_genquery request failed", 200, res.getHttpStatusCode());
         assertEquals("execute_genquery failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -397,7 +396,7 @@ public class DataObjectOperationsTest {
         // Tell the server we're about to do a parallel write.
         String data_object = "/tempZone/home/rods/parallel_write.txt";
 
-        res = rods.dataObject().parallel_write_init(token, data_object, 3, null);
+        res = rods.dataObject().parallelWriteInit(token, data_object, 3, null);
         assertEquals("parallel_write_init request failed", 200, res.getHttpStatusCode());
         assertEquals("parallel_write_init failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -452,7 +451,7 @@ public class DataObjectOperationsTest {
         executor.shutdown();
 
         // End the parallel write
-        res = rods.dataObject().parallel_write_shutdown(token, parallel_write_handle);
+        res = rods.dataObject().parallelWriteShutdown(token, parallel_write_handle);
         assertEquals("parallel_write_shutdown request failed", 200, res.getHttpStatusCode());
         assertEquals("parallel_write_shutdown failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -490,7 +489,7 @@ public class DataObjectOperationsTest {
         // Add metadata to the home data object
         List<ModifyMetadataOperations> jsonParam = new ArrayList<>();
         jsonParam.add(new ModifyMetadataOperations("add", "a1", "v1", "u1"));
-        res = rods.dataObject().modify_metadata(token, data_object, jsonParam, OptionalInt.empty());
+        res = rods.dataObject().modifyMetadata(token, data_object, jsonParam, OptionalInt.empty());
         assertEquals("adding metadata to data object request failed", 200, res.getHttpStatusCode());
         assertEquals("adding metadata to data object failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -498,7 +497,7 @@ public class DataObjectOperationsTest {
         // Show metadata exists on the data object.
         String query = "select COLL_NAME, DATA_NAME where META_DATA_ATTR_NAME = 'a1' and META_DATA_ATTR_VALUE = " +
                 "'v1' and META_DATA_ATTR_UNITS = 'u1'";
-        res = rods.queryOperations().execute_genquery(token, query, null);
+        res = rods.queryOperations().executeGenQuery(token, query, null);
         assertEquals("execute_genquery request failed", 200, res.getHttpStatusCode());
         assertEquals("execute_genquery failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -520,14 +519,14 @@ public class DataObjectOperationsTest {
         // Remove the metadata from the data object.
         List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
         jsonParam2.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
-        res = rods.dataObject().modify_metadata(token, data_object, jsonParam2, OptionalInt.empty());
+        res = rods.dataObject().modifyMetadata(token, data_object, jsonParam2, OptionalInt.empty());
         assertEquals("adding metadata to data object request failed", 200, res.getHttpStatusCode());
         assertEquals("adding metadata to data object failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Show the metadata no longer exists on the data object.
         query = "select COLL_NAME, DATA_NAME where META_DATA_ATTR_NAME = 'a1' and META_DATA_ATTR_VALUE = 'v1' and META_DATA_ATTR_UNITS = 'u1'";
-        res = rods.queryOperations().execute_genquery(token, query, null);
+        res = rods.queryOperations().executeGenQuery(token, query, null);
         assertEquals("execute_genquery request failed", 200, res.getHttpStatusCode());
         assertEquals("execute_genquery failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -553,7 +552,7 @@ public class DataObjectOperationsTest {
         // Give alice read permission on the data object.
         List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
         jsonParam.add(new ModifyPermissionsOperations("alice", "read"));
-        res = rods.dataObject().modify_permissions(token, data_object, jsonParam, OptionalInt.empty());
+        res = rods.dataObject().modifyPermissions(token, data_object, jsonParam, OptionalInt.empty());
         assertEquals("modifying permission request failed", 200, res.getHttpStatusCode());
         assertEquals("modifying permission failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -608,7 +607,7 @@ public class DataObjectOperationsTest {
                 "select DATA_REPL_STATUS, DATA_SIZE where COLL_NAME = '%s' and DATA_NAME = '%s'",
                 directoryName, fileName
         );
-        res = rods.queryOperations().execute_genquery(token, query, null);
+        res = rods.queryOperations().executeGenQuery(token, query, null);
         assertEquals("execute_genquery request failed", 200, res.getHttpStatusCode());
         assertEquals("execute_genquery failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -629,14 +628,14 @@ public class DataObjectOperationsTest {
         modifyParams.setReplicaNum(0);
         modifyParams.setNewDataRepliaStatus(0);
         modifyParams.setNewDataSize(15);
-        res = rods.dataObject().modify_replica(token, data_object, modifyParams);
+        res = rods.dataObject().modifyReplica(token, data_object, modifyParams);
         assertEquals("modify_replica request failed", 200, res.getHttpStatusCode());
         assertEquals("modify_replica failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Show the replica's status and size has changed in the catalog.
         // Same query as before
-        res = rods.queryOperations().execute_genquery(token, query, null);
+        res = rods.queryOperations().executeGenQuery(token, query, null);
         assertEquals("execute_genquery request failed", 200, res.getHttpStatusCode());
         assertEquals("execute_genquery failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
