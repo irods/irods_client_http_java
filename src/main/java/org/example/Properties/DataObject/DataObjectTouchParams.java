@@ -4,11 +4,11 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class DataObjectTouchParams {
-    OptionalInt noCreate = OptionalInt.empty();
-    OptionalInt replicaNum = OptionalInt.empty();
-    Optional<String> leafResource = Optional.empty();
-    OptionalInt secondsSinceEpoch = OptionalInt.empty();
-    Optional<String> reference = Optional.empty();
+    private OptionalInt noCreate = OptionalInt.empty();
+    private OptionalInt replicaNum = OptionalInt.empty();
+    private Optional<String> leafResource = Optional.empty();
+    private OptionalInt secondsSinceEpoch = OptionalInt.empty();
+    private Optional<String> reference = Optional.empty();
 
     public OptionalInt getNoCreate() {
         return noCreate;

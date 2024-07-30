@@ -3,8 +3,8 @@ package org.example.Properties.DataObject;
 import java.util.OptionalInt;
 
 public class DataObjectTrimParams {
-    OptionalInt catalogOnly = OptionalInt.empty();
-    OptionalInt admin = OptionalInt.empty();
+    private OptionalInt catalogOnly = OptionalInt.empty();
+    private OptionalInt admin = OptionalInt.empty();
 
     public OptionalInt getCatalogOnly() {
         return catalogOnly;

@@ -4,9 +4,9 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class DataObjectRegisterParams {
-    OptionalInt asAdditionalReplica = OptionalInt.empty();
-    OptionalInt dataSize = OptionalInt.empty();
-    Optional<String> checksum = Optional.empty();
+    private OptionalInt asAdditionalReplica = OptionalInt.empty();
+    private OptionalInt dataSize = OptionalInt.empty();
+    private Optional<String> checksum = Optional.empty();
 
     public OptionalInt getAsAdditionalReplica() {
         return asAdditionalReplica;

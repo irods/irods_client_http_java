@@ -4,14 +4,14 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class TicketCreateParams {
-    Optional<String> type = Optional.empty();
-    OptionalInt useCount = OptionalInt.empty();
-    OptionalInt writeDataObjectCount = OptionalInt.empty();
-    OptionalInt writeByteCount = OptionalInt.empty();
-    OptionalInt secondsUntilExpiration = OptionalInt.empty();
-    Optional<String> users = Optional.empty();
-    Optional<String> groups = Optional.empty();
-    Optional<String> hosts = Optional.empty();
+    private Optional<String> type = Optional.empty();
+    private OptionalInt useCount = OptionalInt.empty();
+    private OptionalInt writeDataObjectCount = OptionalInt.empty();
+    private OptionalInt writeByteCount = OptionalInt.empty();
+    private OptionalInt secondsUntilExpiration = OptionalInt.empty();
+    private Optional<String> users = Optional.empty();
+    private Optional<String> groups = Optional.empty();
+    private Optional<String> hosts = Optional.empty();
 
     public Optional<String> getType() {
         return type;

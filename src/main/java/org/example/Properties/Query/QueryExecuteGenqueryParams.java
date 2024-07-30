@@ -5,13 +5,13 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class QueryExecuteGenqueryParams {
-    OptionalInt offset = OptionalInt.empty();
-    OptionalInt count = OptionalInt.empty();
-    OptionalInt caseSensitive = OptionalInt.empty();
-    OptionalInt distinct = OptionalInt.empty();
-    Optional<String> parser = Optional.empty();
-    OptionalInt sqlOnly = OptionalInt.empty();
-    Optional<String> zone = Optional.empty();
+    private OptionalInt offset = OptionalInt.empty();
+    private OptionalInt count = OptionalInt.empty();
+    private OptionalInt caseSensitive = OptionalInt.empty();
+    private OptionalInt distinct = OptionalInt.empty();
+    private Optional<String> parser = Optional.empty();
+    private OptionalInt sqlOnly = OptionalInt.empty();
+    private Optional<String> zone = Optional.empty();
 
     public OptionalInt getOffset() {
         return offset;

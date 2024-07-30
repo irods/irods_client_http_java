@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class CollectionsListParams {
-    OptionalInt recurse = OptionalInt.empty();
-    Optional<String> ticket = Optional.empty();
+    private OptionalInt recurse = OptionalInt.empty();
+    private Optional<String> ticket = Optional.empty();
 
     public OptionalInt getRecurse() {
         return recurse;

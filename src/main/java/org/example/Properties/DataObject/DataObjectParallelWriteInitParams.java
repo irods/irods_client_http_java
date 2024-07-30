@@ -4,9 +4,9 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class DataObjectParallelWriteInitParams {
-    OptionalInt truncate = OptionalInt.empty();
-    OptionalInt append = OptionalInt.empty();
-    Optional<String> ticket = Optional.empty();
+    private OptionalInt truncate = OptionalInt.empty();
+    private OptionalInt append = OptionalInt.empty();
+    private Optional<String> ticket = Optional.empty();
 
     public OptionalInt getTruncate() {
         return truncate;

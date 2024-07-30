@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class CollectionsTouchParams {
-    OptionalInt secondsSinceEpoch = OptionalInt.empty();
-    Optional<String> reference = Optional.empty();
+    private OptionalInt secondsSinceEpoch = OptionalInt.empty();
+    private Optional<String> reference = Optional.empty();
 
     public OptionalInt getSecondsSinceEpoch() {
         return secondsSinceEpoch;

@@ -3,9 +3,9 @@ package org.example.Properties.Resource;
 import java.util.Optional;
 
 public class ResourceCreateParams {
-    Optional<String> host = Optional.empty();
-    Optional<String> vaultPath = Optional.empty();
-    Optional<String> context = Optional.empty();
+    private Optional<String> host = Optional.empty();
+    private Optional<String> vaultPath = Optional.empty();
+    private Optional<String> context = Optional.empty();
 
     public Optional<String> getHost() {
         return host;

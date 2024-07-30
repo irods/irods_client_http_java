@@ -3,8 +3,8 @@ package org.example.Properties.Zone;
 import java.util.Optional;
 
 public class ZoneAddParams {
-    Optional<String> connectionInfo = Optional.empty();
-    Optional<String> comment = Optional.empty();
+    private Optional<String> connectionInfo = Optional.empty();
+    private Optional<String> comment = Optional.empty();
 
     public Optional<String> getConnectionInfo() {
         return connectionInfo;

@@ -3,8 +3,8 @@ package org.example.Properties.DataObject;
 import java.util.OptionalInt;
 
 public class DataObjectRemoveParams {
-    OptionalInt noTrash = OptionalInt.empty();
-    OptionalInt admin = OptionalInt.empty();
+    private  OptionalInt noTrash = OptionalInt.empty();
+    private OptionalInt admin = OptionalInt.empty();
 
     public OptionalInt getNoTrash() {
         return noTrash;

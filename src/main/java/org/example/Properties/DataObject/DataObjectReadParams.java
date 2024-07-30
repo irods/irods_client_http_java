@@ -4,9 +4,9 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class DataObjectReadParams {
-    OptionalInt offset = OptionalInt.empty();
-    OptionalInt count = OptionalInt.empty();
-    Optional<String> ticket = Optional.empty();
+    private OptionalInt offset = OptionalInt.empty();
+    private OptionalInt count = OptionalInt.empty();
+    private Optional<String> ticket = Optional.empty();
 
     public OptionalInt getOffset() {
         return offset;

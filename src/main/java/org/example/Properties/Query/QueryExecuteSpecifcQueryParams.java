@@ -5,10 +5,10 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class QueryExecuteSpecifcQueryParams {
-    Optional<String> args = Optional.empty();
-    Optional<String> argsDelimiter = Optional.empty();
-    OptionalInt offset = OptionalInt.empty();
-    OptionalInt count = OptionalInt.empty();
+    private Optional<String> args = Optional.empty();
+    private Optional<String> argsDelimiter = Optional.empty();
+    private OptionalInt offset = OptionalInt.empty();
+    private OptionalInt count = OptionalInt.empty();
 
     public Optional<String> getArgs() {
         return args;

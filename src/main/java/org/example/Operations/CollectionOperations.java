@@ -32,9 +32,7 @@ public class CollectionOperations {
          Map<Object, Object> formData = new HashMap<>();
          formData.put("op", "create");
          formData.put("lpath", lpath);
-         if (createIntermediates.isPresent()) {
-             formData.put("create-intermediates", String.valueOf(createIntermediates.getAsInt()));
-         }
+         createIntermediates.ifPresent(val -> formData.put("create-intermediates", String.valueOf(val)));
 
          HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
          return new Response(response.statusCode(), response.body());
@@ -103,9 +101,7 @@ public class CollectionOperations {
         formData.put("lpath", lpath);
         formData.put("entity-name", entityName);
         formData.put("permission", permission.getValue());
-        if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin.getAsInt()));
-        }
+        admin.ifPresent(val -> formData.put("admin", String.valueOf(val)));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token,
                 client.getClient());
@@ -119,9 +115,7 @@ public class CollectionOperations {
         formData.put("op", "set_inheritance");
         formData.put("lpath", lpath);
         formData.put("enable", String.valueOf(enable));
-        if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin.getAsInt()));
-        }
+        admin.ifPresent(val -> formData.put("admin", String.valueOf(val)));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
 
@@ -139,9 +133,7 @@ public class CollectionOperations {
         formData.put("op", "modify_permissions");
         formData.put("lpath", lpath);
         formData.put("operations", operationsJson);
-        if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin.getAsInt()));
-        }
+        admin.ifPresent(val -> formData.put("admin", String.valueOf(val)));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -163,9 +155,7 @@ public class CollectionOperations {
         formData.put("op", "modify_metadata");
         formData.put("lpath", lpath);
         formData.put("operations", operationsJson);
-        if (admin.isPresent()) {
-            formData.put("admin", String.valueOf(admin.getAsInt()));
-        }
+        admin.ifPresent(val -> formData.put("admin", String.valueOf(val)));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
