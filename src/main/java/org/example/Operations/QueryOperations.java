@@ -6,12 +6,16 @@ import org.example.Wrapper;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
+import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class QueryOperations {
     private final Wrapper client;
@@ -52,10 +56,12 @@ public class QueryOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "execute_specific_query");
         formData.put("name", name);
-        params.getArgs().ifPresent(val -> formData.put("args", val));
-        params.getArgsDelimiter().ifPresent(val -> formData.put("args-delimiter", val));
-        params.getOffset().ifPresent(val -> formData.put("offset", String.valueOf(val)));
-        params.getCount().ifPresent(val -> formData.put("count", String.valueOf(val)));
+        if (params != null) {
+            params.getArgs().ifPresent(val -> formData.put("args", val));
+            params.getArgsDelimiter().ifPresent(val -> formData.put("args-delimiter", val));
+            params.getOffset().ifPresent(val -> formData.put("offset", String.valueOf(val)));
+            params.getCount().ifPresent(val -> formData.put("count", String.valueOf(val)));
+        }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParseGET(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -65,12 +71,18 @@ public class QueryOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "add_specific_query");
         formData.put("name", name);
-        formData.put("sql", sql);
+
+        // need to URL encode the spaces in the query to prevent illegal characters in the query
+        try {
+            String encodedSql = URLEncoder.encode(sql, StandardCharsets.UTF_8.toString());
+            formData.put("sql", encodedSql);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
     }
-
     public Response removeSpecificQuery(String token, String name) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove_specific_query");
