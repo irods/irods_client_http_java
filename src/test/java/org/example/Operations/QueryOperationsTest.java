@@ -28,8 +28,9 @@ public class QueryOperationsTest {
     private String bobToken;
 
     private String host;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
     private static final Logger logger = LogManager.getLogger(QueryOperationsTest.class);
+
     @Before
     public void setup() {
         host = "52.91.145.195";
@@ -47,19 +48,10 @@ public class QueryOperationsTest {
         alice = new Wrapper(baseUrl, "alice", "alicepass");
         alice.authenticate();
         aliceToken = alice.getAuthToken();
-
-        //TODO: may not need
-
-        // Create user with groupadmin status
-        rods.userGroupOperations().createUser(rodsToken, "bob", "tempZone", Optional.of("groupadmin"));
-        rods.userGroupOperations().setPassword(rodsToken, "bob", "tempZone", "bobpass");
-        bob = new Wrapper(baseUrl, "bob", "bobpass");
-        bob.authenticate();
-        bobToken = bob.getAuthToken();
     }
 
     @Test
-    public void testSupportForGenquery1() {
+    public void testSupportForGenQuery1() {
         String query = "select COLL_NAME";
         QueryExecuteGenqueryParams params = new QueryExecuteGenqueryParams();
         params.setParser("genquery1");

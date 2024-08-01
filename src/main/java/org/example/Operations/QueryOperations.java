@@ -56,7 +56,7 @@ public class QueryOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "execute_specific_query");
         formData.put("name", name);
-        if (params != null) {
+        if (null != params) {
             params.getArgs().ifPresent(val -> formData.put("args", val));
             params.getArgsDelimiter().ifPresent(val -> formData.put("args-delimiter", val));
             params.getOffset().ifPresent(val -> formData.put("offset", String.valueOf(val)));
