@@ -11,7 +11,6 @@ import org.example.Util.Response;
 import org.example.Wrapper;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -23,9 +22,6 @@ public class QueryOperationsTest {
 
     private Wrapper alice;
     private String aliceToken;
-
-    private Wrapper bob;
-    private String bobToken;
 
     private String host;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -88,7 +84,7 @@ public class QueryOperationsTest {
         String sql = "select token_id from R_TOKN_MAIN where token_name = 'rodsgroup'";
 
         // Show that rodsusers are NOT allowed to add specific queries.
-        res = rods.queryOperations().addSpecificQuery(aliceToken, specificQueryName, sql);
+        res = assertDoesNotThrow(() -> rods.queryOperations().addSpecificQuery(aliceToken, specificQueryName, sql));
         logger.debug(res.getBody());
         assertEquals("Adding specific query request failed", 200, res.getHttpStatusCode());
         // ierror code of -13000: SYS_NO_API_PRIV
@@ -97,7 +93,7 @@ public class QueryOperationsTest {
 
         try {
             // Show that only rodsadmin are allowed to add specific queries.
-            res = rods.queryOperations().addSpecificQuery(rodsToken, specificQueryName, sql);
+            res = assertDoesNotThrow(() -> rods.queryOperations().addSpecificQuery(rodsToken, specificQueryName, sql));
             logger.debug(res.getBody());
             assertEquals("Adding specific query request failed", 200, res.getHttpStatusCode());
             assertEquals("Adding specific query failed",0,
