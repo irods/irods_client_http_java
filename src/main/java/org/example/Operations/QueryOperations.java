@@ -67,18 +67,14 @@ public class QueryOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response addSpecificQuery(String token, String name, String sql) {
+    public Response addSpecificQuery(String token, String name, String sql) throws UnsupportedEncodingException {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "add_specific_query");
         formData.put("name", name);
 
         // need to URL encode the spaces in the query to prevent illegal characters in the query
-        try {
-            String encodedSql = URLEncoder.encode(sql, StandardCharsets.UTF_8.toString());
-            formData.put("sql", encodedSql);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        String encodedSql = URLEncoder.encode(sql, StandardCharsets.UTF_8.toString());
+        formData.put("sql", encodedSql);
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());

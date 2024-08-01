@@ -39,13 +39,11 @@ public class HttpRequestUtil {
                 .build();
 
         // sending request
-        HttpResponse<String> response;
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return response;
     }
 
     /**
@@ -73,12 +71,10 @@ public class HttpRequestUtil {
                 .build();
 
         // sending request
-        HttpResponse<String> response;
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return response;
     }
 }
