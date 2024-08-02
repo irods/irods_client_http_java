@@ -2,13 +2,8 @@ package org.example.Operations;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Properties.Collection.CollectionsListParams;
-import org.example.Properties.Collection.CollectionsRemoveParams;
 import org.example.Properties.DataObject.DataObjectRemoveParams;
 import org.example.Properties.Ticket.TicketCreateParams;
-import org.example.Serialize.ModifyMetadataOperations;
-import org.example.Serialize.ModifyPermissionsOperations;
-import org.example.Util.Permission;
 import org.example.Wrapper;
 import org.example.Util.Response;
 import org.junit.Before;
