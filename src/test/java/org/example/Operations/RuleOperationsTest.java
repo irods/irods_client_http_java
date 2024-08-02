@@ -1,0 +1,101 @@
+package org.example.Operations;
+
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.Wrapper;
+import org.example.Util.Response;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+public class RuleOperationsTest {
+    private Wrapper rods;
+    private String rodsToken;
+
+    private Wrapper alice;
+    private String aliceToken;
+
+    private final ObjectMapper mapper = new ObjectMapper();
+    // private static final Logger logger = LogManager.getLogger(QueryOperationsTest.class);
+
+
+    @Before
+    public void setup() {
+        String address = "52.91.145.195";
+        String port = "8888";
+        String version = "0.3.0";
+
+        String baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
+
+        // Create client
+        rods = new Wrapper(baseUrl, "rods", "rods");
+        rods.authenticate();
+        rodsToken = rods.getAuthToken();
+
+        // Create alice user
+        rods.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
+        rods.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
+        alice = new Wrapper(baseUrl, "alice", "alicepass");
+        alice.authenticate();
+        aliceToken = alice.getAuthToken();
+    }
+
+    @Test
+    public void testListAllRuleEnginePlugins() {
+        Response res = rods.ruleOperations().listRuleEngines(rodsToken);
+        // logger.debug(res.getBody());
+        assertEquals("Listing rule engines request failed", 200, res.getHttpStatusCode());
+        assertEquals("Listing rule engines failed", 0,
+                getIrodsResponseStatusCode(res.getBody()));
+    }
+
+    @Test
+    public void testRemoveDelayRule() {
+        String repInstance = "irods_rule_engine_plugin-irods_rule_language-instance";
+        String ruleText = String.format(
+                "delay(\"<INST_NAME>%s</INST_NAME><PLUSET>1h</PLUSET>\") { writeLine(\"serverLog\", \"iRODS HTTP API\"); }",
+                repInstance
+        );
+
+        // Schedule a delay rule to execute in the distant future.
+        Response res = rods.ruleOperations().execute(rodsToken, ruleText, Optional.of(repInstance));
+        // logger.debug(res.getBody());
+        assertEquals("Executing rule code request failed", 200, res.getHttpStatusCode());
+        assertEquals("Executing rule code failed", 0,
+                getIrodsResponseStatusCode(res.getBody()));
+
+        // Find the delay rule we just created.
+        // This query assumes the test suite is running on a system where no other delay rules are being created.
+        String query = "select max(RULE_EXEC_ID)";
+        Response queryRes = rods.queryOperations().executeGenQuery(rodsToken, query, null);
+        // logger.debug(res.getBody());
+        assertEquals("Executing genQuery request failed", 200, queryRes.getHttpStatusCode());
+        assertEquals("Executing genQuery failed", 0,
+                getIrodsResponseStatusCode(queryRes.getBody()));
+
+        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(queryRes.getBody()),
+                "JsonProcessingException was thrown");
+        int rowsSize = rootNode.path("rows").size();
+        int ruleId = rootNode.path("rows").get(0).get(0).asInt();
+        assertEquals(1, rowsSize);
+
+        // Remove the delay rule.
+        res = rods.ruleOperations().removeDelayRule(rodsToken, ruleId);
+        // logger.debug(res.getBody());
+        assertEquals("Removing delay rule request failed", 200, queryRes.getHttpStatusCode());
+        assertEquals("Removing delay rule failed", 0,
+                getIrodsResponseStatusCode(queryRes.getBody()));
+    }
+
+    private int getIrodsResponseStatusCode(String jsonString) {
+        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(jsonString),
+                "JsonProcessingException was thrown");
+        JsonNode statusCodeNode = rootNode.path("irods_response").path("status_code");
+        return statusCodeNode.asInt();
+    }
+}
