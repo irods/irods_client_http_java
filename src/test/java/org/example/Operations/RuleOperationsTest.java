@@ -26,11 +26,11 @@ public class RuleOperationsTest {
 
     @Before
     public void setup() {
-        String address = "52.91.145.195";
+        String host = "52.91.145.195";
         String port = "8888";
         String version = "0.3.0";
 
-        String baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
+        String baseUrl = "http://" + host + ":" + port + "/irods-http-api/" + version;
 
         // Create client
         rods = new Wrapper(baseUrl, "rods", "rods");
