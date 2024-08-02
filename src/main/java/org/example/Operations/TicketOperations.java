@@ -39,7 +39,7 @@ public class TicketOperations {
 
     public Response remove(String token, String name) {
         Map<Object, Object> formData = new HashMap<>();
-        formData.put("op", "create");
+        formData.put("op", "remove");
         formData.put("name", name);
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
