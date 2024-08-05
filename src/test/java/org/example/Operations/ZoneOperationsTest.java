@@ -6,6 +6,8 @@ import org.example.Wrapper;
 import org.example.Util.Response;
 import org.junit.Before;
 import org.junit.Test;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +20,7 @@ public class ZoneOperationsTest {
     private String rodsToken;
 
     private final ObjectMapper mapper = new ObjectMapper();
-    // private static final Logger logger = LogManager.getLogger(ZoneOperationsTest.class);
+     private static final Logger logger = LogManager.getLogger(ZoneOperationsTest.class);
 
     @Before
     public void setup() {
@@ -37,7 +39,7 @@ public class ZoneOperationsTest {
     @Test
     public void testReportOperation() {
         Response res = rods.zoneOperations().report(rodsToken);
-        // logger.debug(res.getBody());
+        logger.debug(res.getBody());
         assertEquals("Zone report request failed", 200, res.getHttpStatusCode());
         assertEquals("Zone report failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
@@ -51,7 +53,7 @@ public class ZoneOperationsTest {
             // Add a remote zone to the local zone.
             // The new zone will not have any connection information or anything else.
             Response res = rods.zoneOperations().add(rodsToken, zoneName, null);
-            // logger.debug(res.getBody());
+            logger.debug(res.getBody());
             assertEquals("Adding zone request failed", 200, res.getHttpStatusCode());
             assertEquals("Adding zone failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -68,7 +70,7 @@ public class ZoneOperationsTest {
                 String value = entry.getValue();
 
                 res = rods.zoneOperations().modify(rodsToken, zoneName, property, value);
-                // logger.debug(res.getBody());
+                logger.debug(res.getBody());
                 assertEquals("Modifying zone request failed", 200, res.getHttpStatusCode());
                 assertEquals("Modifying zone failed", 0,
                         getIrodsResponseStatusCode(res.getBody()));
@@ -81,7 +83,7 @@ public class ZoneOperationsTest {
 
             // Remove the remote zone.
             res = rods.zoneOperations().remove(rodsToken, zoneName);
-            // logger.debug(res.getBody());
+            logger.debug(res.getBody());
             assertEquals("Removing zone request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing zone failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
