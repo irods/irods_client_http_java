@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.Properties.Query.QueryExecuteGenqueryParams;
+import org.example.Properties.Query.QueryExecuteGenQueryParams;
 import org.example.Properties.Query.QueryExecuteSpecifcQueryParams;
 import org.example.Util.Response;
 import org.example.Wrapper;
@@ -53,7 +53,7 @@ public class QueryOperationsTest {
     @Test
     public void testSupportForGenQuery1() {
         String query = "select COLL_NAME";
-        QueryExecuteGenqueryParams params = new QueryExecuteGenqueryParams();
+        QueryExecuteGenQueryParams params = new QueryExecuteGenQueryParams();
         params.setParser("genquery1");
         Response res = client.queryOperations().executeGenQuery(aliceToken, query, params);
         logger.debug(res.getBody());

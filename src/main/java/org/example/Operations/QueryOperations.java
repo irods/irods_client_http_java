@@ -1,21 +1,17 @@
 package org.example.Operations;
 
-import org.example.Properties.Query.QueryExecuteGenqueryParams;
+import org.example.Properties.Query.QueryExecuteGenQueryParams;
 import org.example.Properties.Query.QueryExecuteSpecifcQueryParams;
 import org.example.Wrapper;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLEncoder;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class QueryOperations {
     private final Wrapper client;
@@ -26,7 +22,7 @@ public class QueryOperations {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/query";
     }
-    public Response executeGenQuery(String token, String query, QueryExecuteGenqueryParams params)  {
+    public Response executeGenQuery(String token, String query, QueryExecuteGenQueryParams params)  {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "execute_genquery");
 
