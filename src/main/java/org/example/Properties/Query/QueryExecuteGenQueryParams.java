@@ -1,10 +1,9 @@
 package org.example.Properties.Query;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-public class QueryExecuteGenqueryParams {
+public class QueryExecuteGenQueryParams {
     private OptionalInt offset = OptionalInt.empty();
     private OptionalInt count = OptionalInt.empty();
     private OptionalInt caseSensitive = OptionalInt.empty();
