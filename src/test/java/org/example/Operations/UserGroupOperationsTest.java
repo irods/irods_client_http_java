@@ -14,6 +14,8 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.example.IrodsResponseUtils.getIrodsResponseStatusCode;
+
 public class UserGroupOperationsTest {
     private Wrapper client;
     private String rodsToken;
@@ -428,12 +430,5 @@ public class UserGroupOperationsTest {
         rootNode = assertDoesNotThrow(() -> mapper.readTree(queryRes2.getBody()),
                 "JsonProcessingException was thrown");
         assertEquals(0, rootNode.path("rows").size());
-    }
-
-    private int getIrodsResponseStatusCode(String jsonString) {
-        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(jsonString),
-                "JsonProcessingException was thrown");
-        JsonNode statusCodeNode = rootNode.path("irods_response").path("status_code");
-        return statusCodeNode.asInt();
     }
 }

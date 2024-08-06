@@ -11,6 +11,8 @@ import org.example.Util.Response;
 import org.example.Wrapper;
 import org.junit.Before;
 import org.junit.Test;
+import static org.example.IrodsResponseUtils.getIrodsResponseStatusCode;
+
 
 import java.util.Optional;
 
@@ -129,12 +131,5 @@ public class QueryOperationsTest {
             // Remove specific query
             client.queryOperations().removeSpecificQuery(rodsToken, specificQueryName);
         }
-    }
-
-    private int getIrodsResponseStatusCode(String jsonString) {
-        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(jsonString),
-                "JsonProcessingException was thrown");
-        JsonNode statusCodeNode = rootNode.path("irods_response").path("status_code");
-        return statusCodeNode.asInt();
     }
 }
