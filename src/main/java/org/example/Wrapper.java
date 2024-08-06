@@ -15,14 +15,9 @@ public class Wrapper {
 
     private String baseUrl;
     private final HttpClient client = HttpClient.newHttpClient();
-    private String user;
-    private String password;
-    private String authToken;
     private String openIdToken;
-    public Wrapper(String baseUrl, String user, String password) {
+    public Wrapper(String baseUrl) {
         this.baseUrl = baseUrl;
-        this.user = user;
-        this.password = password;
     }
 
     public Wrapper(String baseUrl, String openIdToken) {
@@ -34,9 +29,9 @@ public class Wrapper {
      * Authenticates user by sending the following POST reqeust
      * curl -X POST -u rods:rods http://localhost:8888/irods-http-api/0.3.0/authenticate
      */
-    public Response authenticate() {
+    public Response authenticate(String username, String password) {
         // creating authentication header
-        String auth = user + ":" + password;
+        String auth = username + ":" + password;
         // encodes user and password into a suitable format for HTTP basic authentication
         String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
         String authHeader = "Basic " + encodedAuth;
@@ -55,9 +50,6 @@ public class Wrapper {
             throw new RuntimeException(e);
         }
 
-        if (response.statusCode() == 200) {
-            this.authToken = response.body();
-        }
         return new Response(response.statusCode(), response.body());
     }
 
@@ -105,7 +97,4 @@ public class Wrapper {
         return client;
     }
 
-    public String getAuthToken() {
-        return authToken;
-    }
 }

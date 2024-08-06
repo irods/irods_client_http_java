@@ -10,7 +10,6 @@ import org.example.Util.Response;
 import org.example.Wrapper;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Timeout;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -24,10 +23,9 @@ import java.util.OptionalInt;
 import java.util.concurrent.*;
 
 public class DataObjectOperationsTest {
-    private Wrapper rods;
+    private Wrapper client;
     private String rodsToken;
 
-    private Wrapper alice;
     private String aliceToken;
 
     private String host;
@@ -41,15 +39,18 @@ public class DataObjectOperationsTest {
 
         String baseUrl = "http://" + host + ":" + port + "/irods-http-api/" + version;
 
-        // Create client with rodsadmin status
-        rods = new Wrapper(baseUrl, "rods", "rods");
-        rods.authenticate();
-        rodsToken = rods.getAuthToken();
+        // Create client
+        client = new Wrapper(baseUrl);
 
-        // Create a client with rodsuser status
-        alice = new Wrapper(baseUrl, "alice", "alicepass");
-        alice.authenticate();
-        aliceToken = alice.getAuthToken();
+        // Authenticate rods
+        Response res = client.authenticate("rods", "rods");
+        rodsToken = res.getBody();
+
+        // Create alice user
+        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
+        this.client.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
+        res = client.authenticate("alice", "alicepass");
+        aliceToken = res.getBody();
     }
 
 
@@ -65,7 +66,7 @@ public class DataObjectOperationsTest {
             ResourceCreateParams prop = new ResourceCreateParams();
             prop.setHost(host);
             prop.setVaultPath("/tmp/test_ufs_common_ops_resc_vault");
-            res = rods.resourceOperations().create(rodsToken, resc_name, "unixfilesystem", prop);
+            res = client.resourceOperations().create(rodsToken, resc_name, "unixfilesystem", prop);
 
             assertEquals("Creating a unixfilesystem resource request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating a unixfilesystem resource failed", 0,
@@ -74,7 +75,7 @@ public class DataObjectOperationsTest {
             prop = new ResourceCreateParams();
             prop.setHost(host);
             prop.setVaultPath("/tmp/test_ufs_common_ops_resc_vault");
-            res = rods.resourceOperations().create(rodsToken, resc_name2, "unixfilesystem", prop);
+            res = client.resourceOperations().create(rodsToken, resc_name2, "unixfilesystem", prop);
 
             assertEquals("Creating a unixfilesystem resource request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating a unixfilesystem resource failed", 0,
@@ -82,42 +83,42 @@ public class DataObjectOperationsTest {
 
             // Create a non-empty data object
             byte[] content = "hello, this message was written via the iRODS HTTP API!".getBytes();
-            res = rods.dataObject().write(rodsToken, lpath, content, null);
+            res = client.dataObject().write(rodsToken, lpath, content, null);
             assertEquals("Creating a non-empty data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating a non-empty data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
-            res = rods.dataObject().replicate(rodsToken, lpath, resc_name2, resc_name, OptionalInt.empty());
+            res = client.dataObject().replicate(rodsToken, lpath, resc_name2, resc_name, OptionalInt.empty());
             assertEquals("Replicating data object request failed", 200, res.getHttpStatusCode());
             // replicating results in error code of 168000: SYS_REPLICA_INACCESSIBLE
 
             // Trim the first replica
-            res = rods.dataObject().trim(rodsToken, lpath, 0, null);
+            res = client.dataObject().trim(rodsToken, lpath, 0, null);
             assertEquals("Trimming first replica request failed", 200, res.getHttpStatusCode());
             assertEquals("Trimming first replica failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Rename the data object
-            res = rods.dataObject().rename(rodsToken, lpath, lpath + ".renamed");
+            res = client.dataObject().rename(rodsToken, lpath, lpath + ".renamed");
             assertEquals("Renaming data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Renaming data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Copy the data object
-            res = rods.dataObject().copy(rodsToken, lpath + ".renamed", lpath + ".copied", null);
+            res = client.dataObject().copy(rodsToken, lpath + ".renamed", lpath + ".copied", null);
             assertEquals("Copying the data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Copying the data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Modify permissions on the data object
-            res = rods.dataObject().setPermission(rodsToken, lpath + ".copied", "alice",
+            res = client.dataObject().setPermission(rodsToken, lpath + ".copied", "alice",
                     "read", OptionalInt.empty());
             assertEquals("Modifying permissions on the data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Modifying permissions on the data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show the permissions were updated
-            Response statRes = rods.dataObject().stat(rodsToken, lpath + ".copied", Optional.empty());
+            Response statRes = client.dataObject().stat(rodsToken, lpath + ".copied", Optional.empty());
             assertEquals("Stat request failed", 200, statRes.getHttpStatusCode());
             JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(statRes.getBody()),
                     "JsonProcessingException was thrown");
@@ -141,39 +142,39 @@ public class DataObjectOperationsTest {
          */
             DataObjectRemoveParams prop3 = new DataObjectRemoveParams();
             prop3.setNoTrash(1);
-            res = rods.dataObject().remove(rodsToken, lpath + ".copied", 0, prop3);
+            res = client.dataObject().remove(rodsToken, lpath + ".copied", 0, prop3);
             assertEquals("Removing data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
-            res = rods.dataObject().remove(rodsToken, lpath + ".renamed", 0, prop3);
+            res = client.dataObject().remove(rodsToken, lpath + ".renamed", 0, prop3);
             assertEquals("Removing data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Remove the resource
-            res = rods.resourceOperations().remove(rodsToken, resc_name);
+            res = client.resourceOperations().remove(rodsToken, resc_name);
             assertEquals("Removing resource request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing resource failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
-            res = rods.resourceOperations().remove(rodsToken, resc_name2);
+            res = client.resourceOperations().remove(rodsToken, resc_name2);
             assertEquals("Removing resource request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing resource failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
         } finally {
             // Remove permissions
-           rods.dataObject().setPermission(rodsToken, lpath + ".copied", "alice",
+           client.dataObject().setPermission(rodsToken, lpath + ".copied", "alice",
                     "null", OptionalInt.empty());
 
             // Remove data objects
             DataObjectRemoveParams prop3 = new DataObjectRemoveParams();
             prop3.setNoTrash(1);
-            rods.dataObject().remove(rodsToken, lpath + ".copied", 0, prop3);
-            rods.dataObject().remove(rodsToken, lpath + ".renamed", 0, prop3);
+            client.dataObject().remove(rodsToken, lpath + ".copied", 0, prop3);
+            client.dataObject().remove(rodsToken, lpath + ".renamed", 0, prop3);
 
             // Remove resources
-            rods.resourceOperations().remove(rodsToken, resc_name);
-            rods.resourceOperations().remove(rodsToken, resc_name2);
+            client.resourceOperations().remove(rodsToken, resc_name);
+            client.resourceOperations().remove(rodsToken, resc_name2);
         }
     }
 
@@ -186,20 +187,20 @@ public class DataObjectOperationsTest {
         try {
             // Create a non-empty data object.
             byte[] content = "some data".getBytes();
-            res = rods.dataObject().write(aliceToken, dataObjectA, content, null);
+            res = client.dataObject().write(aliceToken, dataObjectA, content, null);
             assertEquals("Creating a non-empty data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating a non-empty data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Create a second data object containing different information.
             content = "different data".getBytes();
-            res = rods.dataObject().write(aliceToken, dataObjectB, content, null);
+            res = client.dataObject().write(aliceToken, dataObjectB, content, null);
             assertEquals("Creating a non-empty data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating a non-empty data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Calculate checksums for each data object to show they are different.
-            Response checksumRes = rods.dataObject().calculateChecksum(aliceToken, dataObjectA, null);
+            Response checksumRes = client.dataObject().calculateChecksum(aliceToken, dataObjectA, null);
             assertEquals("Calculating checksum for data object request failed", 200,
                     checksumRes.getHttpStatusCode());
             assertEquals("Calculating checksum for data object failed", 0,
@@ -213,7 +214,7 @@ public class DataObjectOperationsTest {
             assertEquals("Checksum did not match", expectedChecksum, actualChecksum);
 
 
-            Response checksumRes2 = rods.dataObject().calculateChecksum(aliceToken, dataObjectB, null);
+            Response checksumRes2 = client.dataObject().calculateChecksum(aliceToken, dataObjectB, null);
             assertEquals("Calculating checksum for data object request failed", 200,
                     checksumRes2.getHttpStatusCode());
             assertEquals("Calculating checksum for data object failed", 0,
@@ -228,7 +229,7 @@ public class DataObjectOperationsTest {
 
             // Show attempting to copy over an existing data object isn't allowed without the "overwrite" parameter.
             // -312000 is the associated irods error
-            res = rods.dataObject().copy(aliceToken, dataObjectA, dataObjectB, null);
+            res = client.dataObject().copy(aliceToken, dataObjectA, dataObjectB, null);
             assertEquals("Copying data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Expected to get a failed message of \'OVERWRITE_WITHOUT_FORCE_FLAG\'", -312000,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -236,7 +237,7 @@ public class DataObjectOperationsTest {
             // Show copying over an existing data object is possible with the "overwrite" parameter.
             DataObjectCopyParams prop = new DataObjectCopyParams();
             prop.setOverwrite(1);
-            res = rods.dataObject().copy(aliceToken, dataObjectA, dataObjectB, prop);
+            res = client.dataObject().copy(aliceToken, dataObjectA, dataObjectB, prop);
             assertEquals("Copying data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Copying data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -247,7 +248,7 @@ public class DataObjectOperationsTest {
             DataObjectCalculateChecksumParams prop2 = new DataObjectCalculateChecksumParams();
             prop2.setForce(1);
 
-            Response checksumRes3 = rods.dataObject().calculateChecksum(aliceToken, dataObjectA, prop2);
+            Response checksumRes3 = client.dataObject().calculateChecksum(aliceToken, dataObjectA, prop2);
             assertEquals("Calculating checksum for data object request failed", 200,
                     checksumRes3.getHttpStatusCode());
             assertEquals("Calculating checksum for data object failed", 0,
@@ -261,7 +262,7 @@ public class DataObjectOperationsTest {
             assertEquals("Checksum did not match", expectedChecksum, actualChecksum);
 
             // data object b
-            Response checksumRes4 = rods.dataObject().calculateChecksum(aliceToken, dataObjectB, prop2);
+            Response checksumRes4 = client.dataObject().calculateChecksum(aliceToken, dataObjectB, prop2);
             assertEquals("Calculating checksum for data object request failed", 200,
                     checksumRes4.getHttpStatusCode());
             assertEquals("Calculating checksum for data object failed", 0,
@@ -278,11 +279,11 @@ public class DataObjectOperationsTest {
             DataObjectRemoveParams prop3 = new DataObjectRemoveParams();
             prop3.setNoTrash(1);
             prop3.setAdmin(1);
-            res = rods.dataObject().remove(rodsToken, dataObjectA, 0, prop3);
+            res = client.dataObject().remove(rodsToken, dataObjectA, 0, prop3);
             assertEquals("Removing data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
-            res = rods.dataObject().remove(rodsToken, dataObjectB, 0, prop3);
+            res = client.dataObject().remove(rodsToken, dataObjectB, 0, prop3);
             assertEquals("Removing data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -291,8 +292,8 @@ public class DataObjectOperationsTest {
             DataObjectRemoveParams prop3 = new DataObjectRemoveParams();
             prop3.setNoTrash(1);
             prop3.setAdmin(1);
-            rods.dataObject().remove(rodsToken, dataObjectA, 0, prop3);
-            rods.dataObject().remove(rodsToken, dataObjectB, 0, prop3);
+            client.dataObject().remove(rodsToken, dataObjectA, 0, prop3);
+            client.dataObject().remove(rodsToken, dataObjectB, 0, prop3);
         }
 
     }
@@ -308,7 +309,7 @@ public class DataObjectOperationsTest {
             ResourceCreateParams prop = new ResourceCreateParams();
             prop.setHost(host);
             prop.setVaultPath("/tmp/test_ufs_checksums_resc_vault");
-            res = rods.resourceOperations().create(rodsToken, rescName, "unixfilesystem", prop);
+            res = client.resourceOperations().create(rodsToken, rescName, "unixfilesystem", prop);
 
             assertEquals("Creating a unixfilesystem resource request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating a unixfilesystem resource failed", 0,
@@ -316,7 +317,7 @@ public class DataObjectOperationsTest {
 
             // Create a non-empty object
             byte[] content = "hello, this message was written via the iRODS HTTP API!".getBytes();
-            res = rods.dataObject().write(rodsToken, dataObject, content, null);
+            res = client.dataObject().write(rodsToken, dataObject, content, null);
             assertEquals("Creating a non-empty data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating a non-empty data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -324,7 +325,7 @@ public class DataObjectOperationsTest {
             // Calculate checksum
             DataObjectCalculateChecksumParams prop2 = new DataObjectCalculateChecksumParams();
             prop2.setReplicaNum(0);
-            Response checksumRes = rods.dataObject().calculateChecksum(rodsToken, dataObject, prop2);
+            Response checksumRes = client.dataObject().calculateChecksum(rodsToken, dataObject, prop2);
             assertEquals("Calculating checksum for data object request failed", 200,
                     checksumRes.getHttpStatusCode());
             assertEquals("Calculating checksum for data object failed", 0,
@@ -338,7 +339,7 @@ public class DataObjectOperationsTest {
             assertEquals("Checksum did not match", expectedChecksum, actualChecksum);
 
             // Verify checksum information
-            res = rods.dataObject().verifyChecksum(rodsToken, dataObject, null);
+            res = client.dataObject().verifyChecksum(rodsToken, dataObject, null);
             assertEquals("Verifying checksum for data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Verifying checksum for data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -346,13 +347,13 @@ public class DataObjectOperationsTest {
             // Remove the data objects
             DataObjectRemoveParams prop3 = new DataObjectRemoveParams();
             prop3.setNoTrash(1);
-            res = rods.dataObject().remove(rodsToken, dataObject, 0, prop3);
+            res = client.dataObject().remove(rodsToken, dataObject, 0, prop3);
             assertEquals("Removing data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Remove the resource
-            res = rods.resourceOperations().remove(rodsToken, rescName);
+            res = client.resourceOperations().remove(rodsToken, rescName);
             assertEquals("Removing resource request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing resource failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -360,10 +361,10 @@ public class DataObjectOperationsTest {
             // Remove the data objects
             DataObjectRemoveParams prop3 = new DataObjectRemoveParams();
             prop3.setNoTrash(1);
-            rods.dataObject().remove(rodsToken, dataObject, 0, prop3);
+            client.dataObject().remove(rodsToken, dataObject, 0, prop3);
 
             // Remove the resource
-            rods.resourceOperations().remove(rodsToken, rescName);
+            client.resourceOperations().remove(rodsToken, rescName);
         }
     }
 
@@ -387,7 +388,7 @@ public class DataObjectOperationsTest {
 
         try {
             // Show the data object we want to create via registration does not exist.
-            res = rods.dataObject().stat(rodsToken, dataObject, Optional.empty());
+            res = client.dataObject().stat(rodsToken, dataObject, Optional.empty());
             assertEquals("Stat request failed", 200, res.getHttpStatusCode());
             // -171000 is the error code for NOT_A_DATA_OBJECT
             assertEquals("Stat to data object was supposed to failed", -171000,
@@ -397,7 +398,7 @@ public class DataObjectOperationsTest {
             // We know we're registering a new data object because the "as-additional-replica" parameter isn't set to 1.
             DataObjectRegisterParams prop = new DataObjectRegisterParams();
             prop.setDataSize(content.length());
-            res = rods.dataObject().register(rodsToken, dataObject, physicalPath, resource, prop);
+            res = client.dataObject().register(rodsToken, dataObject, physicalPath, resource, prop);
             assertEquals("Registering a data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Registering a data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -405,19 +406,19 @@ public class DataObjectOperationsTest {
             // Show a new data object exists with the expected replica information.
             String query = "select COLL_NAME, DATA_NAME, DATA_PATH, RESC_NAME where COLL_NAME = " +
                     "'" + dirName + "' and DATA_NAME = '" + filename + "'";
-            res = rods.queryOperations().executeGenQuery(rodsToken, query, null);
+            res = client.queryOperations().executeGenQuery(rodsToken, query, null);
             assertEquals("execute_genquery request failed", 200, res.getHttpStatusCode());
             assertEquals("execute_genquery failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Unregister the data object
-            res = rods.dataObject().remove(rodsToken, dataObject, 1, null);
+            res = client.dataObject().remove(rodsToken, dataObject, 1, null);
             assertEquals("execute_genquery request failed", 200, res.getHttpStatusCode());
             assertEquals("execute_genquery failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
         } finally {
             // Unregister the data object
-            rods.dataObject().remove(rodsToken, dataObject, 1, null);
+            client.dataObject().remove(rodsToken, dataObject, 1, null);
         }
     }
 
@@ -428,7 +429,7 @@ public class DataObjectOperationsTest {
 
         try {
             // Tell the server we're about to do a parallel write.
-            Response writeRes = rods.dataObject().parallelWriteInit(rodsToken, dataObject, 3, null);
+            Response writeRes = client.dataObject().parallelWriteInit(rodsToken, dataObject, 3, null);
             assertEquals("parallel_write_init request failed", 200, writeRes.getHttpStatusCode());
             assertEquals("parallel_write_init failed", 0,
                     getIrodsResponseStatusCode(writeRes.getBody()));
@@ -457,7 +458,7 @@ public class DataObjectOperationsTest {
                     params.setStreamIndex(finalIndex);
                     params.setParallelWriteHandle(parallelWriteHandle);
 
-                    return rods.dataObject().write(rodsToken, dataObject, bytes, params);
+                    return client.dataObject().write(rodsToken, dataObject, bytes, params);
                 }));
                 index++;
             }
@@ -481,7 +482,7 @@ public class DataObjectOperationsTest {
             }
 
             // End the parallel write
-            res = rods.dataObject().parallelWriteShutdown(rodsToken, parallelWriteHandle);
+            res = client.dataObject().parallelWriteShutdown(rodsToken, parallelWriteHandle);
             assertEquals("parallel_write_shutdown request failed", 200, res.getHttpStatusCode());
             assertEquals("parallel_write_shutdown failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -489,7 +490,7 @@ public class DataObjectOperationsTest {
             // Read the contents of the data object and show it contains exactly what we expect.
             DataObjectReadParams paramsRead = new DataObjectReadParams();
             paramsRead.setCount(60);
-            res = rods.dataObject().read(rodsToken, dataObject, paramsRead);
+            res = client.dataObject().read(rodsToken, dataObject, paramsRead);
             assertEquals("reading data object request failed", 200, res.getHttpStatusCode());
 
             String readData = res.getBody();
@@ -499,7 +500,7 @@ public class DataObjectOperationsTest {
             // Remove the data object.
             DataObjectRemoveParams paramRemove = new DataObjectRemoveParams();
             paramRemove.setNoTrash(1);
-            res = rods.dataObject().remove(rodsToken, dataObject, 0, paramRemove);
+            res = client.dataObject().remove(rodsToken, dataObject, 0, paramRemove);
 
             assertEquals("remove data object request failed", 200, res.getHttpStatusCode());
             assertEquals("remove data object failed", 0,
@@ -508,7 +509,7 @@ public class DataObjectOperationsTest {
             // Remove the data object.
             DataObjectRemoveParams paramRemove = new DataObjectRemoveParams();
             paramRemove.setNoTrash(1);
-            rods.dataObject().remove(rodsToken, dataObject, 0, paramRemove);
+            client.dataObject().remove(rodsToken, dataObject, 0, paramRemove);
         }
     }
 
@@ -520,7 +521,7 @@ public class DataObjectOperationsTest {
 
         try {
             // Create a data object
-            res = rods.dataObject().touch(rodsToken, dataObject, null);
+            res = client.dataObject().touch(rodsToken, dataObject, null);
             assertEquals("touch request failed", 200, res.getHttpStatusCode());
             assertEquals("touch failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -528,7 +529,7 @@ public class DataObjectOperationsTest {
             // Add metadata to the home data object
             List<ModifyMetadataOperations> jsonParam = new ArrayList<>();
             jsonParam.add(new ModifyMetadataOperations("add", "a1", "v1", "u1"));
-            res = rods.dataObject().modifyMetadata(rodsToken, dataObject, jsonParam, OptionalInt.empty());
+            res = client.dataObject().modifyMetadata(rodsToken, dataObject, jsonParam, OptionalInt.empty());
             assertEquals("adding metadata to data object request failed", 200, res.getHttpStatusCode());
             assertEquals("adding metadata to data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -536,7 +537,7 @@ public class DataObjectOperationsTest {
             // Show metadata exists on the data object.
             String query = "select COLL_NAME, DATA_NAME where META_DATA_ATTR_NAME = 'a1' and META_DATA_ATTR_VALUE = " +
                     "'v1' and META_DATA_ATTR_UNITS = 'u1'";
-            Response queryRes = rods.queryOperations().executeGenQuery(rodsToken, query, null);
+            Response queryRes = client.queryOperations().executeGenQuery(rodsToken, query, null);
             assertEquals("execute_genquery request failed", 200, queryRes.getHttpStatusCode());
             assertEquals("execute_genquery failed", 0,
                     getIrodsResponseStatusCode(queryRes.getBody()));
@@ -556,14 +557,14 @@ public class DataObjectOperationsTest {
             // Remove the metadata from the data object.
             List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
             jsonParam2.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
-            res = rods.dataObject().modifyMetadata(rodsToken, dataObject, jsonParam2, OptionalInt.empty());
+            res = client.dataObject().modifyMetadata(rodsToken, dataObject, jsonParam2, OptionalInt.empty());
             assertEquals("adding metadata to data object request failed", 200, res.getHttpStatusCode());
             assertEquals("adding metadata to data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show the metadata no longer exists on the data object.
             query = "select COLL_NAME, DATA_NAME where META_DATA_ATTR_NAME = 'a1' and META_DATA_ATTR_VALUE = 'v1' and META_DATA_ATTR_UNITS = 'u1'";
-            res = rods.queryOperations().executeGenQuery(rodsToken, query, null);
+            res = client.queryOperations().executeGenQuery(rodsToken, query, null);
 
             assertEquals("execute_genquery request failed", 200, res.getHttpStatusCode());
             assertEquals("execute_genquery failed", 0,
@@ -572,14 +573,14 @@ public class DataObjectOperationsTest {
             // Remove the data object.
             DataObjectRemoveParams params = new DataObjectRemoveParams();
             params.setNoTrash(1);
-            res = rods.dataObject().remove(rodsToken, dataObject, 0, params);
+            res = client.dataObject().remove(rodsToken, dataObject, 0, params);
             assertEquals("remove data object request failed", 200, res.getHttpStatusCode());
             assertEquals("remove data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
         } finally {
             DataObjectRemoveParams params = new DataObjectRemoveParams();
             params.setNoTrash(1);
-            rods.dataObject().remove(rodsToken, dataObject, 0, params);
+            client.dataObject().remove(rodsToken, dataObject, 0, params);
         }
     }
 
@@ -590,7 +591,7 @@ public class DataObjectOperationsTest {
 
         try {
             // Create a data object.
-            res = rods.dataObject().touch(rodsToken, dataObject, null);
+            res = client.dataObject().touch(rodsToken, dataObject, null);
             assertEquals("touch request failed", 200, res.getHttpStatusCode());
             assertEquals("touch failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -598,14 +599,14 @@ public class DataObjectOperationsTest {
             // Give alice read permission on the data object.
             List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
             jsonParam.add(new ModifyPermissionsOperations("alice", "read"));
-            res = rods.dataObject().modifyPermissions(rodsToken, dataObject, jsonParam, OptionalInt.empty());
+            res = client.dataObject().modifyPermissions(rodsToken, dataObject, jsonParam, OptionalInt.empty());
 
             assertEquals("modifying permission request failed", 200, res.getHttpStatusCode());
             assertEquals("modifying permission failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show alice now has permission to read the data object.
-            Response statRes = rods.dataObject().stat(rodsToken, dataObject, Optional.empty());
+            Response statRes = client.dataObject().stat(rodsToken, dataObject, Optional.empty());
             assertEquals("stat request failed", 200, statRes.getHttpStatusCode());
             assertEquals("stat endpoint failed", 0,
                     getIrodsResponseStatusCode(statRes.getBody()));
@@ -621,7 +622,7 @@ public class DataObjectOperationsTest {
             DataObjectRemoveParams params = new DataObjectRemoveParams();
             params.setNoTrash(1);
             params.setAdmin(1);
-            res = rods.dataObject().remove(rodsToken, dataObject, 0, params);
+            res = client.dataObject().remove(rodsToken, dataObject, 0, params);
             assertEquals("remove data object request failed", 200, res.getHttpStatusCode());
             assertEquals("remove data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -629,13 +630,13 @@ public class DataObjectOperationsTest {
             // Reset permissions
             List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
             jsonParam.add(new ModifyPermissionsOperations("alice", "null"));
-            rods.dataObject().modifyPermissions(rodsToken, dataObject, jsonParam, OptionalInt.empty());
+            client.dataObject().modifyPermissions(rodsToken, dataObject, jsonParam, OptionalInt.empty());
 
             // Remove the data object.
             DataObjectRemoveParams params = new DataObjectRemoveParams();
             params.setNoTrash(1);
             params.setAdmin(1);
-            rods.dataObject().remove(rodsToken, dataObject, 0, params);
+            client.dataObject().remove(rodsToken, dataObject, 0, params);
         }
     }
 
@@ -647,7 +648,7 @@ public class DataObjectOperationsTest {
 
         try {
             // Create a data object.
-            Response res = rods.dataObject().touch(rodsToken, dataObject, null);
+            Response res = client.dataObject().touch(rodsToken, dataObject, null);
             assertEquals("touch request failed", 200, res.getHttpStatusCode());
             assertEquals("touch failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -658,7 +659,7 @@ public class DataObjectOperationsTest {
                     collection, dataObjectName
             );
 
-            Response queryRes = rods.queryOperations().executeGenQuery(rodsToken, query, null);
+            Response queryRes = client.queryOperations().executeGenQuery(rodsToken, query, null);
             assertEquals("execute_genquery request failed", 200, queryRes.getHttpStatusCode());
             assertEquals("execute_genquery failed", 0,
                     getIrodsResponseStatusCode(queryRes.getBody()));
@@ -675,7 +676,7 @@ public class DataObjectOperationsTest {
             modifyParams.setReplicaNum(0);
             modifyParams.setNewDataRepliaStatus(0);
             modifyParams.setNewDataSize(15);
-            res = rods.dataObject().modifyReplica(rodsToken, dataObject, modifyParams);
+            res = client.dataObject().modifyReplica(rodsToken, dataObject, modifyParams);
 
             assertEquals("modify_replica request failed", 200, res.getHttpStatusCode());
             assertEquals("modify_replica failed", 0,
@@ -683,7 +684,7 @@ public class DataObjectOperationsTest {
 
             // Show the replica's status and size has changed in the catalog.
             // Same query as before
-            Response queryRes2 = rods.queryOperations().executeGenQuery(rodsToken, query, null);
+            Response queryRes2 = client.queryOperations().executeGenQuery(rodsToken, query, null);
             assertEquals("execute_genquery request failed", 200, queryRes2.getHttpStatusCode());
             assertEquals("execute_genquery failed", 0,
                     getIrodsResponseStatusCode(queryRes2.getBody()));
@@ -699,7 +700,7 @@ public class DataObjectOperationsTest {
             DataObjectRemoveParams params = new DataObjectRemoveParams();
             params.setNoTrash(1);
             params.setAdmin(1);
-            res = rods.dataObject().remove(rodsToken, dataObject, 0, params);
+            res = client.dataObject().remove(rodsToken, dataObject, 0, params);
             assertEquals("remove data object request failed", 200, res.getHttpStatusCode());
             assertEquals("remove data object failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -708,7 +709,7 @@ public class DataObjectOperationsTest {
             DataObjectRemoveParams params = new DataObjectRemoveParams();
             params.setNoTrash(1);
             params.setAdmin(1);
-            rods.dataObject().remove(rodsToken, dataObject, 0, params);
+            client.dataObject().remove(rodsToken, dataObject, 0, params);
         }
     }
 

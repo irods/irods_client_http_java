@@ -14,10 +14,9 @@ import java.util.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 public class TicketOperationsTest {
-    private Wrapper rods;
+    private Wrapper client;
     private String rodsToken;
 
-    private Wrapper alice;
     private String aliceToken;
 
     private String host;
@@ -32,16 +31,17 @@ public class TicketOperationsTest {
         String baseUrl = "http://" + host + ":" + port + "/irods-http-api/" + version;
 
         // Create client
-        rods = new Wrapper(baseUrl, "rods", "rods");
-        rods.authenticate();
-        rodsToken = rods.getAuthToken();
+        client = new Wrapper(baseUrl);
+
+        // Authenticate rods
+        Response res = client.authenticate("rods", "rods");
+        rodsToken = res.getBody();
 
         // Create alice user
-        rods.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
-        rods.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
-        alice = new Wrapper(baseUrl, "alice", "alicepass");
-        alice.authenticate();
-        aliceToken = alice.getAuthToken();
+        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
+        this.client.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
+        res = client.authenticate("alice", "alicepass");
+        aliceToken = res.getBody();
     }
 
     @Test
@@ -50,7 +50,7 @@ public class TicketOperationsTest {
 
         try {
             // Create a data object.
-            Response res = rods.dataObject().touch(aliceToken, dataObject, null);
+            Response res = client.dataObject().touch(aliceToken, dataObject, null);
             // logger.debug(res.getBody());
             assertEquals("Creating data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating data object failed",0,
@@ -63,7 +63,7 @@ public class TicketOperationsTest {
             TicketCreateParams createParams = new TicketCreateParams();
             createParams.setUseCount(ticketUseCount);
             createParams.setSecondsUntilExpiration(ticketSecondsUntilExpiratoin);
-            Response ticketRes = rods.ticketOperations().create(aliceToken, dataObject, createParams);
+            Response ticketRes = client.ticketOperations().create(aliceToken, dataObject, createParams);
             // logger.debug(res.getBody());
             assertEquals("Creating ticket request failed", 200, ticketRes.getHttpStatusCode());
             assertEquals("Creating ticket failed",0,
@@ -75,7 +75,7 @@ public class TicketOperationsTest {
             String ticketString = rootNode.path("ticket").asText();
 
             // Remove the ticket.
-            res = rods.ticketOperations().remove(aliceToken, ticketString);
+            res = client.ticketOperations().remove(aliceToken, ticketString);
             // logger.debug(res.getBody());
             assertEquals("Removing ticket request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing ticket failed",0,
@@ -84,7 +84,7 @@ public class TicketOperationsTest {
             // Remove the data object.
             DataObjectRemoveParams removeParams = new DataObjectRemoveParams();
             removeParams.setNoTrash(1);
-            res = rods.dataObject().remove(aliceToken, dataObject, 0, removeParams);
+            res = client.dataObject().remove(aliceToken, dataObject, 0, removeParams);
             // logger.debug(res.getBody());
             assertEquals("Removing data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing data object failed",0,
@@ -93,7 +93,7 @@ public class TicketOperationsTest {
             // Remove the data object.
             DataObjectRemoveParams removeParams = new DataObjectRemoveParams();
             removeParams.setNoTrash(1);
-            rods.dataObject().remove(aliceToken, dataObject, 0, removeParams);
+            client.dataObject().remove(aliceToken, dataObject, 0, removeParams);
         }
 
     }
@@ -114,7 +114,7 @@ public class TicketOperationsTest {
         createParams.setUsers("rods,alice");
         createParams.setGroups(ticketGroups);
         createParams.setHosts(ticketHosts);
-        Response ticketRes = rods.ticketOperations().create(aliceToken, ticketPath, createParams);
+        Response ticketRes = client.ticketOperations().create(aliceToken, ticketPath, createParams);
         // logger.debug(res.getBody());
         assertEquals("Creating ticket request failed", 200, ticketRes.getHttpStatusCode());
         assertEquals("Creating ticket failed",0,
@@ -126,7 +126,7 @@ public class TicketOperationsTest {
         String ticketString = rootNode.path("ticket").asText();
 
         // Remove the ticket.
-        Response res = rods.ticketOperations().remove(aliceToken, ticketString);
+        Response res = client.ticketOperations().remove(aliceToken, ticketString);
         // logger.debug(res.getBody());
         assertEquals("Removing ticket request failed", 200, res.getHttpStatusCode());
         assertEquals("Removing ticket failed",0,

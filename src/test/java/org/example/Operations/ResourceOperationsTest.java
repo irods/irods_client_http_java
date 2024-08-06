@@ -11,7 +11,6 @@ import org.example.Wrapper;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.jupiter.api.Timeout;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,11 +24,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class ResourceOperationsTest {
-    private Wrapper rods;
+    private Wrapper client;
     private String rodsToken;
-
-    private Wrapper alice;
-    private String aliceToken;
 
     private String host;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -43,15 +39,12 @@ public class ResourceOperationsTest {
 
         String baseUrl = "http://" + host + ":" + port + "/irods-http-api/" + version;
 
-        // Create client with rodsadmin status
-        rods = new Wrapper(baseUrl, "rods", "rods");
-        rods.authenticate();
-        rodsToken = rods.getAuthToken();
+        // Create client
+        client = new Wrapper(baseUrl);
 
-        // Create a client with rodsuser status
-        alice = new Wrapper(baseUrl, "alice", "alicepass");
-        alice.authenticate();
-        aliceToken = alice.getAuthToken();
+        // Authenticate rods
+        Response res = client.authenticate("rods", "rods");
+        rodsToken = res.getBody();
     }
 
     @Ignore("Remove this annotation once issue #61 is resolved")
@@ -65,14 +58,14 @@ public class ResourceOperationsTest {
 
         try {
             // Create three resources (replication w/ two unixfilesystem resources).
-            res = rods.resourceOperations().create(rodsToken, rescRepl, "replication", null);
+            res = client.resourceOperations().create(rodsToken, rescRepl, "replication", null);
             logger.debug(res.getBody());
             assertEquals("Creating resource request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating resource failed",0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show the replication resource was created.
-            Response statRes = rods.resourceOperations().stat(rodsToken, rescRepl);
+            Response statRes = client.resourceOperations().stat(rodsToken, rescRepl);
             logger.debug(res.getBody());
             assertEquals("Stat on the resource request failed", 200, statRes.getHttpStatusCode());
             assertEquals("Stat on the resource failed",0,
@@ -108,21 +101,21 @@ public class ResourceOperationsTest {
                 ResourceCreateParams createParams = new ResourceCreateParams();
                 createParams.setHost(this.host);
                 createParams.setVaultPath(vaultPath);
-                res = rods.resourceOperations().create(rodsToken, rescName, "unixfilesystem", createParams);
+                res = client.resourceOperations().create(rodsToken, rescName, "unixfilesystem", createParams);
                 logger.debug(res.getBody());
                 assertEquals("Creating resource request failed", 200, res.getHttpStatusCode());
                 assertEquals("Creating resource failed",0,
                         getIrodsResponseStatusCode(res.getBody()));
 
                 // Add the unixfilesystem resource as a child of the replication resource.
-                res = rods.resourceOperations().addChild(rodsToken, rescRepl, rescName, Optional.empty());
+                res = client.resourceOperations().addChild(rodsToken, rescRepl, rescName, Optional.empty());
                 logger.debug(res.getBody());
                 assertEquals("Adding as a child request failed", 200, res.getHttpStatusCode());
                 assertEquals("Adding as a child failed",0,
                         getIrodsResponseStatusCode(res.getBody()));
 
                 // Show that the resource was created and configured successfully.
-                Response statRes2 = rods.resourceOperations().stat(rodsToken, rescName);
+                Response statRes2 = client.resourceOperations().stat(rodsToken, rescName);
                 logger.debug(res.getBody());
                 assertEquals("Stat on resource request failed", 200, statRes2.getHttpStatusCode());
                 assertEquals("Stat on resource failed",0,
@@ -157,14 +150,14 @@ public class ResourceOperationsTest {
             DataObjectWriteParams writeParams = new DataObjectWriteParams();
             writeParams.setResource(rescRepl);
             writeParams.setOffset(0);
-            res = rods.dataObject().write(rodsToken, dataObject, contents, writeParams);
+            res = client.dataObject().write(rodsToken, dataObject, contents, writeParams);
             logger.debug(res.getBody());
             assertEquals("Creating data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating data object failed",0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Launch rebalance
-            res = rods.resourceOperations().rebalance(rodsToken, rescRepl);
+            res = client.resourceOperations().rebalance(rodsToken, rescRepl);
             logger.debug(res.getBody());
             assertEquals("Rebalance request failed", 200, res.getHttpStatusCode());
             assertEquals("Rebalance failed",0,
@@ -177,7 +170,7 @@ public class ResourceOperationsTest {
             // Remove the data object
             DataObjectRemoveParams removeParams = new DataObjectRemoveParams();
             removeParams.setNoTrash(0);
-            res = rods.dataObject().remove(rodsToken, dataObject, 0, removeParams);
+            res = client.dataObject().remove(rodsToken, dataObject, 0, removeParams);
             logger.debug(res.getBody());
             assertEquals("Removing data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing data object failed",0,
@@ -186,14 +179,14 @@ public class ResourceOperationsTest {
             // Remove the resources.
             for (String rescName : rescNames) {
                 // Detach ufs resource from the replication resource.
-                res = rods.resourceOperations().removeChild(rodsToken, rescRepl, rescName);
+                res = client.resourceOperations().removeChild(rodsToken, rescRepl, rescName);
                 logger.debug(res.getBody());
                 assertEquals("Removing child resource request failed", 200, res.getHttpStatusCode());
                 assertEquals("Removing child resource failed",0,
                         getIrodsResponseStatusCode(res.getBody()));
 
                 // Remove ufs resource.
-                res = rods.resourceOperations().remove(rodsToken, rescName);
+                res = client.resourceOperations().remove(rodsToken, rescName);
                 logger.debug(res.getBody());
                 assertEquals("Removing resource request failed", 200, res.getHttpStatusCode());
                 assertEquals("Removing resource failed",0,
@@ -201,7 +194,7 @@ public class ResourceOperationsTest {
             }
 
             // Remove the replication resource.
-            res = rods.resourceOperations().remove(rodsToken, rescRepl);
+            res = client.resourceOperations().remove(rodsToken, rescRepl);
             logger.debug(res.getBody());
             assertEquals("Removing resource request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing resource failed",0,
@@ -210,20 +203,20 @@ public class ResourceOperationsTest {
             // Remove the data object
             DataObjectRemoveParams removeParams = new DataObjectRemoveParams();
             removeParams.setNoTrash(0);
-            rods.dataObject().remove(rodsToken, dataObject, 0, removeParams);
+            client.dataObject().remove(rodsToken, dataObject, 0, removeParams);
 
             // Remove the resources.
             String[] rescNames = {rescUfs0, rescUfs1};
             for (String rescName : rescNames) {
                 // Detach ufs resource from the replication resource.
-                rods.resourceOperations().removeChild(rodsToken, rescRepl, rescName);
+                client.resourceOperations().removeChild(rodsToken, rescRepl, rescName);
 
                 // Remove ufs resource.
-                rods.resourceOperations().remove(rodsToken, rescName);
+                client.resourceOperations().remove(rodsToken, rescName);
             }
 
             // Remove the replication resource.
-            rods.resourceOperations().remove(rodsToken, rescRepl);
+            client.resourceOperations().remove(rodsToken, rescRepl);
         }
     }
 
@@ -235,7 +228,7 @@ public class ResourceOperationsTest {
             // Add metadata to the resource.
             List<ModifyMetadataOperations> modifyJson = new ArrayList<>();
             modifyJson.add(new ModifyMetadataOperations("add", "a1", "v1", "u1"));
-            Response res = rods.resourceOperations().modifyMetadata(rodsToken, resource, modifyJson);
+            Response res = client.resourceOperations().modifyMetadata(rodsToken, resource, modifyJson);
             logger.debug(res.getBody());
             assertEquals("Modifying metadata request failed", 200, res.getHttpStatusCode());
             assertEquals("Modifying metadata failed",0,
@@ -244,7 +237,7 @@ public class ResourceOperationsTest {
             // Show the metadata exists on the resource.
             String query = "select RESC_NAME where META_RESC_ATTR_NAME = 'a1' and META_RESC_ATTR_VALUE = 'v1' and " +
                     "META_RESC_ATTR_UNITS = 'u1'";
-            Response queryRes = rods.queryOperations().executeGenQuery(rodsToken, query, null);
+            Response queryRes = client.queryOperations().executeGenQuery(rodsToken, query, null);
             logger.debug(res.getBody());
             assertEquals("Executing genQuery request failed", 200, queryRes.getHttpStatusCode());
             assertEquals("Executing genQuery failed",0,
@@ -258,14 +251,14 @@ public class ResourceOperationsTest {
             // Remove the metadata from the resource.
             List<ModifyMetadataOperations> modifyJson2 = new ArrayList<>();
             modifyJson2.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
-            res = rods.resourceOperations().modifyMetadata(rodsToken, resource, modifyJson2);
+            res = client.resourceOperations().modifyMetadata(rodsToken, resource, modifyJson2);
             logger.debug(res.getBody());
             assertEquals("Modifying metadata request failed", 200, res.getHttpStatusCode());
             assertEquals("Modifying metadata failed",0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show the metadata no longer exists on the resource.
-            Response queryRes2 = rods.queryOperations().executeGenQuery(rodsToken, query, null);
+            Response queryRes2 = client.queryOperations().executeGenQuery(rodsToken, query, null);
             logger.debug(res.getBody());
             assertEquals("Executing genQuery request failed", 200, queryRes2.getHttpStatusCode());
             assertEquals("Executing genQuery failed",0,
@@ -279,7 +272,7 @@ public class ResourceOperationsTest {
             // Remove metadata
             List<ModifyMetadataOperations> modifyJson = new ArrayList<>();
             modifyJson.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
-            rods.resourceOperations().modifyMetadata(rodsToken, resource, modifyJson);
+            client.resourceOperations().modifyMetadata(rodsToken, resource, modifyJson);
         }
     }
 
@@ -289,7 +282,7 @@ public class ResourceOperationsTest {
 
         try {
             // Create a new resource.
-            Response res = rods.resourceOperations().create(rodsToken, resource, "replication", null);
+            Response res = client.resourceOperations().create(rodsToken, resource, "replication", null);
             logger.debug(res.getBody());
             assertEquals("Creating resource request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating resource failed",0,
@@ -314,7 +307,7 @@ public class ResourceOperationsTest {
                 String property = entry.getKey();
                 String value = entry.getValue();
                 // Change a property of the resource.
-                res = rods.resourceOperations().modify(rodsToken, resource, property, value);
+                res = client.resourceOperations().modify(rodsToken, resource, property, value);
                 logger.debug(res.getBody());
                 assertEquals("Modifying property of resource request failed", 200, res.getHttpStatusCode());
                 assertEquals("Modifying property of resource failed",0,
@@ -327,7 +320,7 @@ public class ResourceOperationsTest {
                 }
 
                 // Show the property was modified.
-                Response statRes = rods.resourceOperations().stat(rodsToken, resource);
+                Response statRes = client.resourceOperations().stat(rodsToken, resource);
                 logger.debug(res.getBody());
                 assertEquals("Stat on resource request failed", 200, statRes.getHttpStatusCode());
                 assertEquals("Stat on resource failed",0,
@@ -335,7 +328,7 @@ public class ResourceOperationsTest {
                 assertTrue(statRes.getBody().contains("\"" + property + "\":\"" + value + "\""));
             }
             // Remove the resource.
-            res = rods.resourceOperations().remove(rodsToken, resource);
+            res = client.resourceOperations().remove(rodsToken, resource);
             logger.debug(res.getBody());
             assertEquals("Removing resource request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing resource failed",0,
@@ -343,7 +336,7 @@ public class ResourceOperationsTest {
 
         } finally {
             // Remove the resource.
-            rods.resourceOperations().remove(rodsToken, resource);
+            client.resourceOperations().remove(rodsToken, resource);
         }
     }
 

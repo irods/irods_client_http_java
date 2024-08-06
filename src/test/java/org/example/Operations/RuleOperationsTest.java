@@ -14,15 +14,11 @@ import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class RuleOperationsTest {
-    private Wrapper rods;
+    private Wrapper client;
     private String rodsToken;
-
-    private Wrapper alice;
-    private String aliceToken;
 
     private final ObjectMapper mapper = new ObjectMapper();
     // private static final Logger logger = LogManager.getLogger(QueryOperationsTest.class);
-
 
     @Before
     public void setup() {
@@ -33,21 +29,16 @@ public class RuleOperationsTest {
         String baseUrl = "http://" + host + ":" + port + "/irods-http-api/" + version;
 
         // Create client
-        rods = new Wrapper(baseUrl, "rods", "rods");
-        rods.authenticate();
-        rodsToken = rods.getAuthToken();
+        client = new Wrapper(baseUrl);
 
-        // Create alice user
-        rods.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
-        rods.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
-        alice = new Wrapper(baseUrl, "alice", "alicepass");
-        alice.authenticate();
-        aliceToken = alice.getAuthToken();
+        // Authenticate rods
+        Response res = client.authenticate("rods", "rods");
+        rodsToken = res.getBody();
     }
 
     @Test
     public void testListAllRuleEnginePlugins() {
-        Response res = rods.ruleOperations().listRuleEngines(rodsToken);
+        Response res = client.ruleOperations().listRuleEngines(rodsToken);
         // logger.debug(res.getBody());
         assertEquals("Listing rule engines request failed", 200, res.getHttpStatusCode());
         assertEquals("Listing rule engines failed", 0,
@@ -63,7 +54,7 @@ public class RuleOperationsTest {
         );
 
         // Schedule a delay rule to execute in the distant future.
-        Response res = rods.ruleOperations().execute(rodsToken, ruleText, Optional.of(repInstance));
+        Response res = client.ruleOperations().execute(rodsToken, ruleText, Optional.of(repInstance));
         // logger.debug(res.getBody());
         assertEquals("Executing rule code request failed", 200, res.getHttpStatusCode());
         assertEquals("Executing rule code failed", 0,
@@ -72,7 +63,7 @@ public class RuleOperationsTest {
         // Find the delay rule we just created.
         // This query assumes the test suite is running on a system where no other delay rules are being created.
         String query = "select max(RULE_EXEC_ID)";
-        Response queryRes = rods.queryOperations().executeGenQuery(rodsToken, query, null);
+        Response queryRes = client.queryOperations().executeGenQuery(rodsToken, query, null);
         // logger.debug(res.getBody());
         assertEquals("Executing genQuery request failed", 200, queryRes.getHttpStatusCode());
         assertEquals("Executing genQuery failed", 0,
@@ -85,7 +76,7 @@ public class RuleOperationsTest {
         assertEquals(1, rowsSize);
 
         // Remove the delay rule.
-        res = rods.ruleOperations().removeDelayRule(rodsToken, ruleId);
+        res = client.ruleOperations().removeDelayRule(rodsToken, ruleId);
         // logger.debug(res.getBody());
         assertEquals("Removing delay rule request failed", 200, queryRes.getHttpStatusCode());
         assertEquals("Removing delay rule failed", 0,
