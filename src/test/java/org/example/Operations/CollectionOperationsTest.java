@@ -19,10 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class CollectionOperationsTest {
 
-    private Wrapper rods;
+    private Wrapper client;
     private String rodsToken;
 
-    private Wrapper alice;
     private String aliceToken;
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -36,16 +35,16 @@ public class CollectionOperationsTest {
         String baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
 
         // Create client
-        rods = new Wrapper(baseUrl, "rods", "rods");
-        rods.authenticate();
-        rodsToken = rods.getAuthToken();
+        client = new Wrapper(baseUrl);
+
+        Response res = client.authenticate("rods", "rods");
+        rodsToken = res.getBody();
 
         // Create alice user
-        rods.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
-        rods.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
-        alice = new Wrapper(baseUrl, "alice", "alicepass");
-        alice.authenticate();
-        aliceToken = alice.getAuthToken();
+        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
+        this.client.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
+        res = client.authenticate("alice", "alicepass");
+        aliceToken = res.getBody();
     }
 
     @Test
@@ -56,45 +55,45 @@ public class CollectionOperationsTest {
 
         try {
             // Create a new Collection.
-            res = rods.collections().create(rodsToken, collectionPath, OptionalInt.empty());
+            res = client.collections().create(rodsToken, collectionPath, OptionalInt.empty());
             assertEquals("Creating collection request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating collection failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Stat the collection to show that it exists.
-            res = rods.collections().stat(rodsToken, collectionPath, Optional.empty());
+            res = client.collections().stat(rodsToken, collectionPath, Optional.empty());
             assertEquals("Stat request failed", 200, res.getHttpStatusCode());
             assertEquals("Stat failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Rename the collection.
-            res = rods.collections().rename(rodsToken, collectionPath, newCollectionPath);
+            res = client.collections().rename(rodsToken, collectionPath, newCollectionPath);
             assertEquals("Renaming collections request failed", 200, res.getHttpStatusCode());
             assertEquals("Renaming collections failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Stat the original collection to show that it does not exist.
-            res = rods.collections().stat(rodsToken, collectionPath, Optional.empty());
+            res = client.collections().stat(rodsToken, collectionPath, Optional.empty());
             assertEquals("Stat request failed", 200, res.getHttpStatusCode());
             assertEquals("Stat did not fail as expected", -170000,
                     getIrodsResponseStatusCode(res.getBody()));
             // -170000: NOT_A_COLLECTION
 
             // Stat the new collection to show that it does exist.
-            res = rods.collections().stat(rodsToken, newCollectionPath, Optional.empty());
+            res = client.collections().stat(rodsToken, newCollectionPath, Optional.empty());
             assertEquals("Stat request failed", 200, res.getHttpStatusCode());
             assertEquals("Stat failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Give another user (alice) permission to read the object.
-            res = rods.collections().setPermission(rodsToken, newCollectionPath, "alice", Permission.READ,
+            res = client.collections().setPermission(rodsToken, newCollectionPath, "alice", Permission.READ,
                     OptionalInt.empty());
             assertEquals("Setting permission request failed", 200, res.getHttpStatusCode());
             assertEquals("Setting permission failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show that the alice user now has read permission on the collection.
-            Response statRes = rods.collections().stat(rodsToken, newCollectionPath, Optional.empty());
+            Response statRes = client.collections().stat(rodsToken, newCollectionPath, Optional.empty());
             assertEquals("Stat request failed", 200, statRes.getHttpStatusCode());
             assertEquals("Stat failed", 0,
                     getIrodsResponseStatusCode(statRes.getBody()));
@@ -116,22 +115,22 @@ public class CollectionOperationsTest {
             assertTrue("Permission with specified attributes does not exist.", permissionExists);
 
             // Remove the collection.
-            res = rods.collections().remove(rodsToken, newCollectionPath, null);
+            res = client.collections().remove(rodsToken, newCollectionPath, null);
             assertEquals("Removing collection request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing collection failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Stat the original collection to show that it does not exist.
-            res = rods.collections().stat(rodsToken, newCollectionPath, Optional.empty());
+            res = client.collections().stat(rodsToken, newCollectionPath, Optional.empty());
             assertEquals("Stat request failed", 200, res.getHttpStatusCode());
             assertEquals("Stat did not fail as expected", -170000,
                     getIrodsResponseStatusCode(res.getBody()));
             // -170000: NOT_A_COLLECTION
         } finally {
             // Remove collections and reset permissions
-            rods.collections().stat(rodsToken, collectionPath, Optional.empty());
-            rods.collections().stat(rodsToken, newCollectionPath, Optional.empty());
-            rods.collections().setPermission(rodsToken, newCollectionPath, "alice", Permission.NULL,
+            client.collections().stat(rodsToken, collectionPath, Optional.empty());
+            client.collections().stat(rodsToken, newCollectionPath, Optional.empty());
+            client.collections().setPermission(rodsToken, newCollectionPath, "alice", Permission.NULL,
                     OptionalInt.empty());
         }
     }
@@ -144,7 +143,7 @@ public class CollectionOperationsTest {
         try {
             // Created nested collections
             String collection = homeCollection + "/c0/c1/c2";
-            res = alice.collections().create(aliceToken, collection, OptionalInt.of(1));
+            res = client.collections().create(aliceToken, collection, OptionalInt.of(1));
             assertEquals("Creating collection request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating collection failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -156,14 +155,14 @@ public class CollectionOperationsTest {
             dataObjects.add(homeCollection + "/c0/c1/c2/d2");
 
             for (String name : dataObjects) {
-                res = alice.dataObject().touch(aliceToken, name, null);
+                res = client.dataObject().touch(aliceToken, name, null);
                 assertEquals("Creating data object request failed", 200, res.getHttpStatusCode());
                 assertEquals("Creating data object failed", 0,
                         getIrodsResponseStatusCode(res.getBody()));
             }
 
             // List only the contents of the home collection.
-            Response listRes = alice.collections().list(aliceToken, homeCollection, null);
+            Response listRes = client.collections().list(aliceToken, homeCollection, null);
             assertEquals("Listing collections request failed", 200, listRes.getHttpStatusCode());
 
             JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(listRes.getBody()),
@@ -174,7 +173,7 @@ public class CollectionOperationsTest {
             // List the home collection recursively.
             CollectionsListParams listParams = new CollectionsListParams();
             listParams.setRecurse(1);
-            Response listRes2 = alice.collections().list(aliceToken, homeCollection, listParams);
+            Response listRes2 = client.collections().list(aliceToken, homeCollection, listParams);
             List<String> actualEntries = new ArrayList<>();
 
             rootNode = assertDoesNotThrow(() -> mapper.readTree(listRes2.getBody()),
@@ -200,7 +199,7 @@ public class CollectionOperationsTest {
             CollectionsRemoveParams removeParams = new CollectionsRemoveParams();
             removeParams.setRecurse(1);
             removeParams.setNoTrash(1);
-            res = alice.collections().remove(aliceToken, "/tempZone/home/alice/c0", removeParams);
+            res = client.collections().remove(aliceToken, "/tempZone/home/alice/c0", removeParams);
             assertEquals("Removing collection request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing collection failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -209,7 +208,7 @@ public class CollectionOperationsTest {
             CollectionsRemoveParams removeParams = new CollectionsRemoveParams();
             removeParams.setRecurse(1);
             removeParams.setNoTrash(1);
-            alice.collections().remove(aliceToken, "/tempZone/home/alice/c0", removeParams);
+            client.collections().remove(aliceToken, "/tempZone/home/alice/c0", removeParams);
         }
     }
 
@@ -222,7 +221,7 @@ public class CollectionOperationsTest {
             // Add metadata to the collection.
             List<ModifyMetadataOperations> operation = new ArrayList<>();
             operation.add(new ModifyMetadataOperations("add", "a1", "v1", "u1"));
-            res = alice.collections().modifyMetadata(aliceToken, collection, operation, OptionalInt.empty());
+            res = client.collections().modifyMetadata(aliceToken, collection, operation, OptionalInt.empty());
             assertEquals("Adding metadata to collection request failed", 200, res.getHttpStatusCode());
             assertEquals("Adding metadata to collection failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -230,7 +229,7 @@ public class CollectionOperationsTest {
             // Show the metadata exists on the collection.
             String query = "select COLL_NAME where META_COLL_ATTR_NAME = 'a1' and META_COLL_ATTR_VALUE = 'v1' and " +
                     "META_COLL_ATTR_UNITS = 'u1'";
-            Response queryRes = alice.queryOperations().executeGenQuery(aliceToken, query, null);
+            Response queryRes = client.queryOperations().executeGenQuery(aliceToken, query, null);
             assertEquals("Executing genquery request failed", 200, queryRes.getHttpStatusCode());
             assertEquals("Executing genquery failed", 0,
                     getIrodsResponseStatusCode(queryRes.getBody()));
@@ -244,14 +243,14 @@ public class CollectionOperationsTest {
             // Remove the metadata from the collection.
             List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
             jsonParam2.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
-            res = alice.collections().modifyMetadata(aliceToken, collection, jsonParam2, OptionalInt.empty());
+            res = client.collections().modifyMetadata(aliceToken, collection, jsonParam2, OptionalInt.empty());
             assertEquals("Removing metadata to collection request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing metadata to collection failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show the metadata no longer exists on the collection.
             // Same query as before
-            Response queryRes2 = alice.queryOperations().executeGenQuery(aliceToken, query, null);
+            Response queryRes2 = client.queryOperations().executeGenQuery(aliceToken, query, null);
             assertEquals("Executing genquery request failed", 200, queryRes2.getHttpStatusCode());
             assertEquals("Executing genquery failed", 0,
                     getIrodsResponseStatusCode(queryRes2.getBody()));
@@ -263,7 +262,7 @@ public class CollectionOperationsTest {
             // Remove metadata
             List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
             jsonParam2.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
-            alice.collections().modifyMetadata(aliceToken, collection, jsonParam2, OptionalInt.empty());
+            client.collections().modifyMetadata(aliceToken, collection, jsonParam2, OptionalInt.empty());
         }
     }
 
@@ -277,7 +276,7 @@ public class CollectionOperationsTest {
             List<ModifyPermissionsOperations> operation = new ArrayList<>();
             operation.add(new ModifyPermissionsOperations("rods", "read"));
             res = assertDoesNotThrow(() ->
-                            alice.collections().modifyPermissions(aliceToken, collection, operation, OptionalInt.empty()),
+                            client.collections().modifyPermissions(aliceToken, collection, operation, OptionalInt.empty()),
                     "JsonProcessingException was thrown"
             );
 
@@ -286,7 +285,7 @@ public class CollectionOperationsTest {
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show the rodsadmin now has permission to read the collection
-            Response statRes = alice.collections().stat(aliceToken, collection, Optional.empty());
+            Response statRes = client.collections().stat(aliceToken, collection, Optional.empty());
             assertEquals("Stat on collection request failed", 200, statRes.getHttpStatusCode());
             assertEquals("Stat on collection failed", 0,
                     getIrodsResponseStatusCode(statRes.getBody()));
@@ -317,7 +316,7 @@ public class CollectionOperationsTest {
             List<ModifyPermissionsOperations> operation2 = new ArrayList<>();
             operation2.add(new ModifyPermissionsOperations("rods", "null"));
             res = assertDoesNotThrow(() ->
-                            alice.collections().modifyPermissions(aliceToken, collection, operation2, OptionalInt.empty()),
+                            client.collections().modifyPermissions(aliceToken, collection, operation2, OptionalInt.empty()),
                     "JsonProcessingException was thrown"
             );
 
@@ -326,7 +325,7 @@ public class CollectionOperationsTest {
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show the permissions have been removed.
-            Response statRes2 = alice.collections().stat(aliceToken, collection, Optional.empty());
+            Response statRes2 = client.collections().stat(aliceToken, collection, Optional.empty());
             assertEquals("Stat on collection request failed", 200, statRes2.getHttpStatusCode());
             assertEquals("Stat on collection failed", 0,
                     getIrodsResponseStatusCode(statRes2.getBody()));
@@ -340,7 +339,7 @@ public class CollectionOperationsTest {
             List<ModifyPermissionsOperations> operation2 = new ArrayList<>();
             operation2.add(new ModifyPermissionsOperations("rods", "null"));
             res = assertDoesNotThrow(() ->
-                            alice.collections().modifyPermissions(aliceToken, collection, operation2, OptionalInt.empty()),
+                            client.collections().modifyPermissions(aliceToken, collection, operation2, OptionalInt.empty()),
                     "JsonProcessingException was thrown"
             );
         }
@@ -353,7 +352,7 @@ public class CollectionOperationsTest {
 
         // Get the mtime of the home collection.
         String query = "select COLL_MODIFY_TIME where COLL_NAME = '" + collection + "'";
-        Response queryRes = alice.queryOperations().executeGenQuery(aliceToken, query, null);
+        Response queryRes = client.queryOperations().executeGenQuery(aliceToken, query, null);
         assertEquals("Execute genquery request failed", 200, queryRes.getHttpStatusCode());
         assertEquals("Execute genquery failed", 0,
                 getIrodsResponseStatusCode(queryRes.getBody()));
@@ -370,14 +369,14 @@ public class CollectionOperationsTest {
         assertDoesNotThrow(() -> Thread.sleep(2000), "An interruption occurred while sleeping.");
 
         // Update the mtime by calling touch.
-        res =  alice.collections().touch(aliceToken, collection, null);
+        res =  client.collections().touch(aliceToken, collection, null);
         assertEquals("Touch request failed", 200, res.getHttpStatusCode());
         assertEquals("Touch failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Show the mtime has been updated.
         // Same query as before.
-        Response queryRes2 = alice.queryOperations().executeGenQuery(aliceToken, query, null);
+        Response queryRes2 = client.queryOperations().executeGenQuery(aliceToken, query, null);
         assertEquals("Execute genquery request failed", 200, queryRes2.getHttpStatusCode());
         assertEquals("Execute genquery failed", 0,
                 getIrodsResponseStatusCode(queryRes2.getBody()));
@@ -397,7 +396,7 @@ public class CollectionOperationsTest {
 
         try {
             // Show inheritance is not enabled.
-            Response statRes = alice.collections().stat(aliceToken, collection, Optional.empty());
+            Response statRes = client.collections().stat(aliceToken, collection, Optional.empty());
             assertEquals("Stat on collection request failed", 200, statRes.getHttpStatusCode());
             assertEquals("Stat on collection failed", 0,
                     getIrodsResponseStatusCode(statRes.getBody()));
@@ -408,13 +407,13 @@ public class CollectionOperationsTest {
             assertFalse(inheritanceEnabled);
 
             // Enable inheritance.
-            res = alice.collections().setInheritance(aliceToken, collection, 1, OptionalInt.empty());
+            res = client.collections().setInheritance(aliceToken, collection, 1, OptionalInt.empty());
             assertEquals("Set inheritance request failed", 200, res.getHttpStatusCode());
             assertEquals("Set inheritance failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show inheritance is enabled.
-            Response statRes2 = alice.collections().stat(aliceToken, collection, Optional.empty());
+            Response statRes2 = client.collections().stat(aliceToken, collection, Optional.empty());
             assertEquals("Stat on collection request failed", 200, statRes2.getHttpStatusCode());
             assertEquals("Stat on collection failed", 0,
                     getIrodsResponseStatusCode(statRes2.getBody()));
@@ -424,13 +423,13 @@ public class CollectionOperationsTest {
             assertTrue(inheritanceEnabled);
 
             // Disable inheritance.
-            res = alice.collections().setInheritance(aliceToken, collection, 0, OptionalInt.empty());
+            res = client.collections().setInheritance(aliceToken, collection, 0, OptionalInt.empty());
             assertEquals("Set inheritance request failed", 200, res.getHttpStatusCode());
             assertEquals("Set inheritance failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show inheritance is not enabled.
-            Response statRes3 = alice.collections().stat(aliceToken, collection, Optional.empty());
+            Response statRes3 = client.collections().stat(aliceToken, collection, Optional.empty());
             assertEquals("Stat on collection request failed", 200, statRes3.getHttpStatusCode());
             assertEquals("Stat on collection failed", 0,
                     getIrodsResponseStatusCode(statRes3.getBody()));
@@ -441,7 +440,7 @@ public class CollectionOperationsTest {
             assertFalse(inheritanceEnabled);
         } finally {
             // Disable inheritance
-            alice.collections().setInheritance(aliceToken, collection, 0, OptionalInt.empty());
+            client.collections().setInheritance(aliceToken, collection, 0, OptionalInt.empty());
         }
     }
 

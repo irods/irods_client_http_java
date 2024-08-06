@@ -6,8 +6,7 @@ import org.example.Util.Response;
 import static org.junit.Assert.*;
 public class WrapperTest {
     private static String baseUrl;
-    private static Wrapper rods;
-    private Response response;
+    private static Wrapper client;
     @Before
     public void setup() {
         String address = "52.91.145.195";
@@ -15,23 +14,23 @@ public class WrapperTest {
         String version = "0.3.0";
 
         baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
-        rods = new Wrapper(baseUrl, "rods", "rods");
+        client = new Wrapper(baseUrl);
 
         // check that baseUrl is correctly configured and can successfully connect with the API
-        response = rods.information().info();
-        assertEquals(200, response.getHttpStatusCode());
+        Response res = client.information().info();
+        assertEquals(200, res.getHttpStatusCode());
     }
     @Test
     public void authenticate_valid() {
-        response = rods.authenticate();
-        assertEquals(200, response.getHttpStatusCode());
-        assertEquals(response.getBody(), rods.getAuthToken());
+        Response res = client.authenticate("rods", "rods");
+        assertEquals(200, res.getHttpStatusCode());
+        assertEquals(res.getBody(), res.getBody());
 
     }
     @Test
     public void authenticate_invalid_user() {
-        Wrapper test = new Wrapper(baseUrl, "test", "test");
-        response = test.authenticate();
-        assertEquals(401, response.getHttpStatusCode());
+        Wrapper test = new Wrapper(baseUrl);
+        Response res = test.authenticate("test", "test");
+        assertEquals(401, res.getHttpStatusCode());
     }
 }

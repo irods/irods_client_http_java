@@ -15,10 +15,9 @@ import java.util.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 public class UserGroupOperationsTest {
-    private Wrapper rods;
+    private Wrapper client;
     private String rodsToken;
 
-    private Wrapper alice;
     private String aliceToken;
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -33,14 +32,17 @@ public class UserGroupOperationsTest {
         String baseUrl = "http://" + host + ":" + port + "/irods-http-api/" + version;
 
         // Create client
-        rods = new Wrapper(baseUrl, "rods", "rods");
-        rods.authenticate();
-        rodsToken = rods.getAuthToken();
+        client = new Wrapper(baseUrl);
 
-        // Create a client with rodsuser status
-        alice = new Wrapper(baseUrl, "alice", "alicepass");
-        alice.authenticate();
-        aliceToken = alice.getAuthToken();
+        // Authenticate rods
+        Response res = client.authenticate("rods", "rods");
+        rodsToken = res.getBody();
+
+        // Create alice user
+        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
+        this.client.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
+        res = client.authenticate("alice", "alicepass");
+        aliceToken = res.getBody();
     }
 
     @Test
@@ -51,14 +53,14 @@ public class UserGroupOperationsTest {
 
         try {
             // Create a new user.
-            Response res = rods.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
+            Response res = client.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
             logger.debug(res.getBody());
             assertEquals("Creating user request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Stat the user.
-            Response statRes = rods.userGroupOperations().stat(rodsToken, newUsername, Optional.of(zone));
+            Response statRes = client.userGroupOperations().stat(rodsToken, newUsername, Optional.of(zone));
             logger.debug(statRes.getBody());
             assertEquals("Stat on the user request failed", 200, statRes.getHttpStatusCode());
             assertEquals("Stat on the user failed", 0,
@@ -72,14 +74,14 @@ public class UserGroupOperationsTest {
             assertEquals(userType, rootNode.path("type").asText());
 
             // Remove the user.
-            res = rods.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
+            res = client.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
             logger.debug(res.getBody());
             assertEquals("Removing user request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
         } finally {
             // Remove the user.
-            rods.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
+            client.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
         }
     }
 
@@ -91,14 +93,14 @@ public class UserGroupOperationsTest {
 
         try {
             // Create a new user.
-            Response res = rods.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
+            Response res = client.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
             logger.debug(res.getBody());
             assertEquals("Creating user request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Stat the user.
-            Response statRes = rods.userGroupOperations().stat(rodsToken, newUsername, Optional.of(zone));
+            Response statRes = client.userGroupOperations().stat(rodsToken, newUsername, Optional.of(zone));
             logger.debug(statRes.getBody());
             assertEquals("Stat on the user request failed", 200, statRes.getHttpStatusCode());
             assertEquals("Stat on the user failed", 0,
@@ -112,14 +114,14 @@ public class UserGroupOperationsTest {
             assertEquals(userType, rootNode.path("type").asText());
 
             // Remove the user.
-            res = rods.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
+            res = client.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
             logger.debug(res.getBody());
             assertEquals("Removing user request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
         } finally {
             // Remove the user.
-            rods.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
+            client.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
         }
     }
 
@@ -131,14 +133,14 @@ public class UserGroupOperationsTest {
 
         try {
             // Create a new user.
-            Response res = rods.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
+            Response res = client.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
             logger.debug(res.getBody());
             assertEquals("Creating user request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Stat the user.
-            Response statRes = rods.userGroupOperations().stat(rodsToken, newUsername, Optional.of(zone));
+            Response statRes = client.userGroupOperations().stat(rodsToken, newUsername, Optional.of(zone));
             logger.debug(statRes.getBody());
             assertEquals("Stat on the user request failed", 200, statRes.getHttpStatusCode());
             assertEquals("Stat on the user failed", 0,
@@ -152,14 +154,14 @@ public class UserGroupOperationsTest {
             assertEquals(userType, rootNode.path("type").asText());
 
             // Remove the user.
-            res = rods.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
+            res = client.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
             logger.debug(res.getBody());
             assertEquals("Removing user request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
         } finally {
             // Remove the user.
-            rods.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
+            client.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
         }
     }
 
@@ -172,14 +174,14 @@ public class UserGroupOperationsTest {
 
         try {
             // Create a new group.
-            Response res = rods.userGroupOperations().createGroup(rodsToken, newGroup);
+            Response res = client.userGroupOperations().createGroup(rodsToken, newGroup);
             logger.debug(res.getBody());
             assertEquals("Adding group request failed", 200, res.getHttpStatusCode());
             assertEquals("Adding group failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Stat the group.
-            Response statRes = rods.userGroupOperations().stat(rodsToken, newGroup, Optional.empty());
+            Response statRes = client.userGroupOperations().stat(rodsToken, newGroup, Optional.empty());
             logger.debug(statRes.getBody());
             assertEquals("Stat on the user request failed", 200, statRes.getHttpStatusCode());
             assertEquals("Stat on the user failed", 0,
@@ -192,49 +194,49 @@ public class UserGroupOperationsTest {
             assertEquals("rodsgroup", rootNode.path("type").asText());
 
             // Create a new user.
-            res = rods.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
+            res = client.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
             logger.debug(res.getBody());
             assertEquals("Creating user request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Add user to group.
-            res = rods.userGroupOperations().addToGroup(rodsToken, newUsername, zone, newGroup);
+            res = client.userGroupOperations().addToGroup(rodsToken, newUsername, zone, newGroup);
             logger.debug(res.getBody());
             assertEquals("Adding user to group request failed", 200, res.getHttpStatusCode());
             assertEquals("Adding user to group failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show that the user is a member of the group.
-            res = rods.userGroupOperations().isMemberOfGroup(rodsToken, newGroup, newUsername, zone);
+            res = client.userGroupOperations().isMemberOfGroup(rodsToken, newGroup, newUsername, zone);
             logger.debug(res.getBody());
             assertEquals("isMemberOfGroup request failed", 200, res.getHttpStatusCode());
             assertEquals("isMemberOfGroup failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Remove user from group.
-            res = rods.userGroupOperations().removeFromGroup(rodsToken, newUsername, zone, newGroup);
+            res = client.userGroupOperations().removeFromGroup(rodsToken, newUsername, zone, newGroup);
             logger.debug(res.getBody());
             assertEquals("Removing user from group request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing user from group failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Remove user.
-            res = rods.userGroupOperations().removeUser(rodsToken, newUsername, zone);
+            res = client.userGroupOperations().removeUser(rodsToken, newUsername, zone);
             logger.debug(res.getBody());
             assertEquals("Removing user request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Remove group.
-            res = rods.userGroupOperations().removeGroup(rodsToken, newGroup);
+            res = client.userGroupOperations().removeGroup(rodsToken, newGroup);
             logger.debug(res.getBody());
             assertEquals("Removing user from group request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing user from group failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show that the group no longer exists.
-            Response statRes2 = rods.userGroupOperations().stat(rodsToken, newGroup, Optional.empty());
+            Response statRes2 = client.userGroupOperations().stat(rodsToken, newGroup, Optional.empty());
             logger.debug(statRes2.getBody());
             assertEquals("Stat on the user request failed", 200, statRes2.getHttpStatusCode());
             assertEquals("Stat on the user failed", 0,
@@ -245,10 +247,10 @@ public class UserGroupOperationsTest {
             assertFalse(rootNode.path(("exists")).asBoolean());
         } finally {
             // Remove group.
-            rods.userGroupOperations().removeGroup(rodsToken, newGroup);
+            client.userGroupOperations().removeGroup(rodsToken, newGroup);
 
             // Remove user.
-            rods.userGroupOperations().removeUser(rodsToken, newUsername, zone);
+            client.userGroupOperations().removeUser(rodsToken, newUsername, zone);
         }
     }
 
@@ -261,21 +263,21 @@ public class UserGroupOperationsTest {
 
         try {
             // Create a new user.
-            Response res = rods.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
+            Response res = client.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
             logger.debug(res.getBody());
             assertEquals("Creating user request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Change the type of the new user.
-            res = rods.userGroupOperations().setUserType(rodsToken, newUsername, zone, newUserType);
+            res = client.userGroupOperations().setUserType(rodsToken, newUsername, zone, newUserType);
             logger.debug(res.getBody());
             assertEquals("Changing user type request failed", 200, res.getHttpStatusCode());
             assertEquals("Changing user type failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Confirm the user type changed.
-            Response statRes = rods.userGroupOperations().stat(rodsToken, newUsername, Optional.of(zone));
+            Response statRes = client.userGroupOperations().stat(rodsToken, newUsername, Optional.of(zone));
             logger.debug(statRes.getBody());
             assertEquals("Stat on user request failed", 200, statRes.getHttpStatusCode());
             assertEquals("Stat on user failed", 0,
@@ -289,14 +291,14 @@ public class UserGroupOperationsTest {
             assertEquals(newUserType, rootNode.path("type").asText());
 
             // Remove the user.
-            res = rods.userGroupOperations().removeUser(rodsToken, newUsername, zone);
+            res = client.userGroupOperations().removeUser(rodsToken, newUsername, zone);
             logger.debug(res.getBody());
             assertEquals("Removing user request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
         } finally {
             // Remove user.
-            rods.userGroupOperations().removeUser(rodsToken, newUsername, zone);
+            client.userGroupOperations().removeUser(rodsToken, newUsername, zone);
         }
     }
 
@@ -308,34 +310,34 @@ public class UserGroupOperationsTest {
 
         try {
             // Create a new user.
-            Response res = rods.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
+            Response res = client.userGroupOperations().createUser(rodsToken, newUsername, zone, Optional.of(userType));
             logger.debug(res.getBody());
             assertEquals("Creating user request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Set password.
-            res = rods.userGroupOperations().setPassword(rodsToken, newUsername, zone, "newPassword");
+            res = client.userGroupOperations().setPassword(rodsToken, newUsername, zone, "newPassword");
             logger.debug(res.getBody());
             assertEquals("Setting password for user request failed", 200, res.getHttpStatusCode());
             assertEquals("Setting password for user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Remove the user.
-            res = rods.userGroupOperations().removeUser(rodsToken, newUsername, zone);
+            res = client.userGroupOperations().removeUser(rodsToken, newUsername, zone);
             logger.debug(res.getBody());
             assertEquals("Removing user request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing user failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
         } finally {
             // Remove user.
-            rods.userGroupOperations().removeUser(rodsToken, newUsername, zone);
+            client.userGroupOperations().removeUser(rodsToken, newUsername, zone);
         }
     }
 
     @Test
     public void testListingAllUsersInZone() {
-        Response res = rods.userGroupOperations().users(aliceToken);
+        Response res = client.userGroupOperations().users(aliceToken);
         logger.debug(res.getBody());
         assertEquals("Listing users request failed", 200, res.getHttpStatusCode());
         assertEquals("Listing users failed", 0,
@@ -348,14 +350,14 @@ public class UserGroupOperationsTest {
 
         try {
             // Create a new group.
-            Response res = rods.userGroupOperations().createGroup(rodsToken, newGroup);
+            Response res = client.userGroupOperations().createGroup(rodsToken, newGroup);
             logger.debug(res.getBody());
             assertEquals("Adding group request failed", 200, res.getHttpStatusCode());
             assertEquals("Adding group failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Get all groups.
-            Response groupRes = rods.userGroupOperations().groups(rodsToken);
+            Response groupRes = client.userGroupOperations().groups(rodsToken);
             logger.debug(groupRes.getBody());
             assertEquals("Listing groups request failed", 200, groupRes.getHttpStatusCode());
             assertEquals("Listing groups failed", 0,
@@ -368,14 +370,14 @@ public class UserGroupOperationsTest {
             assertTrue(groups.contains(newGroup));
 
             // Remove the new group.
-            res = rods.userGroupOperations().removeGroup(rodsToken, newGroup);
+            res = client.userGroupOperations().removeGroup(rodsToken, newGroup);
             logger.debug(res.getBody());
             assertEquals("Removing group request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing group failed", 0,
                     getIrodsResponseStatusCode(res.getBody()));
 
         } finally {
-            rods.userGroupOperations().removeGroup(rodsToken, newGroup);
+            client.userGroupOperations().removeGroup(rodsToken, newGroup);
         }
     }
 
@@ -386,7 +388,7 @@ public class UserGroupOperationsTest {
         // Add metadata to the user
         List<ModifyMetadataOperations> metadata = new ArrayList<>();
         metadata.add(new ModifyMetadataOperations("add", "a1", "v1", "u1"));
-        Response res = assertDoesNotThrow(() -> rods.userGroupOperations().modifyMetadata(rodsToken, username, metadata),
+        Response res = assertDoesNotThrow(() -> client.userGroupOperations().modifyMetadata(rodsToken, username, metadata),
                 "IOException was thrown");
         logger.debug(res.getBody());
         assertEquals("Adding metadata to user request failed", 200, res.getHttpStatusCode());
@@ -396,7 +398,7 @@ public class UserGroupOperationsTest {
         // Show the metadata exists on the user.
         String query = "select USER_NAME where META_USER_ATTR_NAME = 'a1' and META_USER_ATTR_VALUE = 'v1' and " +
                 "META_USER_ATTR_UNITS = 'u1'";
-        Response queryRes = rods.queryOperations().executeGenQuery(rodsToken, query, null);
+        Response queryRes = client.queryOperations().executeGenQuery(rodsToken, query, null);
         logger.debug(queryRes.getBody());
         assertEquals("Executing genQuery request failed", 200, queryRes.getHttpStatusCode());
         assertEquals("Executing genQuery failed", 0,
@@ -409,7 +411,7 @@ public class UserGroupOperationsTest {
         // Remove the metadata from the user
         List<ModifyMetadataOperations> metadata2 = new ArrayList<>();
         metadata2.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
-        res = assertDoesNotThrow(() -> rods.userGroupOperations().modifyMetadata(rodsToken, username, metadata2),
+        res = assertDoesNotThrow(() -> client.userGroupOperations().modifyMetadata(rodsToken, username, metadata2),
                 "IOException was thrown");
         logger.debug(res.getBody());
         assertEquals("Removing metadata to user request failed", 200, res.getHttpStatusCode());
@@ -417,7 +419,7 @@ public class UserGroupOperationsTest {
                 getIrodsResponseStatusCode(res.getBody()));
 
         // Show the metadata exists on the user.
-        Response queryRes2 = rods.queryOperations().executeGenQuery(rodsToken, query, null);
+        Response queryRes2 = client.queryOperations().executeGenQuery(rodsToken, query, null);
         logger.debug(queryRes2.getBody());
         assertEquals("Executing genQuery request failed", 200, queryRes2.getHttpStatusCode());
         assertEquals("Executing genQuery failed", 0,
