@@ -12,6 +12,8 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.example.IrodsResponseUtils.getIrodsResponseStatusCode;
+
 
 public class RuleOperationsTest {
     private Wrapper client;
@@ -81,12 +83,5 @@ public class RuleOperationsTest {
         assertEquals("Removing delay rule request failed", 200, res.getHttpStatusCode());
         assertEquals("Removing delay rule failed", 0,
                 getIrodsResponseStatusCode(res.getBody()));
-    }
-
-    private int getIrodsResponseStatusCode(String jsonString) {
-        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(jsonString),
-                "JsonProcessingException was thrown");
-        JsonNode statusCodeNode = rootNode.path("irods_response").path("status_code");
-        return statusCodeNode.asInt();
     }
 }

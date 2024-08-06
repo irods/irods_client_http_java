@@ -13,6 +13,8 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.example.IrodsResponseUtils.getIrodsResponseStatusCode;
+
 public class TicketOperationsTest {
     private Wrapper client;
     private String rodsToken;
@@ -131,12 +133,5 @@ public class TicketOperationsTest {
         assertEquals("Removing ticket request failed", 200, res.getHttpStatusCode());
         assertEquals("Removing ticket failed",0,
                 getIrodsResponseStatusCode(res.getBody()));
-    }
-
-    private int getIrodsResponseStatusCode(String jsonString) {
-        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(jsonString),
-                "JsonProcessingException was thrown");
-        JsonNode statusCodeNode = rootNode.path("irods_response").path("status_code");
-        return statusCodeNode.asInt();
     }
 }

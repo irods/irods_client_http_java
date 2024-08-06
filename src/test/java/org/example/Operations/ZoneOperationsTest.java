@@ -1,6 +1,5 @@
 package org.example.Operations;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Wrapper;
 import org.example.Util.Response;
@@ -11,10 +10,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.example.IrodsResponseUtils.getIrodsResponseStatusCode;
+
 
 public class ZoneOperationsTest {
     private Wrapper client;
@@ -95,12 +94,5 @@ public class ZoneOperationsTest {
             client.zoneOperations().remove(rodsToken, zoneName);
             client.zoneOperations().remove(rodsToken, "other_zone_renamed");
         }
-    }
-
-    private int getIrodsResponseStatusCode(String jsonString) {
-        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(jsonString),
-                "JsonProcessingException was thrown");
-        JsonNode statusCodeNode = rootNode.path("irods_response").path("status_code");
-        return statusCodeNode.asInt();
     }
 }

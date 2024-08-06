@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.concurrent.*;
+import static org.example.IrodsResponseUtils.getIrodsResponseStatusCode;
+
 
 public class DataObjectOperationsTest {
     private Wrapper client;
@@ -711,12 +713,5 @@ public class DataObjectOperationsTest {
             params.setAdmin(1);
             client.dataObject().remove(rodsToken, dataObject, 0, params);
         }
-    }
-
-    private int getIrodsResponseStatusCode(String jsonString) {
-        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(jsonString),
-                "JsonProcessingException was thrown");
-        JsonNode statusCodeNode = rootNode.path("irods_response").path("status_code");
-        return statusCodeNode.asInt();
     }
 }

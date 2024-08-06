@@ -22,6 +22,8 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.example.IrodsResponseUtils.getIrodsResponseStatusCode;
+
 
 public class ResourceOperationsTest {
     private Wrapper client;
@@ -338,12 +340,5 @@ public class ResourceOperationsTest {
             // Remove the resource.
             client.resourceOperations().remove(rodsToken, resource);
         }
-    }
-
-    private int getIrodsResponseStatusCode(String jsonString) {
-        JsonNode rootNode = assertDoesNotThrow(() -> mapper.readTree(jsonString),
-                "JsonProcessingException was thrown");
-        JsonNode statusCodeNode = rootNode.path("irods_response").path("status_code");
-        return statusCodeNode.asInt();
     }
 }
