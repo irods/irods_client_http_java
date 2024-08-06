@@ -78,9 +78,9 @@ public class RuleOperationsTest {
         // Remove the delay rule.
         res = client.ruleOperations().removeDelayRule(rodsToken, ruleId);
         // logger.debug(res.getBody());
-        assertEquals("Removing delay rule request failed", 200, queryRes.getHttpStatusCode());
+        assertEquals("Removing delay rule request failed", 200, res.getHttpStatusCode());
         assertEquals("Removing delay rule failed", 0,
-                getIrodsResponseStatusCode(queryRes.getBody()));
+                getIrodsResponseStatusCode(res.getBody()));
     }
 
     private int getIrodsResponseStatusCode(String jsonString) {
