@@ -18,11 +18,7 @@ public class InformationOperations {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/info";
     }
-    /**
-     * Sends request to /info endpoint and parses the response
-     * @return Info objected parsed from the response JSON
-     */
-    public Response info() {
+    public Response get() {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl))
                 .build();

@@ -17,7 +17,7 @@ public class IrodsHttpClientTest {
         client = new IrodsHttpClient(baseUrl);
 
         // check that baseUrl is correctly configured and can successfully connect with the API
-        Response res = client.information().info();
+        Response res = client.information().get();
         assertEquals(200, res.getHttpStatusCode());
     }
     @Test
