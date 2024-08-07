@@ -1,8 +1,8 @@
 package org.example.Operations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.example.IrodsHttpClient;
 import org.example.Properties.Collection.*;
-import org.example.Wrapper;
 import org.example.Serialize.ModifyMetadataOperations;
 import org.example.Serialize.ModifyPermissionsOperations;
 import org.example.Util.*;
@@ -19,10 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class CollectionOperations {
 
-    private final Wrapper client;
+    private final IrodsHttpClient client;
     private String baseUrl;
 
-    public CollectionOperations(Wrapper client) {
+    public CollectionOperations(IrodsHttpClient client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/collections";
     }

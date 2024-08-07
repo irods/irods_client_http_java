@@ -1,7 +1,7 @@
 package org.example.Operations;
 
 import org.example.Properties.Zone.ZoneAddParams;
-import org.example.Wrapper;
+import org.example.IrodsHttpClient;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 
@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ZoneOperations {
-    private final Wrapper client;
+    private final IrodsHttpClient client;
     private String baseUrl;
 
 
-    public ZoneOperations(Wrapper client) {
+    public ZoneOperations(IrodsHttpClient client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/zones";
     }

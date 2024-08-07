@@ -1,8 +1,8 @@
 package org.example.Operations;
 
+import org.example.IrodsHttpClient;
 import org.example.Properties.Query.QueryExecuteGenQueryParams;
 import org.example.Properties.Query.QueryExecuteSpecifcQueryParams;
-import org.example.Wrapper;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 
@@ -14,11 +14,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class QueryOperations {
-    private final Wrapper client;
+    private final IrodsHttpClient client;
     private String baseUrl;
 
 
-    public QueryOperations(Wrapper client) {
+    public QueryOperations(IrodsHttpClient client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/query";
     }

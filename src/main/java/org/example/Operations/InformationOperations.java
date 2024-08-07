@@ -1,7 +1,7 @@
 package org.example.Operations;
 
 
-import org.example.Wrapper;
+import org.example.IrodsHttpClient;
 import org.example.Util.Response;
 
 import java.io.IOException;
@@ -10,11 +10,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class InformationOperations {
-    private final Wrapper client;
+    private final IrodsHttpClient client;
     private String baseUrl;
 
 
-    public InformationOperations(Wrapper client) {
+    public InformationOperations(IrodsHttpClient client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/info";
     }

@@ -1,6 +1,6 @@
 package org.example.Operations;
 
-import org.example.Wrapper;
+import org.example.IrodsHttpClient;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 
@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.Optional;
 
 public class RuleOperations {
-    private final Wrapper client;
+    private final IrodsHttpClient client;
     private String baseUrl;
 
-    public RuleOperations(Wrapper client) {
+    public RuleOperations(IrodsHttpClient client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/rules";
     }

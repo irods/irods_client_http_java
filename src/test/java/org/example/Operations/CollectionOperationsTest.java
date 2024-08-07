@@ -2,12 +2,12 @@ package org.example.Operations;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.IrodsHttpClient;
 import org.example.Properties.Collection.CollectionsListParams;
 import org.example.Properties.Collection.CollectionsRemoveParams;
 import org.example.Serialize.ModifyMetadataOperations;
 import org.example.Serialize.ModifyPermissionsOperations;
 import org.example.Util.Permission;
-import org.example.Wrapper;
 import org.example.Util.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class CollectionOperationsTest {
 
-    private Wrapper client;
+    private IrodsHttpClient client;
     private String rodsToken;
 
     private String aliceToken;
@@ -36,7 +36,7 @@ public class CollectionOperationsTest {
         String baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
 
         // Create client
-        client = new Wrapper(baseUrl);
+        client = new IrodsHttpClient(baseUrl);
 
         Response res = client.authenticate("rods", "rods");
         rodsToken = res.getBody();

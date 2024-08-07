@@ -1,5 +1,5 @@
 target/
-!.mvn/wrapper/maven-wrapper.jar
+!.mvn/irodsHttpClient/maven-irodsHttpClient.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 

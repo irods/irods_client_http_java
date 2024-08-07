@@ -1,7 +1,7 @@
 package org.example.Operations;
 
+import org.example.IrodsHttpClient;
 import org.example.Properties.Ticket.TicketCreateParams;
-import org.example.Wrapper;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
 
@@ -10,10 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TicketOperations {
-    private final Wrapper client;
+    private final IrodsHttpClient client;
     private String baseUrl;
 
-    public TicketOperations(Wrapper client) {
+    public TicketOperations(IrodsHttpClient client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/tickets";
     }

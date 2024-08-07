@@ -2,9 +2,9 @@ package org.example.Operations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.IrodsHttpClient;
 import org.example.Properties.DataObject.*;
 import org.example.Properties.DataObject.DataObjectModifyReplicaParams;
-import org.example.Wrapper;
 import org.example.Serialize.ModifyMetadataOperations;
 import org.example.Serialize.ModifyPermissionsOperations;
 import org.example.Util.HttpRequestUtil;
@@ -18,11 +18,11 @@ import java.util.*;
 
 
 public class DataObjectOperations {
-    private final Wrapper client;
+    private final IrodsHttpClient client;
     private static String baseUrl;
 
 
-    public DataObjectOperations(Wrapper client) {
+    public DataObjectOperations(IrodsHttpClient client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/data-objects";
     }
