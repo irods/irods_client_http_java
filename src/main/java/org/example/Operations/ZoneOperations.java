@@ -23,7 +23,7 @@ public class ZoneOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "add");
         formData.put("name", name);
-        if (params != null) {
+        if (null != params) {
             params.getConnectionInfo().ifPresent(val -> formData.put("connection-info", val));
             params.getComment().ifPresent(val -> formData.put("comment", val));
         }

@@ -31,7 +31,7 @@ public class DataObjectOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "touch");
         formData.put("lpath", lpath);
-        if (params != null) {
+        if (null != params) {
             params.getNoCreate().ifPresent(val -> formData.put("no-create", String.valueOf(val)));
             params.getReplicaNum().ifPresent(val -> formData.put("replica-number", String.valueOf(val)));
             params.getLeafResource().ifPresent(val -> formData.put("leaf-resource", val));
@@ -48,7 +48,7 @@ public class DataObjectOperations {
         formData.put("op", "remove");
         formData.put("lpath", lpath);
         formData.put("catalog-only", String.valueOf(catalogOnly));
-        if (params != null) {
+        if (null != params) {
             params.getNoTrash().ifPresent(val -> formData.put("no-trash", String.valueOf(val)));
             params.getAdmin().ifPresent(val -> formData.put("admin", String.valueOf(val)));
         }
@@ -61,7 +61,7 @@ public class DataObjectOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "calculate_checksum");
         formData.put("lpath", lpath);
-        if (params != null) {
+        if (null != params) {
             params.getResource().ifPresent(val -> formData.put("resource", val));
             params.getReplicaNum().ifPresent(val -> formData.put("replica-number", String.valueOf(val)));
             params.getForce().ifPresent(val -> formData.put("force", String.valueOf(val)));
@@ -77,7 +77,7 @@ public class DataObjectOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "verify_checksum");
         formData.put("lpath", lpath);
-        if (params != null) {
+        if (null != params) {
             params.getResource().ifPresent(val -> formData.put("resource", val));
             params.getReplicaNum().ifPresent(val -> formData.put("replica-number", String.valueOf(val)));
             params.getComputeChecksums().ifPresent(val -> formData.put("compute-checksums", String.valueOf(val)));
@@ -116,7 +116,7 @@ public class DataObjectOperations {
         formData.put("op", "copy");
         formData.put("src-lpath", srcLpath);
         formData.put("dst-lpath", dstLpath);
-        if (params != null) {
+        if (null != params) {
             params.getSrcResource().ifPresent(val -> formData.put("src-resource", val));
             params.getDstResource().ifPresent(val -> formData.put("dst-resource", val));
             params.getOverwrite().ifPresent(val -> formData.put("overwrite", String.valueOf(val)));
@@ -143,7 +143,7 @@ public class DataObjectOperations {
         formData.put("op", "trim");
         formData.put("lpath", lpath);
         formData.put("replica-number", String.valueOf(replicaNum));
-        if (params != null) {
+        if (null != params) {
             params.getCatalogOnly().ifPresent(val -> formData.put("catalog-only", String.valueOf(val)));
             params.getAdmin().ifPresent(val -> formData.put("admin", String.valueOf(val)));
         }
@@ -158,7 +158,7 @@ public class DataObjectOperations {
         formData.put("lpath", lpath);
         formData.put("ppath", ppath);
         formData.put("resource", resource);
-        if (params != null) {
+        if (null != params) {
             params.getAsAdditionalReplica().ifPresent(val -> formData.put("as-additional-replica", String.valueOf(val)));
             params.getDataSize().ifPresent(val -> formData.put("data-size", String.valueOf(val)));
             params.getChecksum().ifPresent(val -> formData.put("checksum", val));
@@ -172,7 +172,7 @@ public class DataObjectOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "read");
         formData.put("lpath", lpath);
-        if (params != null) {
+        if (null != params) {
             params.getOffset().ifPresent(val -> formData.put("offset", String.valueOf(val)));
             params.getCount().ifPresent(val -> formData.put("count", String.valueOf(val)));
             params.getTicket().ifPresent(val -> formData.put("ticket", val));
@@ -190,7 +190,7 @@ public class DataObjectOperations {
         StringBuilder sb = new StringBuilder();
         addFormData(sb, boundary, "op", "write");
         addFormData(sb, boundary, "lpath", lpath);
-        if (params != null) {
+        if (null != params) {
             params.getResource().ifPresent(val -> addFormData(sb, boundary, "resource", val));
             params.getOffset().ifPresent(val -> addFormData(sb, boundary, "offset", String.valueOf(val)));
             params.getTruncate().ifPresent(val -> addFormData(sb, boundary, "truncate", String.valueOf(val)));
@@ -247,7 +247,7 @@ public class DataObjectOperations {
         formData.put("op", "parallel_write_init");
         formData.put("lpath", lpath);
         formData.put("stream-count", String.valueOf(streamCount));
-        if (params != null) {
+        if (null != params) {
             params.getTruncate().ifPresent(val -> formData.put("truncate", String.valueOf(val)));
             params.getAppend().ifPresent(val -> formData.put("append", String.valueOf(val)));
             params.getTicket().ifPresent(val -> formData.put("ticket", val));

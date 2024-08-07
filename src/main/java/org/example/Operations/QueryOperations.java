@@ -34,7 +34,7 @@ public class QueryOperations {
             e.printStackTrace();
         }
 
-        if (params != null) {
+        if (null != params) {
             params.getOffset().ifPresent(val -> formData.put("offset", String.valueOf(val)));
             params.getCount().ifPresent(val -> formData.put("count", String.valueOf(val)));
             params.getCaseSensitive().ifPresent(val -> formData.put("case-sensitive", String.valueOf(val)));
