@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -23,7 +25,7 @@ public class TicketOperationsTest {
 
     private String host;
     private final ObjectMapper mapper = new ObjectMapper();
-    // private static final Logger logger = LogManager.getLogger(TicketOperationsTest.class);
+    private static final Logger logger = LogManager.getLogger(TicketOperationsTest.class);
 
     @Before
     public void setup() {
@@ -53,7 +55,7 @@ public class TicketOperationsTest {
         try {
             // Create a data object.
             Response res = client.dataObject().touch(aliceToken, dataObject, null);
-            // logger.debug(res.getBody());
+            logger.debug(res.getBody());
             assertEquals("Creating data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Creating data object failed",0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -66,7 +68,7 @@ public class TicketOperationsTest {
             createParams.setUseCount(ticketUseCount);
             createParams.setSecondsUntilExpiration(ticketSecondsUntilExpiratoin);
             Response ticketRes = client.ticketOperations().create(aliceToken, dataObject, createParams);
-            // logger.debug(res.getBody());
+            logger.debug(ticketRes.getBody());
             assertEquals("Creating ticket request failed", 200, ticketRes.getHttpStatusCode());
             assertEquals("Creating ticket failed",0,
                     getIrodsResponseStatusCode(ticketRes.getBody()));
@@ -78,7 +80,7 @@ public class TicketOperationsTest {
 
             // Remove the ticket.
             res = client.ticketOperations().remove(aliceToken, ticketString);
-            // logger.debug(res.getBody());
+            logger.debug(res.getBody());
             assertEquals("Removing ticket request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing ticket failed",0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -87,7 +89,7 @@ public class TicketOperationsTest {
             DataObjectRemoveParams removeParams = new DataObjectRemoveParams();
             removeParams.setNoTrash(1);
             res = client.dataObject().remove(aliceToken, dataObject, 0, removeParams);
-            // logger.debug(res.getBody());
+            logger.debug(res.getBody());
             assertEquals("Removing data object request failed", 200, res.getHttpStatusCode());
             assertEquals("Removing data object failed",0,
                     getIrodsResponseStatusCode(res.getBody()));
@@ -117,7 +119,7 @@ public class TicketOperationsTest {
         createParams.setGroups(ticketGroups);
         createParams.setHosts(ticketHosts);
         Response ticketRes = client.ticketOperations().create(aliceToken, ticketPath, createParams);
-        // logger.debug(res.getBody());
+        logger.debug(ticketRes.getBody());
         assertEquals("Creating ticket request failed", 200, ticketRes.getHttpStatusCode());
         assertEquals("Creating ticket failed",0,
                 getIrodsResponseStatusCode(ticketRes.getBody()));
@@ -129,7 +131,7 @@ public class TicketOperationsTest {
 
         // Remove the ticket.
         Response res = client.ticketOperations().remove(aliceToken, ticketString);
-        // logger.debug(res.getBody());
+        logger.debug(res.getBody());
         assertEquals("Removing ticket request failed", 200, res.getHttpStatusCode());
         assertEquals("Removing ticket failed",0,
                 getIrodsResponseStatusCode(res.getBody()));

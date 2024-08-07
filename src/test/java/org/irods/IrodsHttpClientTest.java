@@ -1,5 +1,7 @@
 package org.irods;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.irods.Util.Response;
@@ -7,6 +9,7 @@ import static org.junit.Assert.*;
 public class IrodsHttpClientTest {
     private static String baseUrl;
     private static IrodsHttpClient client;
+    private static final Logger logger = LogManager.getLogger(IrodsHttpClientTest.class);
     @Before
     public void setup() {
         String address = "52.91.145.195";
@@ -23,6 +26,7 @@ public class IrodsHttpClientTest {
     @Test
     public void authenticate_valid() {
         Response res = client.authenticate("rods", "rods");
+        logger.debug(res.getBody());
         assertEquals(200, res.getHttpStatusCode());
         assertEquals(res.getBody(), res.getBody());
 
@@ -31,6 +35,7 @@ public class IrodsHttpClientTest {
     public void authenticate_invalid_user() {
         IrodsHttpClient test = new IrodsHttpClient(baseUrl);
         Response res = test.authenticate("test", "test");
+        logger.debug(res.getBody());
         assertEquals(401, res.getHttpStatusCode());
     }
 }
