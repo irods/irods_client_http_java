@@ -1,7 +1,6 @@
 package org.example;
 
 import org.example.Operations.*;
-import org.example.Util.IrodsException;
 import org.example.Util.Response;
 
 import java.io.IOException;
@@ -11,16 +10,16 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Base64;
 
-public class Wrapper {
+public class IrodsHttpClient {
 
     private String baseUrl;
     private final HttpClient client = HttpClient.newHttpClient();
     private String openIdToken;
-    public Wrapper(String baseUrl) {
+    public IrodsHttpClient(String baseUrl) {
         this.baseUrl = baseUrl;
     }
 
-    public Wrapper(String baseUrl, String openIdToken) {
+    public IrodsHttpClient(String baseUrl, String openIdToken) {
         this.baseUrl = baseUrl;
         this.openIdToken = openIdToken;
     }

@@ -4,9 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.example.Util.Response;
 import static org.junit.Assert.*;
-public class WrapperTest {
+public class IrodsHttpClientTest {
     private static String baseUrl;
-    private static Wrapper client;
+    private static IrodsHttpClient client;
     @Before
     public void setup() {
         String address = "52.91.145.195";
@@ -14,7 +14,7 @@ public class WrapperTest {
         String version = "0.3.0";
 
         baseUrl = "http://" + address + ":" + port + "/irods-http-api/" + version;
-        client = new Wrapper(baseUrl);
+        client = new IrodsHttpClient(baseUrl);
 
         // check that baseUrl is correctly configured and can successfully connect with the API
         Response res = client.information().info();
@@ -29,7 +29,7 @@ public class WrapperTest {
     }
     @Test
     public void authenticate_invalid_user() {
-        Wrapper test = new Wrapper(baseUrl);
+        IrodsHttpClient test = new IrodsHttpClient(baseUrl);
         Response res = test.authenticate("test", "test");
         assertEquals(401, res.getHttpStatusCode());
     }

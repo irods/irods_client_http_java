@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.example.Properties.Query.QueryExecuteGenQueryParams;
 import org.example.Properties.Query.QueryExecuteSpecifcQueryParams;
 import org.example.Util.Response;
-import org.example.Wrapper;
+import org.example.IrodsHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import static org.example.IrodsResponseUtils.getIrodsResponseStatusCode;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class QueryOperationsTest {
-    private Wrapper client;
+    private IrodsHttpClient client;
     private String rodsToken;
 
     private String aliceToken;
@@ -39,7 +39,7 @@ public class QueryOperationsTest {
         String baseUrl = "http://" + host + ":" + port + "/irods-http-api/" + version;
 
         // Create client
-        client = new Wrapper(baseUrl);
+        client = new IrodsHttpClient(baseUrl);
 
         // Authenticate rods
         Response res = client.authenticate("rods", "rods");

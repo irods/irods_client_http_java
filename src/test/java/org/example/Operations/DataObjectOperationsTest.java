@@ -2,12 +2,12 @@ package org.example.Operations;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.IrodsHttpClient;
 import org.example.Serialize.ModifyMetadataOperations;
 import org.example.Serialize.ModifyPermissionsOperations;
 import org.example.Properties.DataObject.*;
 import org.example.Properties.Resource.ResourceCreateParams;
 import org.example.Util.Response;
-import org.example.Wrapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +25,7 @@ import static org.example.IrodsResponseUtils.getIrodsResponseStatusCode;
 
 
 public class DataObjectOperationsTest {
-    private Wrapper client;
+    private IrodsHttpClient client;
     private String rodsToken;
 
     private String aliceToken;
@@ -42,7 +42,7 @@ public class DataObjectOperationsTest {
         String baseUrl = "http://" + host + ":" + port + "/irods-http-api/" + version;
 
         // Create client
-        client = new Wrapper(baseUrl);
+        client = new IrodsHttpClient(baseUrl);
 
         // Authenticate rods
         Response res = client.authenticate("rods", "rods");

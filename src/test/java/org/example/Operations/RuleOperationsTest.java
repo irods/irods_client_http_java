@@ -3,7 +3,7 @@ package org.example.Operations;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Wrapper;
+import org.example.IrodsHttpClient;
 import org.example.Util.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import static org.example.IrodsResponseUtils.getIrodsResponseStatusCode;
 
 
 public class RuleOperationsTest {
-    private Wrapper client;
+    private IrodsHttpClient client;
     private String rodsToken;
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -31,7 +31,7 @@ public class RuleOperationsTest {
         String baseUrl = "http://" + host + ":" + port + "/irods-http-api/" + version;
 
         // Create client
-        client = new Wrapper(baseUrl);
+        client = new IrodsHttpClient(baseUrl);
 
         // Authenticate rods
         Response res = client.authenticate("rods", "rods");

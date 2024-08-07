@@ -2,8 +2,8 @@ package org.example.Operations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.IrodsHttpClient;
 import org.example.Properties.Resource.ResourceCreateParams;
-import org.example.Wrapper;
 import org.example.Serialize.ModifyMetadataOperations;
 import org.example.Util.HttpRequestUtil;
 import org.example.Util.Response;
@@ -12,10 +12,10 @@ import java.net.http.HttpResponse;
 import java.util.*;
 
 public class ResourceOperations {
-    private final Wrapper client;
+    private final IrodsHttpClient client;
     private String baseUrl;
 
-    public ResourceOperations(Wrapper client) {
+    public ResourceOperations(IrodsHttpClient client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/resources";
     }
