@@ -22,7 +22,7 @@ public class TicketOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "create");
         formData.put("lpath", lpath);
-        if (params != null) {
+        if (null != params) {
             params.getType().ifPresent(val -> formData.put("type", val));
             params.getUseCount().ifPresent(val -> formData.put("use-count", String.valueOf(val)));
             params.getWriteDataObjectCount().ifPresent(val -> formData.put("write-data-object-count", String.valueOf(val)));

@@ -44,7 +44,7 @@ public class CollectionOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove");
         formData.put("lpath", lpath);
-        if (params != null) {
+        if (null != params) {
             params.getRecurse().ifPresent(val -> formData.put("recurse", String.valueOf(val)));
             params.getNoTrash().ifPresent(val -> formData.put("no-trash", String.valueOf(val)));
         }
@@ -76,7 +76,7 @@ public class CollectionOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "list");
         formData.put("lpath", lpath);
-        if (params != null) {
+        if (null != params) {
             params.getRecurse().ifPresent(val -> formData.put("recurse", String.valueOf(val)));
             params.getTicket().ifPresent(val -> formData.put("ticket", val));
 
@@ -171,7 +171,7 @@ public class CollectionOperations {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "touch");
         formData.put("lpath", lpath);
-        if (params != null) {
+        if (null != params) {
             params.getSecondsSinceEpoch().ifPresent(val -> formData.put("seconds-since-epoch", String.valueOf(val)));
             params.getReference().ifPresent(val -> formData.put("reference", val));
         }

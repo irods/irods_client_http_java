@@ -26,7 +26,7 @@ public class ResourceOperations {
         formData.put("op", "create");
         formData.put("name", name);
         formData.put("type", type);
-        if (params != null) {
+        if (null != params) {
             params.getHost().ifPresent(val -> formData.put("host", val));
             params.getVaultPath().ifPresent(val -> formData.put("vault-path", val));
             params.getContext().ifPresent(val -> formData.put("context", val));
