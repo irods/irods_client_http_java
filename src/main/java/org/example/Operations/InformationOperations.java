@@ -18,6 +18,7 @@ public class InformationOperations {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/info";
     }
+
     public Response get() {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl))
