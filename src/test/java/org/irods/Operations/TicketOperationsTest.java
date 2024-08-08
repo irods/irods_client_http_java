@@ -6,6 +6,7 @@ import org.irods.IrodsHttpClient;
 import org.irods.Properties.DataObject.DataObjectRemoveParams;
 import org.irods.Properties.Ticket.TicketCreateParams;
 import org.irods.Util.Response;
+import org.irods.Util.UserType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,7 +43,7 @@ public class TicketOperationsTest {
         rodsToken = res.getBody();
 
         // Create alice user
-        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
+        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of(UserType.RODSUSER));
         this.client.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
         res = client.authenticate("alice", "alicepass");
         aliceToken = res.getBody();

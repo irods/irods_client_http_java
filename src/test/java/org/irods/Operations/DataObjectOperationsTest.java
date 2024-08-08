@@ -8,9 +8,11 @@ import org.irods.Serialize.ModifyPermissionsOperations;
 import org.irods.Properties.DataObject.*;
 import org.irods.Properties.Resource.ResourceCreateParams;
 import org.irods.Util.Permission;
+import org.irods.Util.MetadataOperation;
 import org.irods.Util.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.irods.Util.UserType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,7 +55,7 @@ public class DataObjectOperationsTest {
         rodsToken = res.getBody();
 
         // Create alice user
-        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
+        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of(UserType.RODSUSER));
         this.client.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
         res = client.authenticate("alice", "alicepass");
         aliceToken = res.getBody();
@@ -573,7 +575,7 @@ public class DataObjectOperationsTest {
 
             // Add metadata to the home data object
             List<ModifyMetadataOperations> jsonParam = new ArrayList<>();
-            jsonParam.add(new ModifyMetadataOperations("add", "a1", "v1", "u1"));
+            jsonParam.add(new ModifyMetadataOperations(MetadataOperation.ADD, "a1", "v1", "u1"));
             res = client.dataObject().modifyMetadata(rodsToken, dataObject, jsonParam, OptionalInt.empty());
             logger.debug(res.getBody());
             assertEquals("adding metadata to data object request failed", 200, res.getHttpStatusCode());
@@ -603,7 +605,7 @@ public class DataObjectOperationsTest {
 
             // Remove the metadata from the data object.
             List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
-            jsonParam2.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
+            jsonParam2.add(new ModifyMetadataOperations(MetadataOperation.REMOVE, "a1", "v1", "u1"));
             res = client.dataObject().modifyMetadata(rodsToken, dataObject, jsonParam2, OptionalInt.empty());
             logger.debug(res.getBody());
             assertEquals("adding metadata to data object request failed", 200, res.getHttpStatusCode());

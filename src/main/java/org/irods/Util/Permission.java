@@ -1,7 +1,7 @@
 package org.irods.Util;
 
 /**
- * enum for set_permission() method to ensure user only inputs valid data
+ * enum for setPermission() method in collections and data objects endpoint
  */
 public enum Permission {
     OWN("own"),
