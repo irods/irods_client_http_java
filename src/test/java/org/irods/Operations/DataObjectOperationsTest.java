@@ -7,6 +7,7 @@ import org.irods.Serialize.ModifyMetadataOperations;
 import org.irods.Serialize.ModifyPermissionsOperations;
 import org.irods.Properties.DataObject.*;
 import org.irods.Properties.Resource.ResourceCreateParams;
+import org.irods.Util.Permission;
 import org.irods.Util.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +34,7 @@ public class DataObjectOperationsTest {
     private String aliceToken;
 
     private String host;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
     private static final Logger logger = LogManager.getLogger(DataObjectOperationsTest.class);
 
     @Before
@@ -254,7 +255,7 @@ public class DataObjectOperationsTest {
             res = client.dataObject().copy(aliceToken, dataObjectA, dataObjectB, null);
             logger.debug(res.getBody());
             assertEquals("Copying data object request failed", 200, res.getHttpStatusCode());
-            assertEquals("Expected to get a failed message of \'OVERWRITE_WITHOUT_FORCE_FLAG\'", -312000,
+            assertEquals("Expected to get a failed message of 'OVERWRITE_WITHOUT_FORCE_FLAG'", -312000,
                     getIrodsResponseStatusCode(res.getBody()));
 
             // Show copying over an existing data object is possible with the "overwrite" parameter.
@@ -648,7 +649,7 @@ public class DataObjectOperationsTest {
 
             // Give alice read permission on the data object.
             List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
-            jsonParam.add(new ModifyPermissionsOperations("alice", "read"));
+            assertDoesNotThrow(() -> jsonParam.add(new ModifyPermissionsOperations("alice", Permission.READ)));
             res = client.dataObject().modifyPermissions(rodsToken, dataObject, jsonParam, OptionalInt.empty());
 
             logger.debug(res.getBody());
@@ -682,7 +683,7 @@ public class DataObjectOperationsTest {
         } finally {
             // Reset permissions
             List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
-            jsonParam.add(new ModifyPermissionsOperations("alice", "null"));
+            assertDoesNotThrow(() -> jsonParam.add(new ModifyPermissionsOperations("alice", Permission.NULL)));
             client.dataObject().modifyPermissions(rodsToken, dataObject, jsonParam, OptionalInt.empty());
 
             // Remove the data object.
