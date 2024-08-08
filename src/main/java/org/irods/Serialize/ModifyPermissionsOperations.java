@@ -20,14 +20,4 @@ public class ModifyPermissionsOperations {
         this.entity_name = entity_name;
         this.acl = acl;
     }
-
-    @Override
-    public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            return "{ \"error\": \"Unable to serialize to JSON\" }";
-        }
-    }
 }
