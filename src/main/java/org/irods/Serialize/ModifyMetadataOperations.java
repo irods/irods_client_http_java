@@ -24,14 +24,4 @@ public class ModifyMetadataOperations {
         this.value = value;
         this.units = units;
     }
-
-    @Override
-    public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            return "{ \"error\": \"Unable to serialize to JSON\" }";
-        }
-    }
 }
