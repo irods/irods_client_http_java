@@ -7,6 +7,7 @@ import org.irods.Properties.DataObject.DataObjectRemoveParams;
 import org.irods.Properties.DataObject.DataObjectWriteParams;
 import org.irods.Properties.Resource.ResourceCreateParams;
 import org.irods.Serialize.ModifyMetadataOperations;
+import org.irods.Util.MetadataOperation;
 import org.irods.Util.Response;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -229,7 +230,7 @@ public class ResourceOperationsTest {
         try {
             // Add metadata to the resource.
             List<ModifyMetadataOperations> modifyJson = new ArrayList<>();
-            modifyJson.add(new ModifyMetadataOperations("add", "a1", "v1", "u1"));
+            modifyJson.add(new ModifyMetadataOperations(MetadataOperation.ADD, "a1", "v1", "u1"));
             Response res = client.resourceOperations().modifyMetadata(rodsToken, resource, modifyJson);
             logger.debug(res.getBody());
             assertEquals("Modifying metadata request failed", 200, res.getHttpStatusCode());
@@ -252,7 +253,7 @@ public class ResourceOperationsTest {
 
             // Remove the metadata from the resource.
             List<ModifyMetadataOperations> modifyJson2 = new ArrayList<>();
-            modifyJson2.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
+            modifyJson2.add(new ModifyMetadataOperations(MetadataOperation.REMOVE, "a1", "v1", "u1"));
             res = client.resourceOperations().modifyMetadata(rodsToken, resource, modifyJson2);
             logger.debug(res.getBody());
             assertEquals("Modifying metadata request failed", 200, res.getHttpStatusCode());
@@ -273,7 +274,7 @@ public class ResourceOperationsTest {
         } finally {
             // Remove metadata
             List<ModifyMetadataOperations> modifyJson = new ArrayList<>();
-            modifyJson.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
+            modifyJson.add(new ModifyMetadataOperations(MetadataOperation.REMOVE, "a1", "v1", "u1"));
             client.resourceOperations().modifyMetadata(rodsToken, resource, modifyJson);
         }
     }

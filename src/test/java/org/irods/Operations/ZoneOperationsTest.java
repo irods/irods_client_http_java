@@ -2,6 +2,7 @@ package org.irods.Operations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.irods.IrodsHttpClient;
+import org.irods.Util.ZoneProperty;
 import org.irods.Util.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,17 +69,17 @@ public class ZoneOperationsTest {
             );
 
             for (Map.Entry<String, String> entry : propertyMap) {
-                String property = entry.getKey();
+                ZoneProperty zoneProperty = ZoneProperty.valueOf(entry.getKey().toUpperCase());
                 String value = entry.getValue();
 
-                res = client.zoneOperations().modify(rodsToken, zoneName, property, value);
+                res = client.zoneOperations().modify(rodsToken, zoneName, zoneProperty, value);
                 logger.debug(res.getBody());
                 assertEquals("Modifying zone request failed", 200, res.getHttpStatusCode());
-                assertEquals("Modifying zone failed", 0,
+                assertEquals("Modifying zone with property " + zoneProperty.getValue() + " failed", 0,
                         getIrodsResponseStatusCode(res.getBody()));
 
                 // Capture the new name of the zone following its renaming.
-                if ("name".equals(property)) {
+                if ("name".equals(zoneProperty.getValue())) {
                     zoneName = value;
                 }
             }

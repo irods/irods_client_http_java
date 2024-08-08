@@ -3,6 +3,7 @@ package org.irods.Operations;
 import org.irods.Properties.Zone.ZoneAddParams;
 import org.irods.IrodsHttpClient;
 import org.irods.Util.HttpRequestUtil;
+import org.irods.Util.ZoneProperty;
 import org.irods.Util.Response;
 
 import java.net.http.HttpResponse;
@@ -41,11 +42,11 @@ public class ZoneOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response modify(String token, String name, String property, String value) {
+    public Response modify(String token, String name, ZoneProperty zoneProperty, String value) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "modify");
         formData.put("name", name);
-        formData.put("property", property);
+        formData.put("property", zoneProperty.getValue());
         formData.put("value", value);
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());

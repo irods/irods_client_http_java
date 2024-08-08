@@ -9,6 +9,7 @@ import org.irods.Properties.Query.QueryExecuteGenQueryParams;
 import org.irods.Properties.Query.QueryExecuteSpecifcQueryParams;
 import org.irods.Util.Response;
 import org.irods.IrodsHttpClient;
+import org.irods.Util.UserType;
 import org.junit.Before;
 import org.junit.Test;
 import static org.irods.IrodsResponseUtils.getIrodsResponseStatusCode;
@@ -46,7 +47,7 @@ public class QueryOperationsTest {
         rodsToken = res.getBody();
 
         // Create alice user
-        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
+        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of(UserType.RODSUSER));
         this.client.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
         res = client.authenticate("alice", "alicepass");
         aliceToken = res.getBody();

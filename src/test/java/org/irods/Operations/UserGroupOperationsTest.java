@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.irods.IrodsHttpClient;
 import org.irods.Serialize.ModifyMetadataOperations;
+import org.irods.Util.MetadataOperation;
 import org.irods.Util.Response;
+import org.irods.Util.UserType;
 import org.junit.Before;
 import org.junit.Test;
 import org.apache.logging.log4j.LogManager;
@@ -41,7 +43,7 @@ public class UserGroupOperationsTest {
         rodsToken = res.getBody();
 
         // Create alice user
-        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
+        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of(UserType.RODSUSER));
         this.client.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
         res = client.authenticate("alice", "alicepass");
         aliceToken = res.getBody();
@@ -50,7 +52,7 @@ public class UserGroupOperationsTest {
     @Test
     public void testCreateStatAndRemoveRodsuser() {
         String newUsername = "test_user_rodsuser";
-        String userType = "rodsuser";
+        UserType userType = UserType.RODSUSER;
         String zone = "tempZone";
 
         try {
@@ -73,7 +75,7 @@ public class UserGroupOperationsTest {
             assertTrue(rootNode.path("exists").asBoolean());
             assertTrue("'id' field should be present in the response JSON", rootNode.has("id"));
             assertEquals(newUsername + "#" + zone, rootNode.path("local_unique_name").asText());
-            assertEquals(userType, rootNode.path("type").asText());
+            assertEquals(userType.getValue(), rootNode.path("type").asText());
 
             // Remove the user.
             res = client.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
@@ -90,7 +92,7 @@ public class UserGroupOperationsTest {
     @Test
     public void testCreateStatAndRemoveRodsadmin() {
         String newUsername = "test_user_rodsadmin";
-        String userType = "rodsadmin";
+        UserType userType = UserType.RODSADMIN;
         String zone = "tempZone";
 
         try {
@@ -113,7 +115,7 @@ public class UserGroupOperationsTest {
             assertTrue(rootNode.path(("exists")).asBoolean());
             assertTrue("'id' field should be present in the response JSON", rootNode.has("id"));
             assertEquals(newUsername + "#" + zone, rootNode.path("local_unique_name").asText());
-            assertEquals(userType, rootNode.path("type").asText());
+            assertEquals(userType.getValue(), rootNode.path("type").asText());
 
             // Remove the user.
             res = client.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
@@ -130,7 +132,7 @@ public class UserGroupOperationsTest {
     @Test
     public void testCreateStatAndRemoveGroupAdmin() {
         String newUsername = "test_user_groupadmin";
-        String userType = "groupadmin";
+        UserType userType = UserType.GROUPADMIN;
         String zone = "tempZone";
 
         try {
@@ -153,7 +155,7 @@ public class UserGroupOperationsTest {
             assertTrue(rootNode.path(("exists")).asBoolean());
             assertTrue("'id' field should be present in the response JSON", rootNode.has("id"));
             assertEquals(newUsername + "#" + zone, rootNode.path("local_unique_name").asText());
-            assertEquals(userType, rootNode.path("type").asText());
+            assertEquals(userType.getValue(), rootNode.path("type").asText());
 
             // Remove the user.
             res = client.userGroupOperations().removeUser(rodsToken, newUsername, "tempZone");
@@ -171,7 +173,7 @@ public class UserGroupOperationsTest {
     public void testAddRemoveUserToAndFromGroup() {
         String newGroup = "test_group";
         String newUsername = "test_user_rodsuser";
-        String userType = "rodsuser";
+        UserType userType = UserType.RODSUSER;
         String zone = "tempZone";
 
         try {
@@ -259,8 +261,8 @@ public class UserGroupOperationsTest {
     @Test
     public void testChangeUserType() {
         String newUsername = "test_user_rodsuser";
-        String userType = "rodsuser";
-        String newUserType = "groupadmin";
+        UserType userType = UserType.RODSUSER;
+        UserType newUserType = UserType.GROUPADMIN;
         String zone = "tempZone";
 
         try {
@@ -290,7 +292,7 @@ public class UserGroupOperationsTest {
             assertTrue(rootNode.path(("exists")).asBoolean());
             assertEquals(newUsername + "#" + zone, rootNode.path("local_unique_name").asText());
             assertTrue("'id' field should be present in the response JSON", rootNode.has("id"));
-            assertEquals(newUserType, rootNode.path("type").asText());
+            assertEquals(newUserType.getValue(), rootNode.path("type").asText());
 
             // Remove the user.
             res = client.userGroupOperations().removeUser(rodsToken, newUsername, zone);
@@ -307,7 +309,7 @@ public class UserGroupOperationsTest {
     @Test
     public void testUserPassword() {
         String newUsername = "test_user_rodsuser";
-        String userType = "rodsuser";
+        UserType userType = UserType.RODSUSER;
         String zone = "tempZone";
 
         try {
@@ -389,7 +391,7 @@ public class UserGroupOperationsTest {
 
         // Add metadata to the user
         List<ModifyMetadataOperations> metadata = new ArrayList<>();
-        metadata.add(new ModifyMetadataOperations("add", "a1", "v1", "u1"));
+        metadata.add(new ModifyMetadataOperations(MetadataOperation.ADD, "a1", "v1", "u1"));
         Response res = assertDoesNotThrow(() -> client.userGroupOperations().modifyMetadata(rodsToken, username, metadata),
                 "IOException was thrown");
         logger.debug(res.getBody());
@@ -412,7 +414,7 @@ public class UserGroupOperationsTest {
 
         // Remove the metadata from the user
         List<ModifyMetadataOperations> metadata2 = new ArrayList<>();
-        metadata2.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
+        metadata2.add(new ModifyMetadataOperations(MetadataOperation.REMOVE, "a1", "v1", "u1"));
         res = assertDoesNotThrow(() -> client.userGroupOperations().modifyMetadata(rodsToken, username, metadata2),
                 "IOException was thrown");
         logger.debug(res.getBody());
