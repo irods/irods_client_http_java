@@ -4,11 +4,19 @@ package org.irods.Util;
  * enum for set_permission() method to ensure user only inputs valid data
  */
 public enum Permission {
-    NULL("null"),
-    READ("read"),
+    OWN("own"),
+    DELETE_OBJECT("delete_object"),
     WRITE("write"),
-    OWN("own");
-    
+    MODIFY_OBJECT("modify_object"),
+    CREATE_OBJECT("create_object"),
+    DELETE_METADATA("delete_metadata"),
+    MODIFY_METADATA("modify_metadata"),
+    CREATE_METADATA("create_metadata"),
+    READ("read"),
+    READ_OBJECT("read_object"),
+    READ_METADATA("read_metadata"),
+    NULL("null");
+
     private final String value; 
     
     Permission(String value) {
