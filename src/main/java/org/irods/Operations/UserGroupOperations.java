@@ -5,6 +5,7 @@ import org.irods.IrodsHttpClient;
 import org.irods.Serialize.ModifyMetadataOperations;
 import org.irods.Util.HttpRequestUtil;
 import org.irods.Util.Response;
+import org.irods.Util.UserType;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
@@ -22,12 +23,12 @@ public class UserGroupOperations {
         this.baseUrl = client.getBaseUrl() + "/users-groups";
     }
 
-    public Response createUser(String token, String name, String zone, Optional<String> userType) {
+    public Response createUser(String token, String name, String zone, Optional<UserType> userType) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "create_user");
         formData.put("name", name);
         formData.put("zone", zone);
-        userType.ifPresent(val -> formData.put("user-type", val));
+        userType.ifPresent(val -> formData.put("user-type", val.getValue()));
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
@@ -54,12 +55,12 @@ public class UserGroupOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response setUserType(String token, String name, String zone, String newUserType) {
+    public Response setUserType(String token, String name, String zone, UserType newUserType) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "set_user_type");
         formData.put("name", name);
         formData.put("zone", zone);
-        formData.put("new-user-type", newUserType);
+        formData.put("new-user-type", newUserType.getValue());
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());

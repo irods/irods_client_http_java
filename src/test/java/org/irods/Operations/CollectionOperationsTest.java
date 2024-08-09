@@ -9,8 +9,10 @@ import org.irods.Properties.Collection.CollectionsListParams;
 import org.irods.Properties.Collection.CollectionsRemoveParams;
 import org.irods.Serialize.ModifyMetadataOperations;
 import org.irods.Serialize.ModifyPermissionsOperations;
+import org.irods.Util.MetadataOperation;
 import org.irods.Util.Permission;
 import org.irods.Util.Response;
+import org.irods.Util.UserType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,7 +47,7 @@ public class CollectionOperationsTest {
         rodsToken = res.getBody();
 
         // Create alice user
-        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of("rodsuser"));
+        this.client.userGroupOperations().createUser(rodsToken, "alice", "tempZone", Optional.of(UserType.RODSUSER));
         this.client.userGroupOperations().setPassword(rodsToken, "alice", "tempZone", "alicepass");
         res = client.authenticate("alice", "alicepass");
         aliceToken = res.getBody();
@@ -238,7 +240,7 @@ public class CollectionOperationsTest {
         try {
             // Add metadata to the collection.
             List<ModifyMetadataOperations> operation = new ArrayList<>();
-            operation.add(new ModifyMetadataOperations("add", "a1", "v1", "u1"));
+            operation.add(new ModifyMetadataOperations(MetadataOperation.ADD, "a1", "v1", "u1"));
             res = client.collections().modifyMetadata(aliceToken, collection, operation, OptionalInt.empty());
             logger.debug(res.getBody());
             assertEquals("Adding metadata to collection request failed", 200, res.getHttpStatusCode());
@@ -262,7 +264,7 @@ public class CollectionOperationsTest {
 
             // Remove the metadata from the collection.
             List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
-            jsonParam2.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
+            jsonParam2.add(new ModifyMetadataOperations(MetadataOperation.REMOVE, "a1", "v1", "u1"));
             res = client.collections().modifyMetadata(aliceToken, collection, jsonParam2, OptionalInt.empty());
             logger.debug(res.getBody());
             assertEquals("Removing metadata to collection request failed", 200, res.getHttpStatusCode());
@@ -283,7 +285,7 @@ public class CollectionOperationsTest {
         } finally {
             // Remove metadata
             List<ModifyMetadataOperations> jsonParam2 = new ArrayList<>();
-            jsonParam2.add(new ModifyMetadataOperations("remove", "a1", "v1", "u1"));
+            jsonParam2.add(new ModifyMetadataOperations(MetadataOperation.REMOVE, "a1", "v1", "u1"));
             client.collections().modifyMetadata(aliceToken, collection, jsonParam2, OptionalInt.empty());
         }
     }
