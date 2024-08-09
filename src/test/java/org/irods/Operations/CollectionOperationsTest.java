@@ -296,7 +296,7 @@ public class CollectionOperationsTest {
         try {
             // Give the rodsadmin read permission on the rodsuser's home collection.
             List<ModifyPermissionsOperations> operation = new ArrayList<>();
-            operation.add(new ModifyPermissionsOperations("rods", "read"));
+            assertDoesNotThrow(() -> operation.add(new ModifyPermissionsOperations("rods", Permission.READ)));
             res = assertDoesNotThrow(() ->
                             client.collections().modifyPermissions(aliceToken, collection, operation, OptionalInt.empty()),
                     "JsonProcessingException was thrown"
@@ -338,7 +338,7 @@ public class CollectionOperationsTest {
 
             // Remove rodsadmin's permission on the collection.
             List<ModifyPermissionsOperations> operation2 = new ArrayList<>();
-            operation2.add(new ModifyPermissionsOperations("rods", "null"));
+            assertDoesNotThrow(() -> operation2.add(new ModifyPermissionsOperations("rods", Permission.NULL)));
             res = assertDoesNotThrow(() ->
                             client.collections().modifyPermissions(aliceToken, collection, operation2, OptionalInt.empty()),
                     "JsonProcessingException was thrown"
@@ -363,8 +363,8 @@ public class CollectionOperationsTest {
         } finally {
             // Reset permissions
             List<ModifyPermissionsOperations> operation2 = new ArrayList<>();
-            operation2.add(new ModifyPermissionsOperations("rods", "null"));
-            res = assertDoesNotThrow(() ->
+            assertDoesNotThrow(() -> operation2.add(new ModifyPermissionsOperations("rods", Permission.NULL)));
+            assertDoesNotThrow(() ->
                             client.collections().modifyPermissions(aliceToken, collection, operation2, OptionalInt.empty()),
                     "JsonProcessingException was thrown"
             );
