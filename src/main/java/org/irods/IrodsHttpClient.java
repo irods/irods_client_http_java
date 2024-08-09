@@ -1,7 +1,7 @@
 package org.irods;
 
-import org.irods.Operations.*;
-import org.irods.Util.Response;
+import org.irods.operations.*;
+import org.irods.util.Response;
 
 import java.io.IOException;
 import java.net.URI;
