@@ -1,6 +1,7 @@
 package org.irods.operations;
 
 import org.irods.IrodsHttpClient;
+import org.irods.properties.DataObject.DataObjectCopyParams;
 import org.irods.properties.Query.QueryExecuteGenQueryParams;
 import org.irods.properties.Query.QueryExecuteSpecifcQueryParams;
 import org.irods.util.HttpRequestUtil;
@@ -13,15 +14,32 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class provides methods to interact with the query endpoint.
+ */
 public class QueryOperations {
     private final IrodsHttpClient client;
     private String baseUrl;
 
 
+    /**
+     * Constructs a {@code QueryOperations} object.
+     *
+     * @param client An instance of {@link IrodsHttpClient} used to communicate with the iRODS server.
+     */
     public QueryOperations(IrodsHttpClient client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/query";
     }
+
+    /**
+     * Executes a GenQuery string and returns the results.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param query The query being executed.
+     * @param params An instance of the {@link QueryExecuteGenQueryParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response executeGenQuery(String token, String query, QueryExecuteGenQueryParams params)  {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "execute_genquery");
@@ -48,6 +66,14 @@ public class QueryOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Executes a specific query and returns the results.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param name Name of specific query.
+     * @param params An instance of the {@link QueryExecuteSpecifcQueryParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response executeSpecificQuery(String token, String name, QueryExecuteSpecifcQueryParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "execute_specific_query");
@@ -63,6 +89,15 @@ public class QueryOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Adds a SpecificQuery to the iRODS zone. This operation requires rodsadmin level privileges.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param name The name of the SpecificQuery.
+     * @param sql The SQL attached to the SpecificQuery.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     * @throws UnsupportedEncodingException If the named encoding is not supported.
+     */
     public Response addSpecificQuery(String token, String name, String sql) throws UnsupportedEncodingException {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "add_specific_query");
@@ -75,6 +110,14 @@ public class QueryOperations {
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());
         return new Response(response.statusCode(), response.body());
     }
+
+    /**
+     * Removes a SpecificQuery from the iRODS zone. This operation requires rodsadmin level privileges.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param name The name of the SpecificQuery.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response removeSpecificQuery(String token, String name) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove_specific_query");

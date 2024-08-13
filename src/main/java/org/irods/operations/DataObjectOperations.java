@@ -8,6 +8,7 @@ import org.irods.properties.DataObject.DataObjectModifyReplicaParams;
 import org.irods.serialize.ModifyMetadataOperations;
 import org.irods.serialize.ModifyPermissionsOperations;
 import org.irods.util.HttpRequestUtil;
+import org.irods.util.Permission;
 import org.irods.util.Response;
 
 import java.io.*;
@@ -17,16 +18,31 @@ import java.net.http.HttpResponse;
 import java.util.*;
 
 
+/**
+ * Class provides methods to interact with the data-objects endpoint.
+ */
 public class DataObjectOperations {
     private final IrodsHttpClient client;
     private static String baseUrl;
 
-
+    /**
+     * Constructs a {@code DataObjectOperations} object.
+     *
+     * @param client An instance of {@link IrodsHttpClient} used to communicate with thhe iRODS server.
+     */
     public DataObjectOperations(IrodsHttpClient client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/data-objects";
     }
 
+    /**
+     * Updates the mtime of an existing data object or creates a new data object if it does not exist.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param params An instance of the {@link DataObjectTouchParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response touch(String token, String lpath, DataObjectTouchParams params)  {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "touch");
@@ -43,6 +59,15 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Removes a data object or unregisters all replicas.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param catalogOnly 0 or 1. If set to 1, removes only the catalog entry.
+     * @param params An instance of the {@link DataObjectRemoveParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response remove(String token, String lpath, int catalogOnly, DataObjectRemoveParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove");
@@ -57,6 +82,14 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Calculates the checksum for a data object.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param params An instance of the {@link DataObjectCalculateChecksumParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response calculateChecksum(String token, String lpath, DataObjectCalculateChecksumParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "calculate_checksum");
@@ -73,6 +106,14 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Verifies the checksum information for a data object.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param params An instance of the {@link DataObjectVerifyChecksumParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response verifyChecksum(String token, String lpath, DataObjectVerifyChecksumParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "verify_checksum");
@@ -88,6 +129,14 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Returns information about a data object.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param ticket An optional parameter specifying a ticket to enable before stat'ing the data object.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response stat(String token, String lpath, Optional<String> ticket) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
@@ -99,6 +148,13 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Renames or moves a data object.
+     * @param token The authentication token for the iRODS user.
+     * @param oldPath The absolute logical path of the data object to rename.
+     * @param newPath The new absolute logical path of the data object.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response rename(String token, String oldPath, String newPath) {
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
@@ -111,6 +167,15 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Copies a data object.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param srcLpath The absolute logical path of the data object to copy.
+     * @param dstLpath The absolute logical path of a new or existing data object.
+     * @param params An instance of the {@link DataObjectCopyParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response copy(String token, String srcLpath, String dstLpath, DataObjectCopyParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "copy");
@@ -125,6 +190,16 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Replicates an existing replica from one resource to another resource.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param srcResource The resource to replicate from.
+     * @param dstResource The resource to replicate to.
+     * @param admin An optional parameter for the {@code admin} flag. 0 or 1. Defaults to 0. Execute as a rodsadmin.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response replicate(String token, String lpath, String srcResource, String dstResource,
                               OptionalInt admin) {
         Map<Object, Object> formData = new HashMap<>();
@@ -138,6 +213,15 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Trims an existing replica or removes its catalog entry.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param replicaNum The replica number identifying the replica to trim.
+     * @param params An instance of the {@link DataObjectTrimParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response trim(String token, String lpath, int replicaNum, DataObjectTrimParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "trim");
@@ -152,6 +236,18 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Registers a new data object and/or replica into the catalog.
+     * <p>This operation may require rodsadmin level privileges depending on the configuration of the iRODS zone.
+     * Contact the administrator of the iRODS zone to be sure non-rodsadmin users are allowed to execute this operation.</p>
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param ppath Absolute physical path to file on the iRODS server.
+     * @param resource The resource which will own the replica.
+     * @param params An instance of the {@link DataObjectRegisterParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response register(String token, String lpath, String ppath, String resource, DataObjectRegisterParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "register");
@@ -168,6 +264,14 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Reads bytes from a data object.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param params An instance of the {@link DataObjectReadParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response read(String token, String lpath, DataObjectReadParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "read");
@@ -182,6 +286,15 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Writes bytes to a data object.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param bytes The bytes to write.
+     * @param params An instance of the {@link DataObjectWriteParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response write(String token, String lpath, byte[] bytes, DataObjectWriteParams params) {
 
         String boundary = "----http_api_write_data_objects_operations----";
@@ -233,7 +346,7 @@ public class DataObjectOperations {
     }
 
     /**
-     * Helper method for write() to add form data
+     * Helper method for {@code write()} to add form data.
      */
     private static void addFormData(StringBuilder sb, String boundary, String name, String value) {
         sb.append("--").append(boundary).append("\r\n");
@@ -241,6 +354,15 @@ public class DataObjectOperations {
         sb.append(value + "\r\n");
     }
 
+    /**
+     * Initializes server-side state used for writing to a data object in parallel.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param streamCount Number of streams to open.
+     * @param params An instance of the {@link DataObjectParallelWriteInitParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response parallelWriteInit(String token, String lpath, int streamCount,
                                       DataObjectParallelWriteInitParams params) {
         Map<Object, Object> formData = new HashMap<>();
@@ -257,6 +379,17 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Instructs the server to shutdown and release any resources used for parallel write operations.
+     *
+     * <p>
+     *     This operation MUST be called to complete the parallel write operation. Failing to call this operation will
+     *     result in intermediate replicas and the server leaking memory.
+     * </p>
+     * @param token The authentication token for the iRODS user.
+     * @param parallelWriteHandle A handle obtained via the {@code parallelWriteInit} operation.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response parallelWriteShutdown(String token, String parallelWriteHandle) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "parallel_write_shutdown");
@@ -266,6 +399,16 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Adjust multiple AVUs on a data object.
+     *
+     * @param token The authentication token to use for the request.
+     * @param lpath The logical path of the data object.
+     * @param jsonParam A list of {@link ModifyMetadataOperations} specifying the metadata modifications.
+     * @param admin An optional parameter indicating whether the operation is executed as rodsadmin. 0 or 1.
+     *              Defaults to 0. This is wrapped in an {@link OptionalInt}.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response modifyMetadata(String token, String lpath, List<ModifyMetadataOperations> jsonParam,
                                    OptionalInt admin) {
         // Serialize the operations parameter to JSON
@@ -288,6 +431,17 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Sets the permission of a user or group on a data object.
+     *
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param entityName The name of a user or group.
+     * @param permission The {@link Permission} level to be set.
+     * @param admin An optional parameter indicating whether the operation is executed as rodsadmin. 0 or 1.
+     *              Defaults to 0. This is wrapped in an {@link OptionalInt}.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response setPermission(String token, String lpath, String entityName, String permission,
                                   OptionalInt admin) {
         // contains parameters for the HTTP request
@@ -303,6 +457,17 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Adjust permissions for multiple users and groups on a data object atomically.
+     *
+     * @param token The authentication token to use for the request.
+     * @param lpath The logical path of the data object.
+     * @param jsonParam A list of {@link ModifyPermissionsOperations} specifying the permissions to modify.
+     * @param admin An optional parameter indicating whether the operation is executed as rodsadmin. 0 or 1.
+     *              Defaults to 0. This is wrapped in an {@link OptionalInt}.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     * @throws JsonProcessingException If an error occurs during JSON serialization of the operations.
+     */
     public Response modifyPermissions(String token, String lpath, List<ModifyPermissionsOperations> jsonParam,
                                       OptionalInt admin) throws JsonProcessingException {
         // Serialize the operations parameter to JSON
@@ -320,6 +485,18 @@ public class DataObjectOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Modifies properties of a single replica.
+     *
+     * <p>
+     *     WARNING: This operation requires rodsadmin level privileges and should only be used when there isn't a safer
+     *     option. Misuse can lead to catalog inconsistencies and unexpected behavior.
+     * </p>
+     * @param token The authentication token for the iRODS user.
+     * @param lpath The logical path for the data object.
+     * @param params An instance of the {@link DataObjectModifyReplicaParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response modifyReplica(String token, String lpath, DataObjectModifyReplicaParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "modify_replica");
