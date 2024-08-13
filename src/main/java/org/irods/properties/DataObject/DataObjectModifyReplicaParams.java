@@ -1,8 +1,21 @@
 package org.irods.properties.DataObject;
 
+import org.irods.operations.DataObjectOperations;
+
 import java.util.Optional;
 import java.util.OptionalInt;
 
+/**
+ * This class represents the optional parameters for {@code modifyReplica()} in {@link DataObjectOperations}, which
+ * modifies properties of a single replica. Create an instance of this class and set the optional fields as desired,
+ * not all fields have to be set.
+ * <p> {@code resource-hierarchy} and {@code replica-number} are mutually exclusive parameters. </p>
+ * <p>
+ *     All parameters having a prefix of {@code new-} represent modifiable properties of the target replica. At least one
+ *     modifiable property is required for the operation to succeed. This operation allows multiple properties to be
+ *     modified in a single call.
+ * </p>
+ */
 public class DataObjectModifyReplicaParams {
     private Optional<String> resourceHierarchy = Optional.empty();
     private OptionalInt replicaNum = OptionalInt.empty();

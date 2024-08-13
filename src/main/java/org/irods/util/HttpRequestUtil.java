@@ -9,18 +9,23 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class for sending HTTP requests and processing responses.
+ * Provides methods to send POST and GET requests and handle the responses.
+ */
 public class HttpRequestUtil {
     private static final ObjectMapper mapper = new ObjectMapper();
     private static HttpResponse<String> response;
 
     /**
-     * Sends a POST HTTP request and parses the JSON using the methods above
-     * @param formData Contains the parameters of the HTTP request
-     * @param baseUrl
-     * @param token
-     * @return Instance of the response type containing the parsed data
-     * @throws IOException
-     * @throws InterruptedException
+     * Sends a POST HTTP request with form data and parses the response.
+     *
+     * @param formData A map containing the parameters for the HTTP request, where keys and values are converted
+     *                 to a query string format (e.g., "key1=value1&key2=value2").
+     * @param baseUrl The base URL to which the POST request is sent.
+     * @param token The authorization token to be included in the request header.
+     * @param client The {@link HttpClient} instance used to send the request.
+     * @return The {@link HttpResponse} object containing the server's response as a String.
      */
     public static HttpResponse<String> sendAndParsePOST(Map<Object, Object> formData, String baseUrl, String token,
                                                         HttpClient client) {
@@ -47,13 +52,14 @@ public class HttpRequestUtil {
     }
 
     /**
-     * Sends a GET HTTP request and parses the JSON using the methods above
-     * @param formData
-     * @param baseUrl
-     * @param token
-     * @return Instance of the response type containing the parsed data
-     * @throws IOException
-     * @throws InterruptedException
+     * Sends a GET HTTP request with form data appended to the URL and parses the response.
+     *
+     * @param formData A map containing the parameters for the HTTP request, where keys and values are converted
+     *                 to a query string format (e.g., "key1=value1&key2=value2").
+     * @param baseUrl The base URL to which the GET request is sent. Form data is appended as query parameters.
+     * @param token The authorization token to be included in the request header.
+     * @param client The {@link HttpClient} instance used to send the request.
+     * @return The {@link HttpResponse} object containing the server's response as a String.
      */
     public static HttpResponse<String>  sendAndParseGET(Map<Object, Object> formData, String baseUrl, String token,
                                                         HttpClient client)  {

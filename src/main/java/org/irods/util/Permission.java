@@ -1,7 +1,14 @@
 package org.irods.util;
 
 /**
- * enum for setPermission() method in collections and data objects endpoint
+ * Enum representing various permissions for the iRODS system.
+ * This enum is used to ensure that only valid permission values are passed to the {@code setPermission()} and
+ * {@code modifyPermission()} methods used in the collections and data-objects endpoint.
+ * <p> Extra notes:</p>
+ * <ul>
+ *     <li>{@link #MODIFY_OBJECT} - Equivalent to {@link #WRITE}</li>
+ *     <li>{@link #READ_OBJECT} - Equivalent to {@link #READ}</li>
+ * </ul>
  */
 public enum Permission {
     OWN("own"),
@@ -17,11 +24,22 @@ public enum Permission {
     READ_METADATA("read_metadata"),
     NULL("null");
 
-    private final String value; 
-    
+    private final String value;
+
+    /**
+     * Constructs a {@code Permission} enum constant with the specified string value.
+     *
+     * @param value The string representation of the permission.
+     */
     Permission(String value) {
         this.value = value;
     }
+
+    /**
+     * Returns the string representation of this permission.
+     *
+     * @return The string representation of the permission.
+     */
     public String getValue() {
         return value; 
     }

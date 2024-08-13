@@ -1,6 +1,7 @@
 package org.irods.operations;
 
 import org.irods.IrodsHttpClient;
+import org.irods.properties.Collection.CollectionsTouchParams;
 import org.irods.properties.Ticket.TicketCreateParams;
 import org.irods.util.HttpRequestUtil;
 import org.irods.util.Response;
@@ -9,15 +10,31 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class provides methods to interact with the tickets endpoint.
+ */
 public class TicketOperations {
     private final IrodsHttpClient client;
     private String baseUrl;
 
+    /**
+     * Constructs a {@code InformationOperations} object.
+     *
+     * @param client An instance of {@link IrodsHttpClient} used to communicate with the iRODS server.
+     */
     public TicketOperations(IrodsHttpClient client) {
         this.client = client;
         this.baseUrl = client.getBaseUrl() + "/tickets";
     }
 
+    /**
+     * Creates a new ticket for a collection or data object.
+     *
+     * @param token The authentication token to use for the request.
+     * @param lpath Absolute logical path to a collection or data object.
+     * @param params An instance of the {@link TicketCreateParams} containing optional parameters.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response create(String token, String lpath, TicketCreateParams params) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "create");
@@ -37,6 +54,12 @@ public class TicketOperations {
         return new Response(response.statusCode(), response.body());
     }
 
+    /**
+     * Removes a ticket.
+     * @param token The authentication token to use for the request.
+     * @param name The ticket string.
+     * @return A {@link Response} object containing the status and body of the HTTP response.
+     */
     public Response remove(String token, String name) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "remove");
