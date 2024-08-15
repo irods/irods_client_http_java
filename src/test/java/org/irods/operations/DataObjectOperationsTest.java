@@ -652,7 +652,10 @@ public class DataObjectOperationsTest {
             // Give alice read permission on the data object.
             List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
             assertDoesNotThrow(() -> jsonParam.add(new ModifyPermissionsOperations("alice", Permission.READ)));
-            res = client.dataObject().modifyPermissions(rodsToken, dataObject, jsonParam, OptionalInt.empty());
+            res = assertDoesNotThrow(() ->
+                    client.dataObject().modifyPermissions(rodsToken, dataObject, jsonParam, OptionalInt.empty()),
+                    "JsonProcessingException was thrown"
+            );
 
             logger.debug(res.getBody());
             assertEquals("modifying permission request failed", 200, res.getHttpStatusCode());
@@ -686,8 +689,12 @@ public class DataObjectOperationsTest {
             // Reset permissions
             List<ModifyPermissionsOperations> jsonParam = new ArrayList<>();
             assertDoesNotThrow(() -> jsonParam.add(new ModifyPermissionsOperations("alice", Permission.NULL)));
-            client.dataObject().modifyPermissions(rodsToken, dataObject, jsonParam, OptionalInt.empty());
-
+            assertDoesNotThrow(() ->
+                            client.dataObject().modifyPermissions(rodsToken, dataObject, jsonParam, OptionalInt.empty()),
+                    "JsonProcessingException was thrown"
+            );
+            assertDoesNotThrow(() ->
+                    client.dataObject().modifyPermissions(rodsToken, dataObject, jsonParam, OptionalInt.empty()));
             // Remove the data object.
             DataObjectRemoveParams params = new DataObjectRemoveParams();
             params.setNoTrash(1);

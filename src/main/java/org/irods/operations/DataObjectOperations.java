@@ -304,15 +304,10 @@ public class DataObjectOperations {
     }
 
     public Response modifyPermissions(String token, String lpath, List<ModifyPermissionsOperations> jsonParam,
-                                      OptionalInt admin) {
+                                      OptionalInt admin) throws JsonProcessingException {
         // Serialize the operations parameter to JSON
         ObjectMapper mapper = new ObjectMapper();
-        String operationsJson = null;
-        try {
-            operationsJson = mapper.writeValueAsString(jsonParam);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        String operationsJson = mapper.writeValueAsString(jsonParam);
 
         // contains parameters for the HTTP request
         Map<Object, Object> formData = new HashMap<>();
