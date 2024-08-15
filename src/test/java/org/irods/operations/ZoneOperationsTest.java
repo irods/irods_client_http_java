@@ -79,7 +79,7 @@ public class ZoneOperationsTest {
                         getIrodsResponseStatusCode(res.getBody()));
 
                 // Capture the new name of the zone following its renaming.
-                if ("name".equals(zoneProperty.getValue())) {
+                if (ZoneProperty.NAME == zoneProperty) {
                     zoneName = value;
                 }
             }
