@@ -1,7 +1,6 @@
-package org.irods.properties.DataObject;
+package org.irods.properties.data_object;
 
 import org.irods.operations.DataObjectOperations;
-
 import java.util.OptionalInt;
 
 /**

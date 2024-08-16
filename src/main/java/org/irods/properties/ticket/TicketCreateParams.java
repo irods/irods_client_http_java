@@ -1,4 +1,4 @@
-package org.irods.properties.Ticket;
+package org.irods.properties.ticket;
 
 import org.irods.operations.TicketOperations;
 

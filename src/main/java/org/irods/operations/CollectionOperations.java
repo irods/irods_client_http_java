@@ -2,7 +2,7 @@ package org.irods.operations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.irods.IrodsHttpClient;
-import org.irods.properties.Collection.*;
+import org.irods.properties.collection.*;
 import org.irods.serialize.ModifyMetadataOperations;
 import org.irods.serialize.ModifyPermissionsOperations;
 import org.irods.util.*;

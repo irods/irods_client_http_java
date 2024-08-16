@@ -1,4 +1,4 @@
-package org.irods.properties.DataObject;
+package org.irods.properties.data_object;
 
 import org.irods.operations.DataObjectOperations;
 
@@ -50,7 +50,6 @@ public class DataObjectParallelWriteInitParams {
      * @param append 0 or 1. Defaults to 0. Only the int value needs to be provided; it will be wrapped in an {@link OptionalInt}.
      */
     public void setAppend(int append) {
-
         this.append = OptionalInt.of(append);
     }
 
@@ -58,7 +57,6 @@ public class DataObjectParallelWriteInitParams {
      * Gets the ticket to enable for all streams.
      *
      * @return An {@link Optional} containing the {@code ticket} value if set, otherwise an empty {@code Optional}.
-
      */
     public Optional<String> getTicket() {
         return ticket;

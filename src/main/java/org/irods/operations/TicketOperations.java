@@ -1,8 +1,7 @@
 package org.irods.operations;
 
 import org.irods.IrodsHttpClient;
-import org.irods.properties.Collection.CollectionsTouchParams;
-import org.irods.properties.Ticket.TicketCreateParams;
+import org.irods.properties.ticket.TicketCreateParams;
 import org.irods.util.HttpRequestUtil;
 import org.irods.util.Response;
 

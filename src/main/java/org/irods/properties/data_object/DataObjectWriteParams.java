@@ -1,7 +1,6 @@
-package org.irods.properties.DataObject;
+package org.irods.properties.data_object;
 
 import org.irods.operations.DataObjectOperations;
-
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -117,7 +116,6 @@ public class DataObjectWriteParams {
      *
      * @return an {@link OptionalInt} containing the {@code streamIndex} value if set, otherwise an empty {@code OptionalInt}.
      */
-
     public OptionalInt getStreamIndex() {
         return streamIndex;
     }

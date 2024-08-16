@@ -1,6 +1,4 @@
-package org.irods.properties.DataObject;
-
-import org.irods.operations.DataObjectOperations;
+package org.irods.properties.data_object;
 
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -50,7 +48,6 @@ public class DataObjectCopyParams {
      *                    be wrapped in an {@link Optional}.
      */
     public void setDstResource(String dstResource) {
-
         this.dstResource = Optional.of(dstResource);
     }
 

@@ -1,7 +1,6 @@
-package org.irods.properties.DataObject;
+package org.irods.properties.data_object;
 
 import org.irods.operations.DataObjectOperations;
-
 import java.util.OptionalInt;
 
 /**
@@ -30,7 +29,6 @@ public class DataObjectRemoveParams {
      * {@link OptionalInt}.
      */
     public void setNoTrash(int noTrash) {
-
         this.noTrash = OptionalInt.of(noTrash);
     }
 
@@ -39,6 +37,7 @@ public class DataObjectRemoveParams {
      *
      * @return an {@link OptionalInt} containing the {@code admin} flag value if set, otherwise an empty {@code OptionalInt}.
      */
+
     public OptionalInt getAdmin() {
         return admin;
     }

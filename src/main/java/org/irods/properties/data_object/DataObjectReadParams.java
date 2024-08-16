@@ -1,7 +1,6 @@
-package org.irods.properties.DataObject;
+package org.irods.properties.data_object;
 
 import org.irods.operations.DataObjectOperations;
-
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -51,7 +50,6 @@ public class DataObjectReadParams {
      * {@link OptionalInt}.
      */
     public void setCount(int count) {
-
         this.count = OptionalInt.of(count);
     }
 
@@ -71,7 +69,6 @@ public class DataObjectReadParams {
      *               it will be wrapped in an {@link Optional}.
      */
     public void setTicket(String ticket) {
-
         this.ticket = Optional.of(ticket);
     }
 }

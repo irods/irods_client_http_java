@@ -1,7 +1,6 @@
-package org.irods.properties.DataObject;
+package org.irods.properties.data_object;
 
 import org.irods.operations.DataObjectOperations;
-
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -56,11 +55,6 @@ public class DataObjectRegisterParams {
         this.dataSize = OptionalInt.of(dataSize);
     }
 
-    /**
-     * Get the checksum associated with the replica.
-     *
-     * @return an {@link Optional} containing the {@code checksum} value if set, otherwise an empty {@code Optional}.
-     */
     public Optional<String> getChecksum() {
         return checksum;
     }
