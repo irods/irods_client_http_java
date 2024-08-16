@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.irods.properties.Query.QueryExecuteGenQueryParams;
-import org.irods.properties.Query.QueryExecuteSpecifcQueryParams;
+import org.irods.properties.query.QueryExecuteGenQueryParams;
+import org.irods.properties.query.QueryExecuteSpecifcQueryParams;
 import org.irods.util.Response;
 import org.irods.IrodsHttpClient;
 import org.irods.util.UserType;

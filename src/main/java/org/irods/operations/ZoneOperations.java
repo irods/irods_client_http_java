@@ -1,7 +1,6 @@
 package org.irods.operations;
 
-import org.irods.properties.Collection.CollectionsTouchParams;
-import org.irods.properties.Zone.ZoneAddParams;
+import org.irods.properties.zone.ZoneAddParams;
 import org.irods.IrodsHttpClient;
 import org.irods.util.HttpRequestUtil;
 import org.irods.util.Response;

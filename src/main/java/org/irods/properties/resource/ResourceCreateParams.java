@@ -1,4 +1,4 @@
-package org.irods.properties.Resource;
+package org.irods.properties.resource;
 
 import org.irods.operations.ResourceOperations;
 

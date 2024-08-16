@@ -1,6 +1,4 @@
-package org.irods.properties.DataObject;
-
-import org.irods.operations.DataObjectOperations;
+package org.irods.properties.data_object;
 
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -59,11 +57,6 @@ public class DataObjectCalculateChecksumParams {
         this.replicaNum = OptionalInt.of(replicaNum);
     }
 
-    /**
-     * Gets the {@code force} flag for the {@code calculateChecksum()} method to overwrite the existing checksum.
-     *
-     * @return An {@link OptionalInt} containing the {@code force} value if set, otherwise an empty {@code OptionalInt}.
-     */
     public OptionalInt getForce() {
         return force;
     }

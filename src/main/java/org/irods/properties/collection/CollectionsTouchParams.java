@@ -1,4 +1,4 @@
-package org.irods.properties.Collection;
+package org.irods.properties.collection;
 
 import org.irods.operations.CollectionOperations;
 

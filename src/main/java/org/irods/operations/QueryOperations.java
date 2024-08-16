@@ -1,9 +1,8 @@
 package org.irods.operations;
 
 import org.irods.IrodsHttpClient;
-import org.irods.properties.DataObject.DataObjectCopyParams;
-import org.irods.properties.Query.QueryExecuteGenQueryParams;
-import org.irods.properties.Query.QueryExecuteSpecifcQueryParams;
+import org.irods.properties.query.QueryExecuteGenQueryParams;
+import org.irods.properties.query.QueryExecuteSpecifcQueryParams;
 import org.irods.util.HttpRequestUtil;
 import org.irods.util.Response;
 

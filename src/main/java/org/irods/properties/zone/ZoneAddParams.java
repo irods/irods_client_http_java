@@ -1,4 +1,4 @@
-package org.irods.properties.Zone;
+package org.irods.properties.zone;
 
 import org.irods.operations.ZoneOperations;
 

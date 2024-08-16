@@ -1,4 +1,4 @@
-package org.irods.properties.Query;
+package org.irods.properties.query;
 
 import org.irods.operations.QueryOperations;
 
