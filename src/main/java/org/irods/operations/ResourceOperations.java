@@ -6,6 +6,7 @@ import org.irods.IrodsHttpClient;
 import org.irods.properties.Resource.ResourceCreateParams;
 import org.irods.serialize.ModifyMetadataOperations;
 import org.irods.util.HttpRequestUtil;
+import org.irods.util.ResourceProperty;
 import org.irods.util.Response;
 
 import java.net.http.HttpResponse;
@@ -46,11 +47,11 @@ public class ResourceOperations {
         return new Response(response.statusCode(), response.body());
     }
 
-    public Response modify(String token, String name, String property, String value) {
+    public Response modify(String token, String name, ResourceProperty property, String value) {
         Map<Object, Object> formData = new HashMap<>();
         formData.put("op", "modify");
         formData.put("name", name);
-        formData.put("property", property);
+        formData.put("property", property.getValue());
         formData.put("value", value);
 
         HttpResponse<String> response = HttpRequestUtil.sendAndParsePOST(formData, baseUrl, token, client.getClient());

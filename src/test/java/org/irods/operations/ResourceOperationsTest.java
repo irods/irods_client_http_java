@@ -7,6 +7,7 @@ import org.irods.properties.DataObject.DataObjectRemoveParams;
 import org.irods.properties.DataObject.DataObjectWriteParams;
 import org.irods.properties.Resource.ResourceCreateParams;
 import org.irods.serialize.ModifyMetadataOperations;
+import org.irods.util.ResourceProperty;
 import org.irods.util.Response;
 import org.irods.util.MetadataOperation;
 import org.junit.Before;
@@ -292,23 +293,24 @@ public class ResourceOperationsTest {
                     getIrodsResponseStatusCode(res.getBody()));
 
             // The list of updates to apply in sequence.
-            List<Map.Entry<String, String>> propertyMap = List.of(
-                    Map.entry("name", "test_modifying_resource_properties_renamed"),
-                    Map.entry("type", "passthru"),
-                    Map.entry("host", "example.org"),
-                    Map.entry("vault_path", "/tmp/test_modifying_resource_properties_vault"),
-                    Map.entry("status", "down"),
-                    Map.entry("status", "up"),
-                    Map.entry("comments", "test_modifying_resource_properties_comments"),
-                    Map.entry("information", "test_modifying_resource_properties_information"),
-                    Map.entry("free_space", "test_modifying_resource_properties_free_space"),
-                    Map.entry("context", "test_modifying_resource_properties_context")
+            List<Map.Entry<ResourceProperty, String>> propertyMap = List.of(
+                    Map.entry(ResourceProperty.NAME, "test_modifying_resource_properties_renamed"),
+                    Map.entry(ResourceProperty.TYPE, "passthru"),
+                    Map.entry(ResourceProperty.HOST, "example.org"),
+                    Map.entry(ResourceProperty.VAULT_PATH, "/tmp/test_modifying_resource_properties_vault"),
+                    Map.entry(ResourceProperty.STATUS, "down"),
+                    Map.entry(ResourceProperty.STATUS, "up"),
+                    Map.entry(ResourceProperty.COMMENTS, "test_modifying_resource_properties_comments"),
+                    Map.entry(ResourceProperty.INFORMATION, "test_modifying_resource_properties_information"),
+                    Map.entry(ResourceProperty.FREE_SPACE, "test_modifying_resource_properties_free_space"),
+                    Map.entry(ResourceProperty.CONTEXT, "test_modifying_resource_properties_context")
             );
 
             // Apply each update to the resource and verify that each one results in the expected results.
-            for (Map.Entry<String, String> entry : propertyMap) {
-                String property = entry.getKey();
+            for (Map.Entry<ResourceProperty, String> entry : propertyMap) {
+                ResourceProperty property = entry.getKey();
                 String value = entry.getValue();
+
                 // Change a property of the resource.
                 res = client.resourceOperations().modify(rodsToken, resource, property, value);
                 logger.debug(res.getBody());
@@ -317,7 +319,7 @@ public class ResourceOperationsTest {
                         getIrodsResponseStatusCode(res.getBody()));
 
                 // Make sure to update the "resource" variable following a successful rename.
-                if ("name".equals(property)) {
+                if (ResourceProperty.NAME == property) {
                     resource = value;
                     logger.debug("Resource name updated successfully. Capturing new name.");
                 }
@@ -328,7 +330,7 @@ public class ResourceOperationsTest {
                 assertEquals("Stat on resource request failed", 200, statRes.getHttpStatusCode());
                 assertEquals("Stat on resource failed",0,
                         getIrodsResponseStatusCode(statRes.getBody()));
-                assertTrue(statRes.getBody().contains("\"" + property + "\":\"" + value + "\""));
+                assertTrue(statRes.getBody().contains("\"" + property.getValue() + "\":\"" + value + "\""));
             }
             // Remove the resource.
             res = client.resourceOperations().remove(rodsToken, resource);
@@ -340,6 +342,7 @@ public class ResourceOperationsTest {
         } finally {
             // Remove the resource.
             client.resourceOperations().remove(rodsToken, resource);
+            client.resourceOperations().remove(rodsToken, "test_modifying_resource_properties_renamed");
         }
     }
 }
